@@ -29,6 +29,7 @@ QPoint snapPointToGrid(const QPoint &pointToSnap, int gridSize, bool performSnap
 	} else {
 		return pointToSnap;
 	}
+
 }
 
 QPoint rotatePoint(const QPoint &point, const QPoint &pivot, int angle) {
@@ -54,7 +55,7 @@ float distanceBetweenPoints(const QPoint& p1, const QPoint& p2) {
 
 }
 
-// TODO this is HORRIBLY inefficient, but has one major advantage over all the other methods 
+// TODO/NOTE this is rather inefficient, but has one major advantage over all the other methods 
 // I tried in this two-hour-long crusade towards decent mouseOverLink detection
 //
 // the advantage is that

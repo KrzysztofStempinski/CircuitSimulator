@@ -71,7 +71,9 @@ void MainWindow::slot_simulationRun() {
 		logWindow->log("Elapsed time: " + QString::number(std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()) + " ms");
 
 	} else {
+
 		logWindow->log("Simulation failed - " + getSimulationErrorMessage(result) + ".", LogEntryType::Error);
+
 	}
 
 	update();
@@ -94,6 +96,8 @@ void MainWindow::slot_fileOpen() {
 
 	if (!fileName.isEmpty() && !fileName.isNull())
 		editor->circuit.loadFromFile(fileName);
+
+	editor->update();
 
 }
 

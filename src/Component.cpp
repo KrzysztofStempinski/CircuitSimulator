@@ -232,7 +232,7 @@ Component::Component(QString name) {
 							boundingRect["bottomRight"][0].GetInt(),
 							boundingRect["bottomRight"][1].GetInt());
 
-	_boundingRect = _boundingRect.normalized(); // TODO ugly, quick workaround
+	_boundingRect = _boundingRect.normalized(); 
 
 }
 
@@ -347,7 +347,6 @@ std::tuple<QString, QString, double> Component::getSimulationResult() {
 void Component::updateNodeOffsets() {
 
 	const rapidjson::Value& nodes = _componentData["nodes"];
-
 	for (rapidjson::Value::ConstValueIterator it = nodes.Begin(); it != nodes.End(); ++it) {
 
 		QPoint nodeOffset((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt());
@@ -371,8 +370,9 @@ void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Documen
 	rapidjson::Value position(rapidjson::kArrayType);
 	position.PushBack(_pos.x(), allocator);
 	position.PushBack(_pos.y(), allocator);
-
 	valueComponent.AddMember("position", position, allocator);
+
+	valueComponent.AddMember("rotationAngle", _rotationAngle, allocator);
 
 	// same for properties
 	if (!properties.empty()) {

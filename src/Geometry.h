@@ -18,13 +18,13 @@
 #include <cmath>
 #include <vector>
 
-const double PI = std::atan(1) * 4;
-
 #include <qpoint.h>
 #include <qrect.h>
 #include <qpainter.h>
 
 #include "../rapidjson/document.h"
+
+const double PI = std::atan(1) * 4;
 
 // TODO find a proper place to put this in
 template <typename T> int sign(T val) {
@@ -41,7 +41,6 @@ float distanceSquaredBetweenPoints(const QPoint& p1, const QPoint& p2);
 
 struct GeometryObject {
 
-	// NOTE dummy
 	virtual void draw(QPainter &painter, const QPoint &parentPos, int parentRotationAngle = 0) = 0;
 
 };
@@ -51,7 +50,8 @@ struct Circle : public GeometryObject {
 	QPoint center;
 	int radius;
 
-	Circle(QPoint _center, int _radius) : center(_center), radius(_radius) {};
+	Circle(QPoint _center, int _radius) 
+		: center(_center), radius(_radius) {};
 
 	void draw(QPainter& painter, const QPoint& parentPos, int);
 
@@ -61,19 +61,10 @@ struct Line : public GeometryObject {
 
 	QPoint begin, end;
 
-	Line(QPoint _begin, QPoint _end) : begin(_begin), end(_end) {};
+	Line(QPoint _begin, QPoint _end) 
+		: begin(_begin), end(_end) {};
 
 	void draw(QPainter &painter, const QPoint &parentPos, int parentRotationAngle = 0);
-
-};
-
-struct Text : public GeometryObject {
-
-	QPoint pos;
-
-	//Text(QPoint _pos) : begin(_begin), end(_end) {};
-
-	//void draw(QPainter &painter, const QPoint &parentPos, int parentRotationAngle = 0);
 
 };
 

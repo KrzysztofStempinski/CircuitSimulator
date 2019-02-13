@@ -82,6 +82,10 @@ SimulationResult simulate(Circuit& circuit, SimulationMode mode, Eigen::VectorXd
 		case SimulationMode::DCOP: 
 			return DCOP(circuit, solutions, logWindow);
 		break;
+
+		default:
+			return SimulationResult::Error_InvalidMode;
+		break;
 	
 	}
 

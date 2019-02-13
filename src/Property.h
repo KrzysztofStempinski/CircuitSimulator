@@ -27,7 +27,8 @@ struct PropertyGeneric {
 		PropertyGeneric(QString newDisplayName, QString newUnit, T newValue) 
 			: displayName(newDisplayName), unit(newUnit), value(newValue) {};
 
-		PropertyGeneric() : displayName("error"), unit("error"), value(T(0)) {};
+		PropertyGeneric() 
+			: displayName("unspecified"), unit("unspecified"), value(T(0)) {};
 
 };
 

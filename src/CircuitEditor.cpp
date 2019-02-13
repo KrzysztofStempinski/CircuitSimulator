@@ -177,7 +177,6 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 
 		}
 
-
 		if ((*it)->isSelected) {
 			pen.setColor(colorSelected);
 			pen.setWidth(2);
