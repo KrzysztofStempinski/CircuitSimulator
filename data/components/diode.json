@@ -1,0 +1,157 @@
+{
+
+	"displayNameBase": "Diode",
+	"letterIdentifierBase": "D",
+
+	"nameposition": [ 0, -12 ],
+
+	"DCOP": {
+
+		"linear": false,
+
+		  "componentStamps": [ 
+
+			{
+
+				"matrix": "A",
+
+				"row":  "this.node1.voltageIndex",
+				"column":  "this.node1.voltageIndex", 
+
+				"value": "(this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+
+			},
+
+			{
+
+				"matrix": "A",
+
+				"row":  "this.node1.voltageIndex",
+				"column":  "this.node0.voltageIndex", 
+
+				"value": "-1 * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+
+			},
+
+			{
+
+				"matrix": "A",
+
+				"row":  "this.node0.voltageIndex",
+				"column":  "this.node1.voltageIndex", 
+
+				"value": "-1 * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+
+			},
+
+			{
+
+				"matrix": "A",
+
+				"row":  "this.node0.voltageIndex",
+				"column":  "this.node0.voltageIndex", 
+
+				"value": "(this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+
+			},
+
+			{
+
+				"matrix": "B",
+
+				"row":  "this.node0.voltageIndex",
+
+				"value": "(this.node1.voltageValue.k - this.node0.voltageValue.k) * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) - this.properties.sat_curr * (exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) - 1)"
+
+			},
+
+			{
+
+				"matrix": "B",
+
+				"row":  "this.node0.voltageIndex",
+
+				"value": "-(this.node1.voltageValue.k - this.node0.voltageValue.k) * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) + this.properties.sat_curr * (exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) - 1)"
+
+			}
+
+		]
+
+	},
+
+	"properties": [
+
+		{
+			"name": "sat_curr",
+			"displayName": "Saturation current",
+			"unit": "A",
+			"defaultValue": 0.02
+		},
+		{
+			"name": "therm_volt",
+			"displayName": "Thermal voltage",
+			"unit": "V",
+			"defaultValue": 0.026
+		},
+		{
+			"name": "n",
+			"displayName": "Quality factor",
+			"unit": "",
+			"defaultValue": 1
+		}
+
+	],	
+
+	"boundingRect": {
+
+		"topLeft": [ -24, 12 ],  
+		"bottomRight": [ 24, -12 ] 
+
+	},
+
+	"nodes": [
+		{
+			"ID": 0,
+			"position": [ -24, 0]
+		},
+		{
+			"ID": 1,
+			"position": [ 24, 0]
+		}
+	],
+
+	"display": [
+		{
+			"type": "line",
+			"point1": [ -24, 0 ],
+			"point2": [ -6, 0 ]
+		},
+		{
+			"type": "line",
+			"point1": [ -6, 12 ],
+			"point2": [ -6, -12 ]
+		},
+		{
+			"type": "line",
+			"point1": [ -6, 0 ],
+			"point2": [ 6, 12 ]
+		},
+		{
+			"type": "line",
+			"point1": [ -6, 0 ],
+			"point2": [ 6, -12 ]
+		},
+		{
+			"type": "line",
+			"point1": [ 6, 12 ],
+			"point2": [ 6, -12 ]
+		},		  
+   		{
+			"type": "line",
+			"point1": [ 6, 0 ],
+			"point2": [ 24, 0 ]
+		}
+
+	]
+
+}

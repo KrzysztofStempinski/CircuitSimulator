@@ -1,0 +1,125 @@
+{
+
+	"displayNameBase": "Resistor",
+	"letterIdentifierBase": "R",
+
+	"nameposition": [ 0, -12 ],
+
+	"DCOP": {
+
+		"linear": true,
+
+        "componentStamps": [ 
+
+			{
+
+				"matrix": "A",
+
+				"row":  "this.node1.voltageIndex",
+				"column":  "this.node1.voltageIndex", 
+
+				"value": "1/this.properties.resistance"
+
+			},
+			{
+				"matrix": "A",
+
+				"row":  "this.node1.voltageIndex",
+				"column":  "this.node0.voltageIndex", 
+
+				"value": "-1/this.properties.resistance"
+			},			
+			{
+				"matrix": "A",
+
+				"row":  "this.node0.voltageIndex", 
+				"column": "this.node0.voltageIndex",
+
+				"value": "1/this.properties.resistance"
+			},
+			{
+				"matrix": "A",
+			
+				"row":  "this.node0.voltageIndex",
+				"column":  "this.node1.voltageIndex", 
+				
+				"value": "-1/this.properties.resistance"
+			}
+		],
+
+		"simulationResult": {
+
+			"type": "Device current [A]",
+			"value": "(this.node1.voltageValue - this.node0.voltageValue) / this.properties.resistance"
+			
+		}
+
+	},
+
+	"properties": [
+		{
+			"name": "resistance",			
+			"displayName": "Resistance",
+			"unit": "Ω",
+			"defaultValue": 1000.0
+		}
+	],	
+
+	"boundingRect": {
+
+		"topLeft": [ -24, 12 ],  
+		"bottomRight": [ 24, -12 ] 
+
+	},
+
+	"nodes": [
+		{
+			"ID": 0,
+			"position": [ -24, 0]
+		},
+		{
+			"ID": 1,
+			"position": [ 24, 0]
+		}
+	],
+
+	"display": [
+		{
+			"type": "line",
+			"point1": [ -24, 0 ],
+			"point2": [ -11, 0 ]
+		},
+		{
+			"type": "line",
+			"point1": [ -11, 0 ],
+			"point2": [ -7, -7 ]
+		},
+		{
+			"type": "line",
+			"point1": [ -7, -7 ],
+			"point2": [ -2, 7 ]
+		},
+		{
+			"type": "line",
+			"point1": [ -2, 7 ],
+			"point2": [ 3, -7 ]
+		},		  
+ 		{
+			"type": "line",
+			"point1": [ 3, -7 ],
+			"point2": [ 8, 7 ]
+		},	
+  		{
+			"type": "line",
+			"point1": [ 8, 7 ],
+			"point2": [ 12, 0 ]
+		},	
+   		{
+			"type": "line",
+			"point1": [ 12, 0 ],
+			"point2": [ 24, 0 ]
+		}
+
+	]
+
+}

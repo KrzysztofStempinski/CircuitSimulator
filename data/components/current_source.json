@@ -1,0 +1,76 @@
+{
+
+	"displayNameBase": "Current source",
+	"letterIdentifierBase": "I",
+
+	"nameposition": [ 0, -12 ],
+
+	"DCOP": {
+
+        "ignore": true
+
+	},
+	
+	"boundingRect": {
+
+		"topLeft": [ -24, 10 ],  
+		"bottomRight": [ 24, -10 ] 
+
+	},
+
+	"properties": [
+		{
+			"name": "current",
+			"displayName": "DC value",
+			"unit": "A",
+			"defaultValue": 1
+		}
+	
+	],	
+	
+	"nodes": [
+		{
+			"ID": 0,
+			"position": [ -24, 0]
+		},
+		{
+			"ID": 1,
+			"position": [ 24, 0]
+		}
+	],
+
+	"display": [
+		{
+			"type": "circle",
+			"center": [0, 0],
+			"radius": 24
+		},
+		{
+			"type": "line",
+			"point1": [ 8, 0 ],
+			"point2": [ -8, 0 ]
+		},	
+		{
+			"type": "line",
+			"point1": [ -8, 0 ],
+			"point2": [ -4, 3 ]
+		},	
+		{
+			"type": "line",
+			"point1": [ -8, 0 ],
+			"point2": [ -4, -3 ]
+		},	 
+ 		{
+			"type": "line",
+			"point1": [ -12, 0 ],
+			"point2": [ -24, 0 ]
+		},
+ 		{
+			"type": "line",
+			"point1": [ 12, 0 ],
+			"point2": [ 24, 0 ]
+		}
+ 
+	]
+
+}

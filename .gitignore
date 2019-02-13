@@ -1,0 +1,27 @@
+CSIM.sdf
+CSIM.suo
+CSIM.sln
+CSIM.vcxproj.filters
+CSIM.vcxproj.user
+CSIM.APS
+CSIM.ncb
+CSIM.opensdf
+Transient_Simulation.xls
+Transient_Simulation (1).xls
+Debug/
+debug/
+GeneratedFiles/
+release/
+ipch/
+.vs/
+.vs/CSIM/v15.
+x64/
+Headertemplate.txt
+gmp/
+darkstyle/Debug/
+darkstyle/GeneratedFiles/
+darkstyle/debug/
+darkstyle/release/
+darkstyle/x64/
+darkstyle/D
+
