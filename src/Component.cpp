@@ -356,3 +356,35 @@ void Component::updateNodeOffsets() {
 	}
 
 }
+
+void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator) {
+
+	rapidjson::Value valueComponent;
+	valueComponent.SetObject();
+
+	valueComponent.AddMember("ID", ID, allocator);
+
+	rapidjson::Value name(_name.toStdString().c_str(), _name.toStdString().size(), allocator); // TODO wtf is with those strings
+	valueComponent.AddMember("name", name, allocator);
+
+	rapidjson::Value position(rapidjson::kArrayType);
+	position.PushBack(_pos.x(), allocator);
+	position.PushBack(_pos.y(), allocator);
+
+	valueComponent.AddMember("position", position, allocator);
+
+	// same for properties
+	if (!properties.empty()) {
+
+		rapidjson::Value arrayProperties(rapidjson::kArrayType);
+
+		for (auto &it : properties)
+			arrayProperties.PushBack(it.second.value, allocator);
+
+		valueComponent.AddMember("properties", arrayProperties, allocator);
+
+	}
+
+	arrayComponents.PushBack(valueComponent, allocator);
+
+}

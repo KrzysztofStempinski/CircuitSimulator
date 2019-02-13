@@ -25,21 +25,19 @@ class Circuit {
 
 	public:
 
-		std::list<Node*> nodes;
-		std::list<Component*> components;
+		std::vector<Node*> nodes;
+		std::vector<Component*> components;
 
-		void createNode(const QPoint& pos, bool _isCoupled = false, Component* _coupledComponent = NULL);
+		void createNode(const QPoint& pos, bool _isCoupled = false, Component* _coupledComponent = nullptr);
 	
-		std::list<Node*>::iterator deleteNode(std::list<Node*>::iterator node);
-		std::list<Node*>::iterator deleteNode(Node* node);
+		void deleteNode(Node* node);
 
 		void createComponent(QString componentName, const QPoint& pos, bool createNodes = true);
 
 		void deleteComponent(Component* component);
-		void deleteComponent(std::list<Component*>::iterator component);
 
-		bool loadFromFile(QString fileName);
-		bool saveToFile(QString fileName);
+		bool loadFromFile(const QString fileName);
+		bool saveToFile(const QString fileName);
 
 		int voltageCount;
 		int currentCount;

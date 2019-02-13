@@ -17,8 +17,20 @@
 
 #include <qstring.h>
 
-constexpr int VERSION_MAJOR		= 0;
-constexpr int VERSION_MINOR		= 1;
-constexpr int VERSION_REVISION	= 1;
+namespace VersionInfo {
 
-QString getVersionString();
+	struct VersionRecord {
+
+		int Major;
+		int Minor;
+		int Revision;
+
+	};
+
+	constexpr VersionRecord Version = { 0, 1, 1 };
+
+	QString getVersionString();
+
+}
+
+

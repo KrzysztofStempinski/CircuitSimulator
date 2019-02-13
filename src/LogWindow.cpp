@@ -108,7 +108,7 @@ LogWindow::LogWindow(QWidget* parent){
 void LogWindow::slot_clearLog() {
 	list->clear();
 
-	log("CircuitSimulator v." + getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
+	log("CircuitSimulator v." + VersionInfo::getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
 	log("This is free software, but comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it, subject to certain conditions. See license.md for more details.");
 
 }

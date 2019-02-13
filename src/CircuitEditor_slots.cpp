@@ -86,10 +86,10 @@ void CircuitEditor::slot_delete() {
 			for (const auto& it : _selectedComponents)
 				circuit.deleteComponent(it);
 
-			// TODO get rid of this godawful hack
 			for (const auto& it : _selectedNodes)
-				//if (it != nullptr) // in case it's already been deleted
-					circuit.deleteNode(it);
+				circuit.deleteNode(it);
+
+			_mode = EditorMode::_default;
 		
 		}
 		break;

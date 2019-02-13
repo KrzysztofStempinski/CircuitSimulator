@@ -17,44 +17,24 @@
 
 void Circuit::createNode(const QPoint& pos, bool _isCoupled, Component* _coupledComponent) {
 
-	//TODO complete refactoring
-	Node* newNode = new Node(pos, _isCoupled, _coupledComponent);
-
-	nodes.push_back(newNode);
+	// TODO get rid of _isCoupled field, it's not necessary
+	nodes.push_back(new Node(pos, _isCoupled, _coupledComponent));
 
 }
 
-std::list<Node*>::iterator Circuit::deleteNode(std::list<Node*>::iterator node){
-
-	(*node)->removeInboundLinks();
-
-	delete (*node);
-
-	return nodes.erase(node);
-
-}
-
-
-std::list<Node*>::iterator Circuit::deleteNode(Node* node) {
+void Circuit::deleteNode(Node* node) {
 
 	node->removeInboundLinks();
 
 	delete node;
 
-	return nodes.erase(std::find(std::begin(nodes), std::end(nodes), node));
+	nodes.erase(std::find(std::begin(nodes), std::end(nodes), node));
 
 }
 
-void Circuit::createComponent(QString componentName, const QPoint& pos, bool createNodes){
-	
-	Component* newComponent = new Component(componentName);
+void Circuit::createComponent(QString componentName, const QPoint& pos, bool createNodes) {
 
-	if (createNodes) {
-		for (int i = 0; i < newComponent->getNumberOfNodes(); ++i) {
-			createNode(QPoint(0, 0), true, newComponent);
-			newComponent->coupledNodes.push_back(nodes.back());
-		}
-	}
+	Component* newComponent = new Component(componentName);
 
 	int count = std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
 	// I actually find lambda expressions sexy, in a particular way
@@ -67,45 +47,34 @@ void Circuit::createComponent(QString componentName, const QPoint& pos, bool cre
 	newComponent->serialNumber = count;
 
 	newComponent->setPos(pos);
-	newComponent->updateNodeOffsets();
+
+	if (createNodes) {
+
+		for (int i = 0; i < newComponent->getNumberOfNodes(); ++i) {
+			createNode(QPoint(0, 0), true, newComponent);
+			newComponent->coupledNodes.push_back(nodes.back());
+		}
+
+		newComponent->updateNodeOffsets();
+
+	}
+
 
 	components.push_back(newComponent);
 
 }
 
-void Circuit::deleteComponent(std::list<Component*>::iterator component) {
-	
-	for (const auto &jt : (*component)->coupledNodes) {
-		for (auto it = std::begin(nodes); it != std::end(nodes); /**/) {
-
-			if (jt == (*it)) {
-				it = deleteNode(it);
-				break;
-			} else {
-				++it;
-			}
-
-		}
-	}
-
-	delete (*component);
-
-	components.erase(component);
-
-}
-
-
 void Circuit::deleteComponent(Component* component) {
 
-	for (const auto &jt : component->coupledNodes) {
-		for (auto it = std::begin(nodes); it != std::end(nodes); /**/) {
+	for (int i = 0; i < std::size(component->coupledNodes); ++i) {
+		for (int j = 0; j < std::size(nodes); /**/) {
 
-			if (jt == (*it)) {
-				it = deleteNode(it);
+			if (nodes[j] == component->coupledNodes[i]) {
+				deleteNode(nodes[j]);
 				break;
 			}
 			else {
-				++it;
+				++j;
 			}
 
 		}
@@ -116,3 +85,4 @@ void Circuit::deleteComponent(Component* component) {
 	components.erase(std::find(std::begin(components), std::end(components), component));
 
 }
+	

@@ -22,7 +22,6 @@
 #include <qevent.h>
 #include <qpoint.h>		
 
-constexpr double WHEEL_STEP = 180.0;
 constexpr int GRID_SIZE = 8;
 
 enum class EditorMode {
@@ -99,12 +98,14 @@ class CircuitEditor : public QWidget {
 
 		void clearSelection();
 
+
+		// TODO refactor
 		std::pair<Node*, Node*> isMouseOverLink(const QPoint& mousePos);
 
-		EditorMode getMode();
-		void setMode(EditorMode newode);
+		EditorMode mode() const;
+		void setMode(const EditorMode newMode);
 
-		void setCurrentComponent(QString component);
+		void setCurrentComponent(const QString component);
 
 		void drawEverything(QPainter& painter);
 		void paintEvent(QPaintEvent *) override;
@@ -130,7 +131,5 @@ class CircuitEditor : public QWidget {
 			void mouseReleaseEvent(QMouseEvent* event);
 			void mouseMoveEvent(QMouseEvent* event);
 			void mouseDoubleClickEvent(QMouseEvent* event);
-
-            void wheelEvent(QWheelEvent * event);
 
 };

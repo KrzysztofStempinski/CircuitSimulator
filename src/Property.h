@@ -15,20 +15,20 @@
 
 #pragma once
 
-// TODO use templates (or something like that), so that component
-// properties can not only be doubles, but, say, strings and bools as well
-
 #include <qstring.h>
 
-struct Property {
+template <typename T>
+struct PropertyGeneric {
 
 	QString displayName;
 	QString unit;
-	double value;
+	T value;
 
-		Property(QString newDisplayName, QString newUnit, double newValue) 
+		PropertyGeneric(QString newDisplayName, QString newUnit, T newValue) 
 			: displayName(newDisplayName), unit(newUnit), value(newValue) {};
 
-		Property() : displayName("error"), unit("error"), value(0.0) {};
+		PropertyGeneric() : displayName("error"), unit("error"), value(T(0)) {};
 
 };
+
+using Property = PropertyGeneric<double>;

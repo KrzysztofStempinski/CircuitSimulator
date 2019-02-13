@@ -1,102 +1,71 @@
 
 #include "Circuit.h"
+#include "Version.h"
 
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/stringbuffer.h"
 #include "../rapidjson/istreamwrapper.h"
 #include "../rapidjson/prettywriter.h"
 
-#include <iterator>
+// alright, this is ugly, pathetic, badly commented
+// has computational complexity of O(fuck me),
+// but I need file IO routines up and running
 
-bool Circuit::saveToFile(QString fileName) {
+// TODO figure out something half decent
+
+// TODO: error handling
+bool Circuit::saveToFile(const QString fileName) {
 
 	// assign each node and component a unique ID
 	int ID = 0;
-	for (auto &it : nodes) {
-		it->ID = ID;
-		++ID;
-	}
+	for (auto &it : nodes)
+		it->ID = ID++;
 
 	ID = 0;
-	for (auto &it : components) {
-		it->ID = ID;
-		++ID;
-	}
+	for (auto &it : components)
+		it->ID = ID++;
 
 	// initialize an emppty JSON doc
 	rapidjson::Document file;
 	file.SetObject();
 	rapidjson::Document::AllocatorType& allocator = file.GetAllocator();
 
+	// save version info for comparision between releases
+	rapidjson::Value version(VersionInfo::getVersionString().toStdString().c_str(),
+								VersionInfo::getVersionString().toStdString().size(),
+								allocator);
+	file.AddMember("version", version, allocator);
+
 	// start by saving all NON-COUPLED(!) nodes to file
 	rapidjson::Value arrayNodes(rapidjson::kArrayType);
-	for (auto &it : nodes) 
-		if (!it->isCoupled())
-			it->saveToJSON(arrayNodes, allocator);
+	for (auto &it : nodes)
+		it->saveToJSON(arrayNodes, allocator);	//	if (!it->isCoupled())
 
 	file.AddMember("nodes", arrayNodes, allocator);
-	
+
 	// save all components to file, together with nodes coupled to each of them
 	rapidjson::Value arrayComponents(rapidjson::kArrayType);
-
-	for (auto &it : components) {
-
-		rapidjson::Value valueComponent;
-		valueComponent.SetObject();
-
-		valueComponent.AddMember("ID", it->ID, allocator);
-
-		rapidjson::Value name(it->getName().toStdString().c_str(), it->getName().toStdString().size(), allocator); // TODO wtf is with those strings
-		valueComponent.AddMember("name", name, allocator);
-
-		rapidjson::Value position(rapidjson::kArrayType);
-		position.PushBack(it->getPos().x(), allocator);
-		position.PushBack(it->getPos().y(), allocator);
-
-		valueComponent.AddMember("position", position, allocator);
-
-		// save coupled nodes, if there are any
-        if (!it->coupledNodes.empty()) {
-
-			rapidjson::Value arrayCoupledNodes(rapidjson::kArrayType);
-			for (auto &itn : it->coupledNodes)
-				itn->saveToJSON(arrayCoupledNodes, allocator);
-
-			valueComponent.AddMember("coupledNodes", arrayCoupledNodes, allocator);
-
-		}
-
-		// same for properties
-        if (!it->properties.empty()) {
-		
-			rapidjson::Value arrayProperties(rapidjson::kArrayType);
-			
-			for (auto &itp : it->properties)
-				arrayProperties.PushBack(itp.second.value, allocator);
-
-			valueComponent.AddMember("properties", arrayProperties, allocator);
-
-		}
-
-		arrayComponents.PushBack(valueComponent, allocator);
-
-	}
+	for (auto &it : components)
+		it->saveToJSON(arrayComponents, allocator);
 
 	file.AddMember("components", arrayComponents, allocator);
 
+	// save to disk
 	rapidjson::StringBuffer strbuf;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(strbuf); // so that the file is somewhat human-readable
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(strbuf); // prettywrite so that the file is at least somewhat human-readable
 	file.Accept(writer);
 
-	std::ofstream out(fileName.toStdString()); 
-    out << strbuf.GetString();
-    out.close();
+	std::ofstream out(fileName.toStdString());
+	out << strbuf.GetString();
+	out.close();
 
-	return true;
+	return true; 
 
 }
 
-bool Circuit::loadFromFile(QString fileName) {
+// TODO: error handling
+// TODO: version checking
+bool Circuit::loadFromFile(const QString fileName) {
 
 	// clean up
 	nodes.clear();
@@ -109,21 +78,21 @@ bool Circuit::loadFromFile(QString fileName) {
 	rapidjson::Document file;
 	file.ParseStream(isw);
 
-	const rapidjson::Value& nodesVal = file["nodes"];
-
-	// first, we need to create all the nodes - only then can we start connecting them together
-	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it)
-		createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), false);
-
+	// read component data and create all components
 	const rapidjson::Value& componentsVal = file["components"];
+
+	std::vector<Component*> componentsByIndex;
 
 	for (rapidjson::Value::ConstValueIterator it = componentsVal.Begin(); it != componentsVal.End(); ++it) {
 
-		createComponent((*it)["name"].GetString(), QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), false);
+		createComponent((*it)["name"].GetString(), QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), false); // adn disable automatic node creation
 
+		componentsByIndex.push_back(components.back());
+
+		// TODO load properties from file
 		if ((*it).HasMember("properties")) {
 
-			const rapidjson::Value& arrayProperties =(*it)["properties"];
+			const rapidjson::Value& arrayProperties = (*it)["properties"];
 
 			//for (rapidjson::Value::ConstValueIterator itp = arrayProperties.Begin(); itp != arrayProperties.End(); ++itp)
 				//components.back()->properties.set
@@ -138,8 +107,43 @@ bool Circuit::loadFromFile(QString fileName) {
 
 	}
 
+	const rapidjson::Value& nodesVal = file["nodes"];
 
-	//for (auto it = std::begin(nodes); it != std::end(nodes); ++it) {
+	// TODO figure a better name
+	std::map<int, int> coupledComponentToNode;
+
+	// first, we need to create all the nodes - only then can we start connecting them together
+	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it) {
+
+		if ((*it).HasMember("coupled")) {
+			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), true, componentsByIndex[(*it)["coupledComponent"].GetInt()]);
+		} else {
+			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()));
+		}
+		//	createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), true, components[(*it)["coupledComponent"].GetInt()]);
+		// TODO actually, it shouldn't be possible for a node to be on its own, with no
+		// outbound connections
+		/*if ((*it).HasMember("connectedNodes")) {
+
+			std::vector<int> connectedNodesVec;
+			const rapidjson::Value& connectedNodes = (*it)["connectedNodes"];
+			for (rapidjson::Value::ConstValueIterator jt = connectedNodes.Begin(); jt != connectedNodes.End(); ++jt)
+				connectedNodesVec.push_back((*jt).GetInt());
+
+		}*/
+
+
+
+		nodes.back()->ID = (*it)["ID"].GetInt();
+
+	}
+
+	for (const auto& it : components)
+		it->updateNodeOffsets();
+
+	//for (const auto& it : nodes) {
+
+		//nodes.
 
 		//int i = std::distance(nodes.begin(), it);
 

@@ -158,10 +158,10 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 
 	}
 
-	//if ((*it)->isCoupled()) {
-	//	valueNode.AddMember("isCoupled", true, allocator);
-		//valueNode.AddMember("coupledComponent", (*it)->getcoupledComponent()->ID, allocator);
-	//}
+	if (_isCoupled) {
+		valueNode.AddMember("coupled", true, allocator);
+		valueNode.AddMember("coupledComponent", _coupledComponent->ID, allocator);
+	}
 
 	nodeArray.PushBack(valueNode, allocator);
 

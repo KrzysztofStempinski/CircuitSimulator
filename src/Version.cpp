@@ -15,10 +15,14 @@
 
 #include "Version.h"
 
-QString getVersionString(){
+namespace VersionInfo {
 
-	return	QString::number(VERSION_MAJOR)			
-				+ "." + QString::number(VERSION_MINOR)	
-				+ "." + QString::number(VERSION_REVISION);
+	QString getVersionString() {
+
+		return	QString::number(Version.Major)
+			+ "." + QString::number(Version.Minor)
+			+ "." + QString::number(Version.Revision);
+
+	}
 
 }

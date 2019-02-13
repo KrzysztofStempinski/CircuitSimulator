@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include <qstring.h>
@@ -9,10 +7,9 @@ enum class SimulationResult {
 	Success,
 	Error_NoGroundNode,
 	Error_NoComponents,
-
-	Error_NewtonFailed
+	Error_InvalidMode
 
 };
 
 
-QString getSimulationErrorMessage(SimulationResult result);
+QString getSimulationErrorMessage(const SimulationResult result);

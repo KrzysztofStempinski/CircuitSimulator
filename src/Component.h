@@ -135,4 +135,6 @@ class Component {
 
 		void updateNodeOffsets();
 
+		void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
+
 };

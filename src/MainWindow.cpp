@@ -103,7 +103,7 @@ void MainWindow::slot_fileOpen() {
 MainWindow::MainWindow() {
 
 	setWindowIcon(QIcon("data\\icons\\appicon.ico"));
-	setWindowTitle("untitled.esf - Schematic Editor | CircuitSimulator v." + getVersionString());
+	setWindowTitle("untitled.esf - Schematic Editor | CircuitSimulator v." + VersionInfo::getVersionString());
 
 	resize(QSize(MAINWINDOW_DEF_WIDTH, MAINWINDOW_DEF_HEIGHT));
 
@@ -116,7 +116,7 @@ MainWindow::MainWindow() {
 	createMenu();
 	createToolBar();
 
-	logWindow->log("CircuitSimulator v." + getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
+	logWindow->log("CircuitSimulator v." + VersionInfo::getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
 	logWindow->log("This is free software, but comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it, subject to certain conditions. See license.md for more details.");
 
 }

@@ -597,7 +597,7 @@ void  CircuitEditor::mouseButtonLeftDblClick(const QPoint& mousePos) {
 //
 // CircuitEditor::paintEvent()
 //
-void CircuitEditor::paintEvent(QPaintEvent *) {
+void CircuitEditor::paintEvent(QPaintEvent*) {
 
 	QPainter painter(this);
 	painter.scale(_scale, _scale);
@@ -606,7 +606,7 @@ void CircuitEditor::paintEvent(QPaintEvent *) {
 
 }
 
-void CircuitEditor::setCurrentComponent(QString component) {
+void CircuitEditor::setCurrentComponent(const QString component) {
 
 	_currentComponent = component;
 
@@ -708,21 +708,10 @@ void CircuitEditor::displayContextMenu(const QPoint& mousePos) {
 
 }
 
-void CircuitEditor::wheelEvent(QWheelEvent * event){
-
-	_scale += (event->delta() / WHEEL_STEP); 
-
-	if (_scale < 1.0)
-		_scale = 1.0;
-
-	update();
-
-}
-
-EditorMode CircuitEditor::getMode() {
+EditorMode CircuitEditor::mode() const {
 	return _mode;
 }
 
-void CircuitEditor::setMode(EditorMode newMode) {
+void CircuitEditor::setMode(const EditorMode newMode) {
 	_mode = newMode;
 }

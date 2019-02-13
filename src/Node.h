@@ -65,7 +65,6 @@ class Node {
 		bool isMouseOver(const QPoint& mousePos);
 		bool isWithinRectangle(const QRect& rect);
 		
-		
 		// TODO refactor
 		//CircuitEfitor related stuff stuff
 		bool isSelected;
