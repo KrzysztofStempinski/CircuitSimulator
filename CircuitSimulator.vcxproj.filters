@@ -31,8 +31,8 @@
     <Filter Include="Math">
       <UniqueIdentifier>{a7a82df1-80bb-4c10-b401-06c1ce0fbca2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Simulation\Objects">
-      <UniqueIdentifier>{dc78e042-2b79-4f8d-9290-b31b4b0719bc}</UniqueIdentifier>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{08edffe0-4b0e-47d2-93d7-4b6f6f99fb54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,12 +41,6 @@
     </ClCompile>
     <ClCompile Include="src\SimulationErrors.cpp">
       <Filter>Simulation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Component.cpp">
-      <Filter>Simulation\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Node.cpp">
-      <Filter>Simulation\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\Version.cpp">
       <Filter>Version Info</Filter>
@@ -87,6 +81,12 @@
     <ClCompile Include="src\Geometry.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Log.h">
@@ -104,12 +104,6 @@
     <ClInclude Include="src\DCOP.h">
       <Filter>Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="src\Node.h">
-      <Filter>Simulation\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Component.h">
-      <Filter>Simulation\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\Version.h">
       <Filter>Version Info</Filter>
     </ClInclude>
@@ -121,6 +115,15 @@
     </ClInclude>
     <ClInclude Include="src\Geometry.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Node.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\ComponentData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

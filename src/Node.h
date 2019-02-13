@@ -35,14 +35,13 @@ class Node {
 		QPoint _pos; 
 		QPoint _posOffset;
 		QRect _boundingRect;
-		bool _isCoupled;
-		Component *_coupledComponent;
+		Component* _coupledComponent;
 
 	public:
 
 		int ID;
 
-		Node(const QPoint& newPos, bool isCoupled = false, Component* coupledComponent = nullptr);
+		Node(const QPoint& newPos, Component* coupledComponent = nullptr);
 
 		std::list<Node*> connectedNodes;
 
@@ -58,7 +57,7 @@ class Node {
 		void removeInboundLinks();
 
 		bool isCoupled();
-		Component* getcoupledComponent();
+		Component* getCoupledComponent();
 		
 		void draw(QPainter* painter);
 

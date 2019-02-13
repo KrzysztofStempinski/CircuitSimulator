@@ -28,7 +28,7 @@ SimulationResult prepareSimulation(Circuit& circuit, Eigen::VectorXd& solutions,
 	bool foundGround = false;
 	for (const auto& it : circuit.nodes) {
 		if (it->voltageIndex == -1) {
-			if (it->isCoupled() && it->getcoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
+			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
 				markAdjacentNodes(it, 0);
 				//it->voltageValue = 0;// perhaps node->isGround() ???	
 				foundGround = true;

@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\components\ComponentData.h" />
     <ClInclude Include="src\DCOP.h" />
     <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\Log.h" />

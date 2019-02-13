@@ -105,13 +105,13 @@ void CircuitEditor::slot_nextNode() {
 	if (_mode == EditorMode::linkDrawing) {
 		if (nodeLinkStart->isCoupled()) {
 
-			auto it = std::find(std::begin(nodeLinkStart->getcoupledComponent()->coupledNodes),
-								std::end(nodeLinkStart->getcoupledComponent()->coupledNodes),
+			auto it = std::find(std::begin(nodeLinkStart->getCoupledComponent()->coupledNodes),
+								std::end(nodeLinkStart->getCoupledComponent()->coupledNodes),
 								nodeLinkStart);
 
 			// last node, switch to first
-			if (it == std::next(nodeLinkStart->getcoupledComponent()->coupledNodes.end(), -1))
-				nodeLinkStart = nodeLinkStart->getcoupledComponent()->coupledNodes.front();
+			if (it == std::next(nodeLinkStart->getCoupledComponent()->coupledNodes.end(), -1))
+				nodeLinkStart = nodeLinkStart->getCoupledComponent()->coupledNodes.front();
 			else
 				nodeLinkStart = *(++it);
 

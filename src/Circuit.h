@@ -28,7 +28,7 @@ class Circuit {
 		std::vector<Node*> nodes;
 		std::vector<Component*> components;
 
-		void createNode(const QPoint& pos, bool _isCoupled = false, Component* _coupledComponent = nullptr);
+		void createNode(const QPoint& pos, Component* _coupledComponent = nullptr);
 	
 		void deleteNode(Node* node);
 

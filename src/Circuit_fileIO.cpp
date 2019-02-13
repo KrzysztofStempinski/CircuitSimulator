@@ -81,13 +81,9 @@ bool Circuit::loadFromFile(const QString fileName) {
 	// read component data and create all components
 	const rapidjson::Value& componentsVal = file["components"];
 
-	std::vector<Component*> componentsByIndex;
-
 	for (rapidjson::Value::ConstValueIterator it = componentsVal.Begin(); it != componentsVal.End(); ++it) {
 
-		createComponent((*it)["name"].GetString(), QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), false); // adn disable automatic node creation
-
-		componentsByIndex.push_back(components.back());
+		createComponent((*it)["name"].GetString(), QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), false); // disable automatic node creation
 
 		// TODO load properties from file
 		if ((*it).HasMember("properties")) {
@@ -109,14 +105,12 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 	const rapidjson::Value& nodesVal = file["nodes"];
 
-	// TODO figure a better name
-	std::map<int, int> coupledComponentToNode;
-
 	// first, we need to create all the nodes - only then can we start connecting them together
 	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it) {
 
 		if ((*it).HasMember("coupled")) {
-			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), true, componentsByIndex[(*it)["coupledComponent"].GetInt()]);
+			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), components[(*it)["coupledComponent"].GetInt()]);
+			components[(*it)["coupledComponent"].GetInt()]->coupledNodes.push_back(nodes.back());
 		} else {
 			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()));
 		}
@@ -132,14 +126,26 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 		}*/
 
-
-
 		nodes.back()->ID = (*it)["ID"].GetInt();
 
 	}
 
 	for (const auto& it : components)
 		it->updateNodeOffsets();
+
+	// first, we need to create all the nodes - only then can we start connecting them together
+	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it) {
+
+		if ((*it).HasMember("connectedNodes")) { // TODO it should always have one
+		
+			for (rapidjson::Value::ConstValueIterator jt = (*it)["connectedNodes"].Begin(); jt != (*it)["connectedNodes"].End(); ++jt) {
+
+				nodes[(*it)["ID"].GetInt()]->connectTo(nodes[(*jt).GetInt()]);
+
+			}
+		}
+
+	}
 
 	//for (const auto& it : nodes) {
 
@@ -155,6 +161,7 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 		//}
 
+	//}
 	//}
 
 	return true;

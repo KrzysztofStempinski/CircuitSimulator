@@ -13,9 +13,10 @@
 // 
 //  ---------------------------------------------
 
-#include "Component.h"
 #include <iomanip>
 #include <string>
+
+#include "Component.h"
 
 void Component::_loadComponentStamps() {
 

@@ -17,29 +17,25 @@
 
 #include "Log.h"
 
-Node::Node(const QPoint& newPos, bool isCoupled, Component* coupledComponent){
+Node::Node(const QPoint& newPos, Component* coupledComponent)
+	: _coupledComponent(coupledComponent),
+	isSelected(false),
+	voltageIndex(-1),
+	voltageValue(0),
+	_pos(newPos)
+{
 
-	_isCoupled = isCoupled;
-	_coupledComponent = coupledComponent;
-
-	isSelected = false;
-
-	voltageIndex = -1;
-	voltageValue = double(0);
-	_pos = newPos;
-
-	int size = 2 + _isCoupled;
-
+	int size = NODE_SIZE + isCoupled();
 	_boundingRect.setCoords(-size, size, size, -size);
 
 }
 
 bool Node::isCoupled() {
-	return _isCoupled;
+	return _coupledComponent != nullptr;
 }
 
 
-Component* Node::getcoupledComponent(){
+Component* Node::getCoupledComponent() {
 	return _coupledComponent;
 }
 
@@ -53,9 +49,7 @@ void Node::setPos(const QPoint &newPos) {
 }
 
 void Node::updatePos() {
-
 	_pos = rotatePoint(_coupledComponent->getPos() + _posOffset, _coupledComponent->getPos(), _coupledComponent->getRotationAngle());
-
 }
 
 void Node::setOffset(const QPoint& offset) {
@@ -66,7 +60,7 @@ void Node::setOffset(const QPoint& offset) {
 
 bool Node::isMouseOver(const QPoint& mousePos) {
 
-	int size = NODE_SIZE + _isCoupled; // we add _isCoupled again so that bounding rect is slightly bigger, hence easier to select
+	int size = NODE_SIZE + isCoupled() + 1; // we add 1 so that bounding rect is slightly bigger, hence easier to select
 
 	return (abs(mousePos.x() - (_pos.x())) <= size && abs(mousePos.y() - (_pos.y())) <= size);
 
@@ -103,7 +97,7 @@ bool Node::isConnectedTo(Node* node) {
 
 void Node::draw(QPainter *painter){
 
-	int size = NODE_SIZE + _isCoupled;
+	int size = NODE_SIZE + isCoupled();
 
 	// TODO ugly hack
 	painter->fillRect(_pos.x() - size, _pos.y() - size, 2 * size, 2 * size, painter->pen().color());
@@ -158,7 +152,7 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 
 	}
 
-	if (_isCoupled) {
+	if (isCoupled()) {
 		valueNode.AddMember("coupled", true, allocator);
 		valueNode.AddMember("coupledComponent", _coupledComponent->ID, allocator);
 	}

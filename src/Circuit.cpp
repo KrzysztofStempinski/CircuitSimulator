@@ -15,10 +15,10 @@
 
 #include "Circuit.h"
 
-void Circuit::createNode(const QPoint& pos, bool _isCoupled, Component* _coupledComponent) {
+void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
 
 	// TODO get rid of _isCoupled field, it's not necessary
-	nodes.push_back(new Node(pos, _isCoupled, _coupledComponent));
+	nodes.push_back(new Node(pos, _coupledComponent));
 
 }
 
@@ -51,7 +51,7 @@ void Circuit::createComponent(QString componentName, const QPoint& pos, bool cre
 	if (createNodes) {
 
 		for (int i = 0; i < newComponent->getNumberOfNodes(); ++i) {
-			createNode(QPoint(0, 0), true, newComponent);
+			createNode(QPoint(0, 0), newComponent);
 			newComponent->coupledNodes.push_back(nodes.back());
 		}
 
