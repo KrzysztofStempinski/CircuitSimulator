@@ -1,3 +1,3 @@
 # Circuit Simulator
 
-![screen](help/screen_main?raw=true "sample")
+![screen](help/screen_main.jpg?raw=true "sample")
