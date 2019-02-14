@@ -43,10 +43,10 @@ class Node {
 
 		Node(const QPoint& newPos, Component* coupledComponent = nullptr);
 
-		std::list<Node*> connectedNodes;
+		std::vector<Node*> connectedNodes;
 
 		void setPos(const QPoint& newPos);
-		QPoint getPos();
+		const QPoint getPos() const;
 		void updatePos();
 		void setOffset(const QPoint& offset);
 

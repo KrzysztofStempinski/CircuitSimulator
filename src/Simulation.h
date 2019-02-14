@@ -13,15 +13,6 @@
 // 
 //  ---------------------------------------------
 
-// it is customary to name engines 
-// so 
-// this is
-//
-// juliE numerical circuit simulation engine
-//
-// (name because of 
-// various reasons)
-
 #pragma once
 
 #include "Circuit.h"
@@ -34,7 +25,6 @@ enum class SimulationMode {
 	Transient
 
 };
-
 
 void markAdjacentNodes(Node* nodeBegin, int voltageIndex);
 

@@ -40,7 +40,7 @@ Component* Node::getCoupledComponent() {
 }
 
 
-QPoint Node::getPos() {
+const QPoint Node::getPos() const {
 	return _pos;
 }
 

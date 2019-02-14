@@ -125,7 +125,7 @@ MainWindow::MainWindow() {
 
 }
 
-void MainWindow::slot_schematicPlaceComponent(QAction *action) {
+void MainWindow::slot_schematicPlaceComponent(QAction* action) {
 
 	// chop 5 chars to get resistor to resistor.json
 	// TODO make it less retarded

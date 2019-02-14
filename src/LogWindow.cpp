@@ -23,6 +23,7 @@
 
 void LogWindow::log(QString entry, LogEntryType type) {
 
+	// discard debug messages
 	if (type == LogEntryType::Debug && !checkboxDebug->isChecked())
 		return;
 
@@ -33,7 +34,7 @@ void LogWindow::log(QString entry, LogEntryType type) {
 
 		case LogEntryType::Error:
 			icon = QIcon("data\\icons\\error.ico");
-			text = entry; //"ERROR: ";
+			text = entry; 
 		break;
 
 		case LogEntryType::Info:
@@ -69,43 +70,38 @@ LogWindow::LogWindow(QWidget* parent){
 	setWindowTitle("Debug | Circuit Simulator");
 
 	list = new QListWidget(this);
-	//list->setWordWrap(true);
+	list->setSelectionMode(QAbstractItemView::NoSelection);
+	// TODO maybe we need list.show in here? check.
 
-	QVBoxLayout *mainLayout = new QVBoxLayout;
+	QVBoxLayout* mainLayout = new QVBoxLayout;
 
 	mainLayout->addWidget(list);
 
-	checkboxDebug = new QCheckBox("Show debug messages");
-
-	if (DEBUG)
+	if (DEBUG) {
+		checkboxDebug = new QCheckBox("Show debug messages");
 		checkboxDebug->setChecked(true);
+	}
 
-//	mainLayout->addWidget(checkboxDebug);
+	QHBoxLayout* layoutBottom = new QHBoxLayout;
 
-	QHBoxLayout *layout2 = new QHBoxLayout;
-
-	layout2->addWidget(checkboxDebug);
+	layoutBottom->addWidget(checkboxDebug);
 
 	QPushButton* buttonClear = new QPushButton("Clear log");
 	buttonClear->setIcon(QIcon("data//icons//clear.ico"));
-	//buttonClear->setToolTip("Clear log");
-
+	buttonClear->setToolTip("Clear log");
 	QObject::connect(buttonClear, SIGNAL(clicked()), this, SLOT(slot_clearLog()));
 
-	layout2->addWidget(buttonClear);
-	layout2->setAlignment(buttonClear, Qt::AlignRight);
+	layoutBottom->addWidget(buttonClear);
+	layoutBottom->setAlignment(buttonClear, Qt::AlignRight);
 
-	mainLayout->addLayout(layout2);
+	mainLayout->addLayout(layoutBottom);
 
 	setLayout(mainLayout);
-
-	list->setSelectionMode(QAbstractItemView::NoSelection);
-
-	list->show();
 
 }
 
 void LogWindow::slot_clearLog() {
+
 	list->clear();
 
 	log("CircuitSimulator v." + VersionInfo::getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
@@ -113,17 +109,22 @@ void LogWindow::slot_clearLog() {
 
 }
 
-// TODO fix acess violation problem
 void LogWindow::exprTkError(exprtk::parser<double>& parser) {
 
 	for (std::size_t i = 0; i < parser.error_count(); ++i){
 
-		QString msg = "exprTk ";
+		QString msg("exprTk ");
 
 		exprtk::parser_error::type error = parser.get_error(i);
 
-		msg += QString::fromStdString(exprtk::parser_error::to_str(error.mode)).toLower() + " at position " + QString::number(error.token.position);
-		msg += ": " + QString::fromStdString(error.diagnostic);
+		// we convert to lowercase to get "syntax error" from less fancy "SYNTAX ERROR" (don't want the app shouting at us)
+		std::string parserErrorMode = exprtk::parser_error::to_str(error.mode);
+		std::transform(parserErrorMode.begin(), parserErrorMode.end(), parserErrorMode.begin(), ::tolower);
+
+		msg += QString::fromStdString(parserErrorMode + " at position ");
+		msg += QString::number(error.token.position);
+
+		msg += QString::fromStdString(": " + error.diagnostic);
 
 		log(msg, LogEntryType::Error);
 

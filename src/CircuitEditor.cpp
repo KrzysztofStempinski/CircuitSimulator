@@ -77,21 +77,18 @@ void CircuitEditor::mouseDoubleClickEvent(QMouseEvent* event) {
 CircuitEditor::CircuitEditor() {
 
 	nodeLinkStart = nullptr;
-
 	mouseOverNode = nullptr;
-
 	mouseOverComponent = nullptr;
-
-	_currentComponent = "resistor";
 
     _mode = EditorMode::_default;
 
 	setMouseTracking(true); 
-	circuit = Circuit();
 
 	_scale = 1.0;
 
 	createActions();
+
+	circuit = Circuit();
 
 }
 
@@ -204,13 +201,50 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 	// paint the currently drawn link
 	if (_mode == EditorMode::linkDrawing) {
 
+		QPoint snappedCursor = snapPointToGrid(mapFromGlobal(QCursor::pos()), GRID_SIZE);
+		QPoint adjustedPosition = snappedCursor;
+
 		pen.setColor(colorNormal);
 		painter.setPen(pen); 
 
-		if (mouseOverNode != nullptr) 
-			painter.drawLine(nodeLinkStart->getPos(), mouseOverNode->getPos());
+		// we allow the user only to draw straight connections,
+		// i.e. either y = y_o or x=x_o, where (x_o, y_o) is position
+		// of nodeLinkStart
+
+		// compute distances to line x=x_o and y=y_o
+		int distX = std::abs(nodeLinkStart->getPos().x() - snappedCursor.x());
+		int distY = std::abs(nodeLinkStart->getPos().y() - snappedCursor.y());
+
+		if (distX < distY) 
+			adjustedPosition.setX(nodeLinkStart->getPos().x());
 		else 
-			painter.drawLine(nodeLinkStart->getPos(), snapPointToGrid(mapFromGlobal(QCursor::pos()), GRID_SIZE));
+			adjustedPosition.setY(nodeLinkStart->getPos().y());
+
+		// draw the link currently being created
+		if (mouseOverNode != nullptr)
+			painter.drawLine(nodeLinkStart->getPos(), mouseOverNode->getPos());
+		else
+			painter.drawLine(nodeLinkStart->getPos(), adjustedPosition);
+
+		// TODO comment
+		for (const auto& it : circuit.nodes) {
+
+			if (it == nodeLinkStart)
+				continue;
+
+			if (it->getPos().x() == snappedCursor.x() || it->getPos().y() == snappedCursor.y()) {
+
+				pen.setStyle(Qt::DashLine);
+				pen.setColor(Qt::green);
+				painter.setPen(pen);
+
+				painter.drawLine(it->getPos(), snappedCursor);
+
+				pen.setStyle(Qt::SolidLine);
+
+			}
+
+		}
 
 	}
 
@@ -285,7 +319,19 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 			}
 
 			// if we click ona free space, create node there
-			circuit.createNode(snapPointToGrid(mousePos, GRID_SIZE));
+			// taking into account that we can create straight lines
+
+			QPoint adjustedPosition = snapPointToGrid(mousePos, GRID_SIZE);
+
+			int distX = std::abs(nodeLinkStart->getPos().x() - adjustedPosition.x());
+			int distY = std::abs(nodeLinkStart->getPos().y() - adjustedPosition.y());
+
+			if (distX < distY)
+				adjustedPosition.setX(nodeLinkStart->getPos().x());
+			else
+				adjustedPosition.setY(nodeLinkStart->getPos().y());
+
+			circuit.createNode(adjustedPosition);
 			circuit.nodes.back()->connectTo(nodeLinkStart);
 
 			nodeLinkStart = circuit.nodes.back();
@@ -434,6 +480,7 @@ void CircuitEditor::mouseMove(const QPoint& mousePos) {
 			update();
 
 	switch (_mode) {
+
 		case EditorMode::componentCreation: {
 
 			_tempComponentPos = snapPointToGrid(mousePos, GRID_SIZE);

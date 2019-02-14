@@ -3,7 +3,7 @@
 	"displayNameBase": "Current source",
 	"letterIdentifierBase": "I",
 
-	"nameposition": [ 0, -12 ],
+	"nameposition" : [ 0, -12 ],
 
 	"DCOP": {
 

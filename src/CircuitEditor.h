@@ -94,6 +94,7 @@ class CircuitEditor : public QWidget {
 		void mouseButtonLeftUp(const QPoint& mousePos);
 		void mouseButtonLeftDblClick(const QPoint& mousePos);
 		void mouseButtonRightUp(const QPoint& mousePos);
+		
 		void mouseMove(const QPoint& mousePos);
 
 		void clearSelection();

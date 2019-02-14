@@ -17,6 +17,7 @@
 // (and generally is in poor taste)
 // HOWEVER, I need file IO methods up and running
 
+// TODO: http://rapidjson.org/md_doc_stream.html, change from i/ofstream to dedicated streams
 // TODO: error handling
 // TODO(?): check for version compatibility in loadFromFile(...)
 
