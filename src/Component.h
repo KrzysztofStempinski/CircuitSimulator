@@ -94,7 +94,7 @@ class Component {
 		QString getLetterIdentifierBase();
 
 		//
-		QPoint getPos();
+		const QPoint pos() const;
 		void setPos(const QPoint& newPos);
 
 		//

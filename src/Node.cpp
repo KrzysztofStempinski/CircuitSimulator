@@ -40,7 +40,7 @@ Component* Node::getCoupledComponent() {
 }
 
 
-const QPoint Node::getPos() const {
+const QPoint Node::pos() const {
 	return _pos;
 }
 
@@ -49,7 +49,7 @@ void Node::setPos(const QPoint &newPos) {
 }
 
 void Node::updatePos() {
-	_pos = rotatePoint(_coupledComponent->getPos() + _posOffset, _coupledComponent->getPos(), _coupledComponent->getRotationAngle());
+	_pos = rotatePoint(_coupledComponent->pos() + _posOffset, _coupledComponent->pos(), _coupledComponent->getRotationAngle());
 }
 
 void Node::setOffset(const QPoint& offset) {

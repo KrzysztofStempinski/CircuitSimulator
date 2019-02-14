@@ -162,14 +162,14 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 				pen.setWidth(2);
 				painter.setPen(pen);
 
-				painter.drawLine((*it)->getPos(), it2->getPos());
+				painter.drawLine((*it)->pos(), it2->pos());
 
 				pen.setColor(colorNormal);
 				pen.setWidth(1);
 				painter.setPen(pen);
 
 			} else {
-				painter.drawLine((*it)->getPos(), it2->getPos());
+				painter.drawLine((*it)->pos(), it2->pos());
 			}
 
 		}
@@ -212,39 +212,41 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 		// of nodeLinkStart
 
 		// compute distances to line x=x_o and y=y_o
-		int distX = std::abs(nodeLinkStart->getPos().x() - snappedCursor.x());
-		int distY = std::abs(nodeLinkStart->getPos().y() - snappedCursor.y());
+		int distX = std::abs(nodeLinkStart->pos().x() - snappedCursor.x());
+		int distY = std::abs(nodeLinkStart->pos().y() - snappedCursor.y());
 
 		if (distX < distY) 
-			adjustedPosition.setX(nodeLinkStart->getPos().x());
+			adjustedPosition.setX(nodeLinkStart->pos().x());
 		else 
-			adjustedPosition.setY(nodeLinkStart->getPos().y());
+			adjustedPosition.setY(nodeLinkStart->pos().y());
 
 		// draw the link currently being created
 		if (mouseOverNode != nullptr)
-			painter.drawLine(nodeLinkStart->getPos(), mouseOverNode->getPos());
+			painter.drawLine(nodeLinkStart->pos(), mouseOverNode->pos());
 		else
-			painter.drawLine(nodeLinkStart->getPos(), adjustedPosition);
+			painter.drawLine(nodeLinkStart->pos(), adjustedPosition);
 
-		// TODO comment
+		// TODO improve AND THEN commit
+		/*
 		for (const auto& it : circuit.nodes) {
 
 			if (it == nodeLinkStart)
 				continue;
 
-			if (it->getPos().x() == snappedCursor.x() || it->getPos().y() == snappedCursor.y()) {
+			if (it->pos().x() == snappedCursor.x() || it->pos().y() == snappedCursor.y()) {
 
 				pen.setStyle(Qt::DashLine);
 				pen.setColor(Qt::green);
 				painter.setPen(pen);
 
-				painter.drawLine(it->getPos(), snappedCursor);
+				painter.drawLine(it->pos(), snappedCursor);
 
 				pen.setStyle(Qt::SolidLine);
 
 			}
 
 		}
+		*/
 
 	}
 
@@ -257,7 +259,7 @@ std::pair<Node*, Node*> CircuitEditor::isMouseOverLink(const QPoint& mousePos) {
 
 	for (const auto &it : circuit.nodes) 
 		for (const auto it2 : it->connectedNodes) 
-			if (isPointOnLine(it->getPos(), it2->getPos(), mousePos)) 
+			if (isPointOnLine(it->pos(), it2->pos(), mousePos)) 
 				return std::make_pair(it, it2);
 
 	return std::make_pair(nullptr, nullptr);
@@ -323,13 +325,13 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 
 			QPoint adjustedPosition = snapPointToGrid(mousePos, GRID_SIZE);
 
-			int distX = std::abs(nodeLinkStart->getPos().x() - adjustedPosition.x());
-			int distY = std::abs(nodeLinkStart->getPos().y() - adjustedPosition.y());
+			int distX = std::abs(nodeLinkStart->pos().x() - adjustedPosition.x());
+			int distY = std::abs(nodeLinkStart->pos().y() - adjustedPosition.y());
 
 			if (distX < distY)
-				adjustedPosition.setX(nodeLinkStart->getPos().x());
+				adjustedPosition.setX(nodeLinkStart->pos().x());
 			else
-				adjustedPosition.setY(nodeLinkStart->getPos().y());
+				adjustedPosition.setY(nodeLinkStart->pos().y());
 
 			circuit.createNode(adjustedPosition);
 			circuit.nodes.back()->connectTo(nodeLinkStart);
@@ -347,17 +349,17 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 			if ((mouseOverNode != nullptr && mouseOverNode->isSelected) || (mouseOverComponent != nullptr && mouseOverComponent->isSelected)) {
 
 				if (mouseOverNode != nullptr) 
-					_origin = mouseOverNode->getPos();
+					_origin = mouseOverNode->pos();
 				else 
-					_origin = mouseOverComponent->getPos();
+					_origin = mouseOverComponent->pos();
 
 				_mode = EditorMode::moving;
 
 				for (const auto& it : _selectedComponents) 
-					it->prevPos = it->getPos();
+					it->prevPos = it->pos();
 			
 				for (const auto& it : _selectedNodes)
-					it->prevPos = it->getPos();
+					it->prevPos = it->pos();
 
 			} else {
 
@@ -391,7 +393,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 
 				_selectedNodes.push_back(mouseOverNode);
 				mouseOverNode->isSelected = true;
-				mouseOverNode->prevPos = mouseOverNode->getPos();
+				mouseOverNode->prevPos = mouseOverNode->pos();
 				_origin = mousePos;
 				_mode = EditorMode::moving;
 
@@ -405,7 +407,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 				clearSelection();
 				_selectedComponents.push_back(mouseOverComponent);
 				mouseOverComponent->isSelected = true;
-				mouseOverComponent->prevPos = mouseOverComponent->getPos();
+				mouseOverComponent->prevPos = mouseOverComponent->pos();
 				_origin = mousePos;
 				_mode = EditorMode::moving;
 
@@ -425,8 +427,8 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 				linkToMove.first = mouseOverLink.first;
 				linkToMove.second = mouseOverLink.second;
 
-				linkToMove.first->prevPos = linkToMove.first->getPos();
-				linkToMove.second->prevPos = linkToMove.second->getPos();
+				linkToMove.first->prevPos = linkToMove.first->pos();
+				linkToMove.second->prevPos = linkToMove.second->pos();
 
 				update();
 				break;

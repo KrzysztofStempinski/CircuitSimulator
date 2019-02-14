@@ -274,7 +274,7 @@ void Component::draw(QPainter& painter) {
 
 }
 
-QPoint Component::getPos() {
+const QPoint Component::pos() const {
 	return _pos;
 }
 

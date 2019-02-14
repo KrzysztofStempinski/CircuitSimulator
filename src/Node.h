@@ -46,7 +46,7 @@ class Node {
 		std::vector<Node*> connectedNodes;
 
 		void setPos(const QPoint& newPos);
-		const QPoint getPos() const;
+		const QPoint pos() const;
 		void updatePos();
 		void setOffset(const QPoint& offset);
 

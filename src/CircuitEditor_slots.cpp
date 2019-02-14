@@ -47,20 +47,26 @@ void CircuitEditor::slot_delete() {
 
         case EditorMode::_default: {
 
-			if (mouseOverNode != nullptr)
+			if (mouseOverNode != nullptr) {
 				if (!mouseOverNode->isCoupled()) {
 
 					circuit.deleteNode(mouseOverNode);
 					clearSelection();
 					mouseOverNode = nullptr;
 
-				}
+					break;
+
+				}			
+			}
+
 
 			if (mouseOverComponent != nullptr) {
 
 				circuit.deleteComponent(mouseOverComponent);
 				clearSelection();
 				mouseOverComponent = nullptr;
+
+				break;
 
 			}
 
@@ -74,6 +80,8 @@ void CircuitEditor::slot_delete() {
 					circuit.deleteNode(mouseOverLink.second);
 
 				mouseOverLink = std::make_pair(nullptr, nullptr);
+
+				break;
 
 			}
 

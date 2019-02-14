@@ -64,7 +64,7 @@ struct Line : public GeometryObject {
 	Line(QPoint _begin, QPoint _end) 
 		: begin(_begin), end(_end) {};
 
-	void draw(QPainter &painter, const QPoint &parentPos, int parentRotationAngle = 0);
+	void draw(QPainter& painter, const QPoint &parentPos, int parentRotationAngle = 0);
 
 };
 

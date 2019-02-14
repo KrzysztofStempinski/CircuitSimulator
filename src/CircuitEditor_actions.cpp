@@ -43,8 +43,8 @@ void CircuitEditor::createMidpointNode() {
 
 	if (mouseOverLink.first != nullptr) {
 
-		QPoint p1 = mouseOverLink.first->getPos();
-		QPoint p2 = mouseOverLink.second->getPos();
+		QPoint p1 = mouseOverLink.first->pos();
+		QPoint p2 = mouseOverLink.second->pos();
 		
 		circuit.createNode(snapPointToGrid((p1 + p2) / 2, GRID_SIZE));
 		mouseOverLink.first->disconnectFrom(mouseOverLink.second);
