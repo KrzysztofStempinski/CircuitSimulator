@@ -137,7 +137,7 @@ bool Circuit::loadFromFile(const QString fileName) {
 	for (const auto& it : components)
 		it->updateNodeOffsets();
 
-	// first, we need to create all the nodes - only then can we start connecting them together
+	// connect nodes together
 	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it) 
 		if ((*it).HasMember("connectedNodes"))  // TODO it should always have one
 			for (rapidjson::Value::ConstValueIterator jt = (*it)["connectedNodes"].Begin(); jt != (*it)["connectedNodes"].End(); ++jt) 

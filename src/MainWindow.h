@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <qtoolbar.h>
 
 constexpr int MAINWINDOW_DEF_WIDTH = 1440;
 constexpr int MAINWINDOW_DEF_HEIGHT = 900;
@@ -44,11 +45,16 @@ class MainWindow : public QMainWindow {
 
 		QAction* action_aboutQt;
 
+		QMenu* menuComponents;
+		QToolBar* toolbarComponents;
+
     Q_OBJECT
 	public:
 		
 		explicit MainWindow();
 
+		void populateComponents();
+		void createInterface();
 		void createDockWidgets();
 		void createMenu();
 		void createToolBar();

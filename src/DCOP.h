@@ -21,25 +21,23 @@ SimulationResult DCOP(Circuit& circuit, Eigen::VectorXd& solutions, LogWindow* l
 
 	solutions = matrixA.partialPivLu().solve(matrixB);
 
+	// compute the error
 	double relativeError = (matrixA * solutions - matrixB).norm() / matrixB.norm();
 	logWindow->log("Relative error: " + QString::number(relativeError));
 
+	// print out solutions
 	logWindow->log("Solutions = " + vectorToString(solutions), LogEntryType::Debug);
 
-	// save solutions etc. 
-	// TODO write actually decent comments
-
-	for (auto& it : circuit.nodes) {
-		if (it->voltageIndex >= 1) {
-			it->voltageValue = static_cast<double>(solutions(it->voltageIndex - 1));
-		}
+	for (auto& it : circuit.nodes) 
+		if (it->voltageIndex >= 1) 
+			it->voltageValue = solutions(it->voltageIndex - 1);
 		else
 			it->voltageValue = double(0);
-	}
+
 
 	for (auto& it : circuit.components)
 		if (it->requireCurrentEntry())
-			it->currentValue = static_cast<double>(solutions((circuit.voltageCount - 1) + it->currentIndex));
+			it->currentValue = solutions((circuit.voltageCount - 1) + it->currentIndex);
 
 	return SimulationResult::Success;
 

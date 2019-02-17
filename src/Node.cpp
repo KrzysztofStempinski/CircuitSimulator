@@ -99,7 +99,6 @@ void Node::draw(QPainter *painter){
 
 	int size = NODE_SIZE + isCoupled();
 
-	// TODO ugly hack
 	painter->fillRect(_pos.x() - size, _pos.y() - size, 2 * size, 2 * size, painter->pen().color());
 
 	if (DEBUG)
@@ -121,7 +120,7 @@ void Node::removeInboundLinks(){
 
 		if (jt != std::end(it->connectedNodes)) {
 			it->connectedNodes.erase(jt);
-				//break; // TODO why not?
+			// break; 
 		}
 
 	}

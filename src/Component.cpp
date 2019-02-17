@@ -74,7 +74,9 @@ void Component::_loadComponentStamps() {
 			newStamp.value = _expression.value();
 		else {
 
-			newStamp.expression.register_symbol_table(_symbolTable);
+
+			// TODO symbol tables here
+			//newStamp.expression.register_symbol_table(_symbolTable);
 
 			if (!_parser.compile(valueString, newStamp.expression))
 				logWindow->exprTkError(_parser);
@@ -90,25 +92,22 @@ void Component::_loadComponentStamps() {
 
 void Component::_loadSimulationVariables(int voltageCount) {
 
-	_symbolTable.clear_variables();
-	_symbolTable.clear();
-	_simulationVariables.clear();
 
-	for (auto it = std::begin(coupledNodes); it != std::end(coupledNodes); ++it)
-		_simulationVariables.push_back(std::make_pair("this.node" + std::to_string(std::distance(std::begin(coupledNodes), it)) + ".voltageIndex",
-										static_cast<double>((*it)->voltageIndex)));
+	/*
+	_symbolTableIndices.clear();
+	_symbolTableProperties.clear();
 
-	_simulationVariables.push_back(std::make_pair("voltageCount", static_cast<double>(voltageCount)));
-	_simulationVariables.push_back(std::make_pair("this.currentIndex", static_cast<double>(currentIndex)));
+	for (int i = 0; i < coupledNodes.size(); ++i)
+		_symbolTableIndices.add_variable("this.node" + std::to_string(i) + ".voltageIndex", coupledNodes[i]->voltageIndex, true);
 
-	for (auto& it : _simulationVariables) 
-		if (!_symbolTable.add_variable(it.first, it.second, true))
-			OutputDebugStringA("adding variable failed\n");
-	
 	for (auto& it : properties)
-		_symbolTable.add_variable("this.properties." + it.first.toStdString(), it.second.value, true);
+		_symbolTableIndices.add_variable("this.properties." + it.first.toStdString(), it.second.value, true);
 
-	_expression.register_symbol_table(_symbolTable);
+	_symbolTableIndices.add_variable("voltageCount", voltageCount, true);
+
+	_symbolTableIndices.add_variable("this.currentIndex", currentIndex, true);
+
+	_expression.register_symbol_table(_symbolTableIndices);*/
 
 }
 
@@ -172,9 +171,10 @@ void Component::applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& m
 		}
 
 
-	
+		//TODO  only DEBUG 
 		p << std::setprecision(40) << value << " for " << _name.toStdString() << "\n";
 		OutputDebugStringA(p.str().c_str());
+
 	}
 
 }
@@ -238,25 +238,20 @@ Component::Component(QString name) {
 
 void Component::setPos(const QPoint& newPos){
 
-	// TODO fix this node bullshit, you know what I mean
-
 	_pos = newPos;
-
-	//rapidjson::Value::MemberIterator attributeIterator = _componentData.FindMember("nodes")
-	const rapidjson::Value& displayMembers = _componentData["nodes"];
 
 	for (const auto& it : coupledNodes)
 		it->updatePos();
 
-
 };
-bool Component::isMouseOver(const QPoint& mousePos) {
+
+bool Component::isMouseOver(const QPoint& mousePos) const {
 
 	return (abs(mousePos.x() - _pos.x()) <= _boundingRect.width() / 2 && abs(mousePos.y() - _pos.y()) <= _boundingRect.height() / 2);
 
 }
 
-bool Component::isWithinRectangle(const QRect& rect) {
+bool Component::isWithinRectangle(const QRect& rect) const {
 
 	return _boundingRect.translated(_pos).intersects(rect);
 
@@ -275,14 +270,18 @@ void Component::draw(QPainter& painter) {
 }
 
 const QPoint Component::pos() const {
+
 	return _pos;
+
 }
 
-int Component::getRotationAngle() {
+int Component::getRotationAngle() const {
+
 	return this->_rotationAngle;
+
 }
 
-void Component::setRotationAngle(int angle) {
+void Component::setRotationAngle(const int angle) {
 
 	// division by zero is apparently bad
 	if (angle == 0)
@@ -294,7 +293,7 @@ void Component::setRotationAngle(int angle) {
 	if (_rotationAngle % 180 != 0)
 		_boundingRect = _boundingRect.transposed();
 
-	// so as to update note positions
+	//  update node positions
 	setPos(_pos);
 
 }
@@ -374,7 +373,6 @@ void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Documen
 
 	valueComponent.AddMember("rotationAngle", _rotationAngle, allocator);
 
-	// same for properties
 	if (!properties.empty()) {
 
 		rapidjson::Value arrayProperties(rapidjson::kArrayType);

@@ -71,9 +71,10 @@ class Component {
 
 		// simulation-related stuff
 		void _loadSimulationVariables(int voltageCount);
-		std::vector<std::pair<std::string, double>> _simulationVariables;
 
-		exprtk::symbol_table<double> _symbolTable;
+		exprtk::symbol_table<int> _symbolTableIndices;
+		exprtk::symbol_table<double> _symbolTableProperties;
+
 		exprtk::parser<double> _parser;
 
 		exprtk::expression<double> _expression;
@@ -99,11 +100,11 @@ class Component {
 
 		//
 		void draw(QPainter& painter);
-		bool isMouseOver(const QPoint& mousePos);
-		bool isWithinRectangle(const QRect& rect);
+		bool isMouseOver(const QPoint& mousePos) const;
+		bool isWithinRectangle(const QRect& rect) const;
 		
-		int getRotationAngle();
-		void setRotationAngle(int angle);
+		int getRotationAngle() const;
+		void setRotationAngle(const int angle);
 
 		//
 		int getNumberOfNodes();
