@@ -185,7 +185,9 @@ void MainWindow::createMenu() {
 void MainWindow::populateComponents() {
 
 	toolbarComponents = new QToolBar();
-	toolbarComponents->setWindowTitle("Components");
+	toolbarComponents->setIconSize(QSize(40, 40));
+	toolbarComponents->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 	addToolBar(Qt::LeftToolBarArea, toolbarComponents);
 
 	bool foundFile = false;
@@ -207,22 +209,10 @@ void MainWindow::populateComponents() {
 			loadGeometryFromJSON(file["display"], geometry);
 
 			QPixmap* pixmap = new QPixmap(36, 36);
-
-
 			pixmap->fill(Qt::transparent);
+
 			QPainter* painter = new QPainter(pixmap);
-		//	pixmap->setAlphaChannel(pixmap);
-
-			QPen pen;
-			pen.setWidth(1);
-			pen.setColor(Qt::cyan);
-			painter->setPen(pen);	
-
-
-		//	painter->setBackgroundMode(Qt::OpaqueMode);
-			//painter->setBackground(QColor(Qt::black));
-			//painter->setPen(QPen(Qt::black));
-			//
+			painter->setPen(Qt::cyan);	
 				   
 			for (auto &it : geometry)
 				it->draw(*painter, QPoint(18, 18));
@@ -232,8 +222,6 @@ void MainWindow::populateComponents() {
 			menuComponents->addAction(action);
 			toolbarComponents->addAction(action);
 
-				toolbarComponents->setIconSize(QSize(40, 40));
-				toolbarComponents->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 			foundFile = true;
 
 		}
