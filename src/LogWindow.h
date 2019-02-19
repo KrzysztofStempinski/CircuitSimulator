@@ -38,7 +38,9 @@ class LogWindow : public QDialog {
 		LogWindow(QWidget* parent = nullptr);
 
 		void log(QString entry, LogEntryType type = LogEntryType::Info);
-		void exprTkError(exprtk::parser<double>& parser);
+
+		//template<typename T>
+		//void exprTkError(exprtk::parser<T>& parser);
 
 	public slots:
 

@@ -41,7 +41,7 @@ float distanceSquaredBetweenPoints(const QPoint& p1, const QPoint& p2);
 
 struct GeometryObject {
 
-	virtual void draw(QPainter &painter, const QPoint &parentPos, int parentRotationAngle = 0) = 0;
+	virtual void draw(QPainter &painter, const QPoint &parentPos, const int parentRotationAngle = 0) const = 0;
 
 };
 
@@ -53,7 +53,11 @@ struct Circle : public GeometryObject {
 	Circle(QPoint _center, int _radius) 
 		: center(_center), radius(_radius) {};
 
-	void draw(QPainter& painter, const QPoint& parentPos, int);
+	void draw(QPainter& painter, const QPoint& parentPos, const int) const {
+
+		painter.drawEllipse(center + parentPos, radius / 2, radius / 2);
+
+	}
 
 };
 
@@ -64,7 +68,11 @@ struct Line : public GeometryObject {
 	Line(QPoint _begin, QPoint _end) 
 		: begin(_begin), end(_end) {};
 
-	void draw(QPainter& painter, const QPoint &parentPos, int parentRotationAngle = 0);
+	void draw(QPainter& painter, const QPoint &parentPos, const int parentRotationAngle = 0) const {
+
+		painter.drawLine(rotatePoint(parentPos + begin, parentPos, parentRotationAngle), rotatePoint(parentPos + end, parentPos, parentRotationAngle));
+	
+	}
 
 };
 

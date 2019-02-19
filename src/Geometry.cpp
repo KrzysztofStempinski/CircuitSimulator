@@ -55,7 +55,7 @@ float distanceBetweenPoints(const QPoint& p1, const QPoint& p2) {
 
 }
 
-// TODO/NOTE this is rather inefficient, but has one major advantage over all the other methods 
+// NOTE this is rather inefficient, but has one major advantage over all the other methods 
 // I tried in this two-hour-long crusade towards decent mouseOverLink detection
 //
 // the advantage is that
@@ -68,18 +68,6 @@ bool isPointOnLine(const QPoint& lineStart, const QPoint& lineEnd, const QPoint&
 	float distPE = distanceBetweenPoints(point, lineEnd);
 
 	return (abs(distSE - (distSP + distPE)) <= precision);
-
-}
-
-void Circle::draw(QPainter& painter, const QPoint& parentPos, int) {
-
-	painter.drawEllipse(center + parentPos, radius / 2, radius / 2);
-
-}
-
-void Line::draw(QPainter& painter, const QPoint& parentPos, int parentRotationAngle) {
-
-	painter.drawLine(rotatePoint(parentPos + begin, parentPos, parentRotationAngle), rotatePoint(parentPos + end, parentPos, parentRotationAngle));
 
 }
 

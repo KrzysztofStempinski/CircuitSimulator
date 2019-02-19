@@ -18,102 +18,109 @@
 
 #include "Component.h"
 
+// TODO error handling!
 void Component::_loadComponentStamps() {
+
+	_stamps.clear();
+
+	SimpleParser::Interpreter _interpreter;
+	_interpreter.varTable = &_varTableIndices;
+
+	if (!_componentData.HasMember("DCOP")) {
+		logWindow->log("component " + _name + " has no DCOP entry in its definition file.", LogEntryType::Error);
+		return;
+	}
 
 	// NOTE the value of "ignore" is always assumed to be true 
 	if (_componentData["DCOP"].HasMember("ignore"))
 		return;
-
+	
 	// iterate through element stamps and evaluate/apply each of them
 	const rapidjson::Value& stamps = _componentData["DCOP"]["componentStamps"];
 	for (rapidjson::Value::ConstValueIterator it = stamps.Begin(); it != stamps.End(); ++it) {
 
 		ComponentStamp newStamp;
-
+		
 		std::string matrixString = (*it)["matrix"].GetString();
-
+		
 		if (matrixString == "A") {
 
 			newStamp.matrix = MNAmatrix::A;
 
 			std::string columnEntry = (*it)["column"].GetString(); // currentIndex or rowIndex
 
-			if (!_parser.compile(columnEntry, _expression))
-				logWindow->exprTkError(_parser);
+			//if (!parserIndices.compile()) {
+			//	logWindow->exprTkError(parserIndices);
+			//	return;
+			//}
 
-			newStamp.columnNumber = static_cast<int>(_expression.value()) - 1;
 			// we need to substract 1 from both row/column number, as voltageIndex is numbered from 1 to n (and C++ uses, well, 0 to n - 1)
 			// (and each matrix coord is either voltageIndex, or voltageCount + currentIndex)
+			newStamp.columnNumber = _interpreter.evaluate(columnEntry) - 1;
 
-			if (newStamp.columnNumber < 0) // we may as well discard the stamp right now, not going to apply it anyway
+			// we may as well discard the stamp right now, not going to apply it anyway
+			if (newStamp.columnNumber < 0) 
 				continue;
 
 		}
-
+		
 		if (matrixString == "B") 
 			newStamp.matrix = MNAmatrix::B;
 
 		std::string rowEntryString = (*it)["row"].GetString();
 
-		if (!_parser.compile(rowEntryString, _expression))
-			logWindow->exprTkError(_parser);
-
-		newStamp.rowNumber = static_cast<int>(_expression.value()) - 1;
+	//	if (!parserIndices.compile(rowEntryString, expressionIndices)) {
+		//	logWindow->exprTkError(parserIndices);
+			//return;
+		//}
+		
+		newStamp.rowNumber = _interpreter.evaluate(rowEntryString) - 1;
 
 		if (newStamp.rowNumber < 0) 
 			continue;
 
+		// now, compute the value of the entry
+		exprtk::parser<double> parserValue;
+		exprtk::expression<double> expressionValue;
+		expressionValue.register_symbol_table(_symbolTableProperties);
+
 		std::string valueString = (*it)["value"].GetString();
 
-		if (!_parser.compile(valueString, _expression))
-			logWindow->exprTkError(_parser);
-
-		// if we are linear, we may basically evaluate the value of the entry 
-		// it's not going to change
-		if (isLinear())			
-			newStamp.value = _expression.value();
-		else {
-
-
-			// TODO symbol tables here
-			//newStamp.expression.register_symbol_table(_symbolTable);
-
-			if (!_parser.compile(valueString, newStamp.expression))
-				logWindow->exprTkError(_parser);
-
+		if (!parserValue.compile(valueString, expressionValue)) {
+			throw "exprtk error placeholder!"; // TODO error messages
+			//logWindow->exprTkError(parserValue);
+			return;
 		}
 
-		// Cave Johnson, we're done here
+		newStamp.value = expressionValue.value();
+			
+		 //Cave Johnson, we're done here
 		_stamps.push_back(newStamp);
 
 	}
-
+	
 }
 
 void Component::_loadSimulationVariables(int voltageCount) {
 
-
-	/*
-	_symbolTableIndices.clear();
-	_symbolTableProperties.clear();
+	// indices
+	_varTableIndices.clear();
 
 	for (int i = 0; i < coupledNodes.size(); ++i)
-		_symbolTableIndices.add_variable("this.node" + std::to_string(i) + ".voltageIndex", coupledNodes[i]->voltageIndex, true);
+		_varTableIndices.addVariable("this.node" + std::to_string(i) + ".voltageIndex", coupledNodes[i]->voltageIndex);
+
+	_varTableIndices.addVariable("voltageCount", voltageCount);
+	_varTableIndices.addVariable("this.currentIndex", currentIndex);
+
+	// properties
+	_symbolTableProperties.clear();
 
 	for (auto& it : properties)
-		_symbolTableIndices.add_variable("this.properties." + it.first.toStdString(), it.second.value, true);
-
-	_symbolTableIndices.add_variable("voltageCount", voltageCount, true);
-
-	_symbolTableIndices.add_variable("this.currentIndex", currentIndex, true);
-
-	_expression.register_symbol_table(_symbolTableIndices);*/
+		_symbolTableProperties.add_variable("this.properties." + it.first.toStdString(), it.second.value, true);
 
 }
 
 void Component::prepareForSimulation(int voltageCount) {
-
-	_stamps.clear();
 
 	_loadSimulationVariables(voltageCount);
 	_loadComponentStamps();
@@ -137,44 +144,13 @@ QString Component::getLetterIdentifierBase() {
 	return _componentData["letterIdentifierBase"].GetString();
 }
 
-bool Component::isLinear() {
-
-	if (_componentData["DCOP"].HasMember("linear"))
-		return _componentData["DCOP"]["linear"].GetBool();
-	else
-		return true; // TODO default...?
-
-}
-
 void Component::applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount, LogWindow* logWindow){
 
-	double value;
 	for (auto &it : _stamps) {
-		
-		if (isLinear())
-			value = it.value;
+		if (it.matrix == MNAmatrix::A) 
+			matrixA(it.rowNumber, it.columnNumber) += it.value;
 		else
-			value = it.expression.value();
-
-	
-		std::stringstream p;
-		if (it.matrix == MNAmatrix::A)
-		{
-			p << "A: ";
-			matrixA(it.rowNumber, it.columnNumber) += value;
-		
-		}
-		else {
-			p << "B: ";
-			matrixB(it.rowNumber) += value;
-		
-		}
-
-
-		//TODO  only DEBUG 
-		p << std::setprecision(40) << value << " for " << _name.toStdString() << "\n";
-		OutputDebugStringA(p.str().c_str());
-
+			matrixB(it.rowNumber) += it.value;
 	}
 
 }

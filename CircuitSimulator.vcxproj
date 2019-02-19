@@ -35,10 +35,13 @@
     <ClInclude Include="src\components\ComponentData.h" />
     <ClInclude Include="src\DCOP.h" />
     <ClInclude Include="src\Geometry.h" />
+    <ClInclude Include="src\GeometryData.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MatrixHelper.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Property.h" />
+    <ClInclude Include="src\SimpleParser\ParserExceptions.h" />
+    <ClInclude Include="src\SimpleParser\SimpleParser.h" />
     <ClInclude Include="src\Simulation.h" />
     <ClInclude Include="src\SimulationErrors.h" />
     <ClInclude Include="src\Version.h" />

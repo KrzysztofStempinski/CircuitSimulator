@@ -109,7 +109,10 @@ void LogWindow::slot_clearLog() {
 
 }
 
-void LogWindow::exprTkError(exprtk::parser<double>& parser) {
+
+/*
+template<typename T>
+void LogWindow::exprTkError(exprtk::parser<T>& parser) {
 
 	for (std::size_t i = 0; i < parser.error_count(); ++i){
 
@@ -131,3 +134,4 @@ void LogWindow::exprTkError(exprtk::parser<double>& parser) {
 	}
 
 }
+*/

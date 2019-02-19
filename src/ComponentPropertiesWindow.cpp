@@ -21,7 +21,6 @@
 void ComponentPropertiesWindow::buttonAccept() {
 
 	// save component properties
-	// TODO can we use iterators here?
 	for (int i = 0; i < _formLayout->count(); i++){
 
 		QWidget *widget = _formLayout->itemAt(i)->widget();

@@ -34,6 +34,9 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{08edffe0-4b0e-47d2-93d7-4b6f6f99fb54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{acfbd126-e942-4ee5-ab54-288ac2b19801}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Simulation.cpp">
@@ -124,6 +127,15 @@
     </ClInclude>
     <ClInclude Include="src\components\ComponentData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeometryData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimpleParser\ParserExceptions.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimpleParser\SimpleParser.h">
+      <Filter>Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

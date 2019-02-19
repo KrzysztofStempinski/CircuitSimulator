@@ -195,16 +195,22 @@ void MainWindow::populateComponents() {
 	for (auto &p : std::filesystem::directory_iterator(COMPONENT_PATH)) {
 		if (p.path().extension() == L".json") {
 
+			// load and parse the JSON component definition file
 			std::ifstream ifs(p.path());
 			rapidjson::IStreamWrapper isw(ifs);
 
 			rapidjson::Document file;
 			file.ParseStream(isw);
 
+			// For instance "Voltage Source" - that's what's displayed in menu
 			QAction* action = new QAction(file["displayNameBase"].GetString());
 
-			action->setData(QString(p.path().filename().string().c_str())); // TODO what in the name of the unholy fuck is with these strings
+			// TODO what in the name of the unholy fuck is with these strings
+			// TODO maybe we should just do "resistor", as in, chop 5 last chars here?
+			// for instance, resistor.json
+			action->setData(QString(p.path().filename().string().c_str())); 
 
+			// load geometry and draw it to produce a nice thumnbai/icon
 			GeometryData geometry;
 			loadGeometryFromJSON(file["display"], geometry);
 
@@ -214,11 +220,12 @@ void MainWindow::populateComponents() {
 			QPainter* painter = new QPainter(pixmap);
 			painter->setPen(Qt::cyan);	
 				   
-			for (auto &it : geometry)
+			for (const auto& it : geometry)
 				it->draw(*painter, QPoint(18, 18));
 
 			action->setIcon(QIcon(*pixmap));
 
+			// finalize
 			menuComponents->addAction(action);
 			toolbarComponents->addAction(action);
 
@@ -234,7 +241,6 @@ void MainWindow::populateComponents() {
 		temp->setEnabled(false);
 		menuComponents->addAction(temp);
 	}
-
 
 }
 

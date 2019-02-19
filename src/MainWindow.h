@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow {
 
 	private:
 
-		LogWindow *logWindow;
+		LogWindow* logWindow;
 
 		QAction* action_componentProperties;
 

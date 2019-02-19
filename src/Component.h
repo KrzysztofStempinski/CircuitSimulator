@@ -18,14 +18,14 @@
 #include <vector>
 #include <string>
 
-#include "../exprtk/exprtk.hpp"
-
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/document.h"
 #include "../rapidjson/filereadstream.h"
 #include "../rapidjson/istreamwrapper.h"
 
 #include "..//eigen//Dense"
+
+#include "SimpleParser/SimpleParser.h"
 
 class Component;
 
@@ -72,15 +72,13 @@ class Component {
 		// simulation-related stuff
 		void _loadSimulationVariables(int voltageCount);
 
-		exprtk::symbol_table<int> _symbolTableIndices;
-		exprtk::symbol_table<double> _symbolTableProperties;
-
-		exprtk::parser<double> _parser;
-
-		exprtk::expression<double> _expression;
+	//	TokenMap _simulationVariables;
 
 		void _loadComponentStamps();
 		std::list<ComponentStamp> _stamps;
+		exprtk::symbol_table<double> _symbolTableProperties;
+
+		SimpleParser::VarTable _varTableIndices;
 
 	public:
 
@@ -123,7 +121,6 @@ class Component {
 		QPoint prevPos;
 
 		// DCOP STUFF
-		bool isLinear();
 		bool requireCurrentEntry();
 
 		void prepareForSimulation(int voltageCount);
