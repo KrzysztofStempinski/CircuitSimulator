@@ -37,22 +37,16 @@
     <Filter Include="Parser">
       <UniqueIdentifier>{acfbd126-e942-4ee5-ab54-288ac2b19801}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core %28circuit%29">
+      <UniqueIdentifier>{b3fd2e39-4b7b-4d05-ab6e-0f38a2184c6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Simulation.cpp">
-      <Filter>Simulation</Filter>
-    </ClCompile>
     <ClCompile Include="src\SimulationErrors.cpp">
       <Filter>Simulation</Filter>
     </ClCompile>
     <ClCompile Include="src\Version.cpp">
       <Filter>Version Info</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Circuit.cpp">
-      <Filter>Circuit</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Circuit_fileIO.cpp">
-      <Filter>Circuit</Filter>
     </ClCompile>
     <ClCompile Include="src\SimulationResultsWindow.cpp">
       <Filter>Dialogs</Filter>
@@ -81,14 +75,23 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="src\Geometry.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="src\Component.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\Node.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Circuit.cpp">
+      <Filter>Core %28circuit%29</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Simulation.cpp">
+      <Filter>Core %28circuit%29</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileIO.cpp">
+      <Filter>Core %28circuit%29</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,25 +101,13 @@
     <ClInclude Include="src\Property.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Simulation.h">
-      <Filter>Simulation</Filter>
-    </ClInclude>
     <ClInclude Include="src\SimulationErrors.h">
-      <Filter>Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DCOP.h">
       <Filter>Simulation</Filter>
     </ClInclude>
     <ClInclude Include="src\Version.h">
       <Filter>Version Info</Filter>
     </ClInclude>
-    <ClInclude Include="src\Circuit.h">
-      <Filter>Circuit</Filter>
-    </ClInclude>
     <ClInclude Include="src\MatrixHelper.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Geometry.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Node.h">
@@ -125,17 +116,20 @@
     <ClInclude Include="src\Component.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\ComponentData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GeometryData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\SimpleParser\ParserExceptions.h">
       <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="src\SimpleParser\SimpleParser.h">
       <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Circuit.h">
+      <Filter>Core %28circuit%29</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

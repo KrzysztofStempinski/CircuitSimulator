@@ -211,8 +211,7 @@ void MainWindow::populateComponents() {
 			action->setData(QString(p.path().filename().string().c_str())); 
 
 			// load geometry and draw it to produce a nice thumnbai/icon
-			GeometryData geometry;
-			loadGeometryFromJSON(file["display"], geometry);
+			GeometryList geometry(file["display"]);
 
 			QPixmap* pixmap = new QPixmap(36, 36);
 			pixmap->fill(Qt::transparent);
@@ -220,7 +219,7 @@ void MainWindow::populateComponents() {
 			QPainter* painter = new QPainter(pixmap);
 			painter->setPen(Qt::cyan);	
 				   
-			for (const auto& it : geometry)
+			for (const auto& it : geometry.objects)
 				it->draw(*painter, QPoint(18, 18));
 
 			action->setIcon(QIcon(*pixmap));

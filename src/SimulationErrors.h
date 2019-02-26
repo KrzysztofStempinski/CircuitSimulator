@@ -11,5 +11,4 @@ enum class SimulationResult {
 
 };
 
-
 QString getSimulationErrorMessage(const SimulationResult result);

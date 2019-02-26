@@ -78,7 +78,7 @@
 			"name": "voltage",
 			"displayName": "Voltage",
 			"unit": "V",
-			"defaultValue": 12
+			"defaultValue": 1.5
 		}
 	
 	],	

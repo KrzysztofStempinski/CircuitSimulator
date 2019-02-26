@@ -49,14 +49,14 @@ void Component::_loadComponentStamps() {
 
 			std::string columnEntry = (*it)["column"].GetString(); // currentIndex or rowIndex
 
-			//if (!parserIndices.compile()) {
-			//	logWindow->exprTkError(parserIndices);
-			//	return;
-			//}
+			if (!_interpreter.evaluate(columnEntry)) {
+				logWindow->log("error parsing matrix indices for component " + _name + ": " + QString::fromStdString(_interpreter.getErrorMessage()), LogEntryType::Error);
+				return;
+			}
 
 			// we need to substract 1 from both row/column number, as voltageIndex is numbered from 1 to n (and C++ uses, well, 0 to n - 1)
 			// (and each matrix coord is either voltageIndex, or voltageCount + currentIndex)
-			newStamp.columnNumber = _interpreter.evaluate(columnEntry) - 1;
+			newStamp.columnNumber = _interpreter.getValue() - 1;
 
 			// we may as well discard the stamp right now, not going to apply it anyway
 			if (newStamp.columnNumber < 0) 
@@ -67,14 +67,14 @@ void Component::_loadComponentStamps() {
 		if (matrixString == "B") 
 			newStamp.matrix = MNAmatrix::B;
 
-		std::string rowEntryString = (*it)["row"].GetString();
+		std::string rowEntry = (*it)["row"].GetString();
 
-	//	if (!parserIndices.compile(rowEntryString, expressionIndices)) {
-		//	logWindow->exprTkError(parserIndices);
-			//return;
-		//}
+		if (!_interpreter.evaluate(rowEntry)) {
+			logWindow->log("error parsing matrix indices for component " + _name + ": " + QString::fromStdString(_interpreter.getErrorMessage()), LogEntryType::Error);
+			return;
+		}
 		
-		newStamp.rowNumber = _interpreter.evaluate(rowEntryString) - 1;
+		newStamp.rowNumber = _interpreter.getValue() - 1;
 
 		if (newStamp.rowNumber < 0) 
 			continue;
@@ -93,6 +93,8 @@ void Component::_loadComponentStamps() {
 		}
 
 		newStamp.value = expressionValue.value();
+
+		//logWindow->log("Value of component stamp for " + _name + ": " + QString::number(newStamp.value));
 			
 		 //Cave Johnson, we're done here
 		_stamps.push_back(newStamp);
@@ -117,6 +119,9 @@ void Component::_loadSimulationVariables(int voltageCount) {
 
 	for (auto& it : properties)
 		_symbolTableProperties.add_variable("this.properties." + it.first.toStdString(), it.second.value, true);
+
+	for (int i = 0; i < coupledNodes.size(); ++i)
+		_symbolTableProperties.add_variable("this.node" + std::to_string(i) + ".voltageValue", coupledNodes[i]->voltageValue, true);
 
 }
 
@@ -144,7 +149,7 @@ QString Component::getLetterIdentifierBase() {
 	return _componentData["letterIdentifierBase"].GetString();
 }
 
-void Component::applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount, LogWindow* logWindow){
+void Component::applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount){
 
 	for (auto &it : _stamps) {
 		if (it.matrix == MNAmatrix::A) 
@@ -198,7 +203,7 @@ Component::Component(QString name) {
 
 	// parse geometry data
 	const rapidjson::Value& displayMembers = _componentData["display"];
-	loadGeometryFromJSON(displayMembers, _geometryObjects);
+	_geometryObjects.loadFromJSON(displayMembers);
 
 	// bounding rect
 	const rapidjson::Value& boundingRect = _componentData["boundingRect"];
@@ -235,7 +240,7 @@ bool Component::isWithinRectangle(const QRect& rect) const {
 
 void Component::draw(QPainter& painter) {
 	
-	for (const auto& it : _geometryObjects)
+	for (const auto& it : _geometryObjects.objects)
 		it->draw(painter, _pos, _rotationAngle);
 
 	// draw text

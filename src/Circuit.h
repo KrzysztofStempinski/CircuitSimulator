@@ -19,8 +19,14 @@ class Circuit;
 
 #include "Node.h"
 #include "Geometry.h"
+#include "SimulationErrors.h"
 
 class Circuit {
+
+	private:
+
+		void _markAdjacentNodes(Node* nodeBegin, const int voltageIndex);
+		SimulationResult _prepareDCOP();
 
 	public:
 
@@ -31,7 +37,7 @@ class Circuit {
 	
 		void deleteNode(Node* node);
 
-		void createComponent(QString componentName, const QPoint& pos, bool createNodes = true);
+		void createComponent(const QString componentName, const QPoint& pos, const bool createNodes = true);
 
 		void deleteComponent(Component* component);
 
@@ -40,6 +46,8 @@ class Circuit {
 
 		int voltageCount;
 		int currentCount;
+
+		SimulationResult simulate();
 
 };
 

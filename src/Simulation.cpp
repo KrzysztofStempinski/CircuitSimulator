@@ -1,35 +1,33 @@
-#include "Simulation.h"
+#include "Circuit.h"
 
-#include "DCOP.h"
-
-void markAdjacentNodes(Node* nodeBegin, int voltageIndex) {
+void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
 
 	nodeBegin->voltageIndex = voltageIndex;
 
 	for (const auto &it : nodeBegin->connectedNodes)
-		if (it->voltageIndex == -1)
-			markAdjacentNodes(it, voltageIndex);
+		if (it->voltageIndex == -1) // if a node wasn't visited yet
+			_markAdjacentNodes(it, voltageIndex);
 
 }
 
-SimulationResult prepareSimulation(Circuit& circuit, Eigen::VectorXd& solutions, LogWindow* logWindow) {
+SimulationResult Circuit::_prepareDCOP() {
 
 	// sanity check
-	if (circuit.components.empty())
+	if (components.empty())
 		return SimulationResult::Error_NoComponents;
 
 	// cleanup
-	for (auto& it : circuit.nodes) {
+	for (auto& it : nodes) {
 		it->voltageIndex = -1;
 		it->voltageValue  = 0;
 	}
 
 	// first pass
 	bool foundGround = false;
-	for (const auto& it : circuit.nodes) {
+	for (const auto& it : nodes) {
 		if (it->voltageIndex == -1) {
 			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
-				markAdjacentNodes(it, 0);
+				_markAdjacentNodes(it, 0);
 				//it->voltageValue = 0;// perhaps node->isGround() ???	
 				foundGround = true;
 			}
@@ -40,53 +38,70 @@ SimulationResult prepareSimulation(Circuit& circuit, Eigen::VectorXd& solutions,
 		return SimulationResult::Error_NoGroundNode;
 																	
 	int voltageIndex = 0;
-	for (auto& it : circuit.nodes) {
+	for (auto& it : nodes) {
 		if (it->voltageIndex == -1) {
 			voltageIndex++;
-			markAdjacentNodes(it, voltageIndex);
+			_markAdjacentNodes(it, voltageIndex);
 		}
 	}
 
-	circuit.voltageCount = voltageIndex;
+	voltageCount = voltageIndex;
 
 	int currentIndex = 0;
-	for (const auto& it : circuit.components) {
+	for (const auto& it : components) {
 
 		if (it->requireCurrentEntry()) {
 			currentIndex++;
 			it->currentIndex = currentIndex;
 		}
-
-		it->logWindow = logWindow;
-		it->prepareForSimulation(circuit.voltageCount);
+		// TODO NOTE REMOVED HERE!!!!!
+		//it->prepareForSimulation(circuit.voltageCount);
 
 	}
 
-	circuit.currentCount = currentIndex;
+	currentCount = currentIndex;
 
 	return SimulationResult::Success;
 
 }
 
-SimulationResult simulate(Circuit& circuit, SimulationMode mode, Eigen::VectorXd& solutions, LogWindow* logWindow){
+SimulationResult Circuit::simulate() {
 
-	logWindow->log("Starting simulation...");
+	//logWindow->log("Starting simulation...");
 
-	SimulationResult result = prepareSimulation(circuit, solutions, logWindow);
+	SimulationResult preparationResult = _prepareDCOP();
+	if (preparationResult != SimulationResult::Success)
+		return preparationResult;
 
-	if (result != SimulationResult::Success)
-		return result;
+	Eigen::MatrixXd matrixA(voltageCount + currentCount, voltageCount + currentCount);
+	Eigen::VectorXd matrixB(voltageCount + currentCount);
 
-	switch (mode) {
-	
-		case SimulationMode::DCOP: 
-			return DCOP(circuit, solutions, logWindow);
-		break;
+	matrixA.fill(0);
+	matrixB.fill(0);
 
-		default:
-			return SimulationResult::Error_InvalidMode;
-		break;
-	
+	for (auto &it : components) {
+		it->prepareForSimulation(voltageCount);
+		it->applyComponentStamp(matrixA, matrixB, voltageCount);
 	}
+
+	Eigen::VectorXd solutions = matrixA.partialPivLu().solve(matrixB);
+
+		for (auto& it : nodes)
+			if (it->voltageIndex >= 1)
+				it->voltageValue = solutions(it->voltageIndex - 1);
+			else
+				it->voltageValue = double(0);
+
+		for (auto& it : components)
+			if (it->requireCurrentEntry())
+				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
+
+		// print out solutions
+	//	logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
+		//logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
+//
+	//	logWindow->log("Solutions = " + vectorToString(solutions), LogEntryType::Debug);
+
+	return SimulationResult::Success;
 
 }

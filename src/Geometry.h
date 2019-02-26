@@ -1,43 +1,10 @@
-/*
-
-	This file is part of CircuitSimulator
-	Copyright (C) 2018 Krzysztof Stempinski
-
-	Refer to main.cpp or License.md for licensing info
-
-*/
-
-//  ---------------------------------------------
-//
-//	Geometry.h
-// 
-//  ---------------------------------------------
-
 #pragma once
 
-#include <cmath>
-#include <vector>
-
-#include <qpoint.h>
-#include <qrect.h>
 #include <qpainter.h>
 
 #include "../rapidjson/document.h"
 
-const double PI = std::atan(1) * 4;
-
-// TODO find a proper place to put this in
-template <typename T> int sign(T val) {
-	return (T(0) < val) - (val < T(0));
-}
-
-QPoint snapPointToGrid(const QPoint& pointToSnap, int gridSize, bool performSnap = true);
-QPoint rotatePoint(const QPoint& point, const QPoint& pivot, int angle);
-
-bool isPointOnLine(const QPoint& lineStart, const QPoint& lineEnd, const QPoint& point, double precision = 0.25);
-
-float distanceBetweenPoints(const QPoint& p1, const QPoint& p2);
-float distanceSquaredBetweenPoints(const QPoint& p1, const QPoint& p2);
+#include "Math.h"
 
 struct GeometryObject {
 
@@ -50,7 +17,7 @@ struct Circle : public GeometryObject {
 	QPoint center;
 	int radius;
 
-	Circle(QPoint _center, int _radius) 
+	Circle(QPoint _center, int _radius)
 		: center(_center), radius(_radius) {};
 
 	void draw(QPainter& painter, const QPoint& parentPos, const int) const {
@@ -65,17 +32,63 @@ struct Line : public GeometryObject {
 
 	QPoint begin, end;
 
-	Line(QPoint _begin, QPoint _end) 
+	Line(QPoint _begin, QPoint _end)
 		: begin(_begin), end(_end) {};
 
 	void draw(QPainter& painter, const QPoint &parentPos, const int parentRotationAngle = 0) const {
 
 		painter.drawLine(rotatePoint(parentPos + begin, parentPos, parentRotationAngle), rotatePoint(parentPos + end, parentPos, parentRotationAngle));
-	
+
 	}
 
 };
 
-using GeometryData = std::vector<GeometryObject*>;
+struct GeometryList {
 
-void loadGeometryFromJSON(const rapidjson::Value& JSONdata, GeometryData& geometryData);
+	std::vector<GeometryObject*> objects;
+
+	GeometryList() {}
+
+	GeometryList(const rapidjson::Value& JSONdata) {
+		loadFromJSON(JSONdata);
+	}
+
+	void loadFromJSON(const rapidjson::Value& JSONdata){
+
+		objects.clear();
+
+		for (rapidjson::Value::ConstValueIterator itr = JSONdata.Begin(); itr != JSONdata.End(); ++itr) {
+			const rapidjson::Value& attribute = *itr;
+
+			if (attribute["type"] == "line") {
+
+				const rapidjson::Value& point1 = attribute["point1"];
+				const rapidjson::Value& point2 = attribute["point2"];
+
+				GeometryObject *line = new Line(QPoint(point1[0].GetInt(), point1[1].GetInt()),
+					QPoint(point2[0].GetInt(), point2[1].GetInt()));
+
+				objects.push_back(line);
+
+			}
+			else if (attribute["type"] == "circle") {
+
+				const rapidjson::Value& center = attribute["center"];
+				const rapidjson::Value& radius = attribute["radius"];
+
+				GeometryObject *circle = new Circle(QPoint(center[0].GetInt(), center[1].GetInt()), radius.GetInt());
+
+				objects.push_back(circle);
+
+			}
+			else if (attribute["type"] == "nametext") {
+
+				const rapidjson::Value& pos = attribute["pos"];
+
+			}
+
+		}
+
+	}
+
+};

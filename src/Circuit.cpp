@@ -32,7 +32,7 @@ void Circuit::deleteNode(Node* node) {
 
 }
 
-void Circuit::createComponent(QString componentName, const QPoint& pos, bool createNodes) {
+void Circuit::createComponent(const QString componentName, const QPoint& pos, const bool createNodes) {
 
 	Component* newComponent = new Component(componentName);
 

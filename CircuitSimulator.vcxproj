@@ -15,10 +15,10 @@
     <ClCompile Include="src\CircuitEditor.cpp" />
     <ClCompile Include="src\CircuitEditor_actions.cpp" />
     <ClCompile Include="src\CircuitEditor_slots.cpp" />
-    <ClCompile Include="src\Circuit_fileIO.cpp" />
+    <ClCompile Include="src\FileIO.cpp" />
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentPropertiesWindow.cpp" />
-    <ClCompile Include="src\Geometry.cpp" />
+    <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\LogWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainWindow.cpp" />
@@ -32,17 +32,14 @@
   <ItemGroup>
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
-    <ClInclude Include="src\components\ComponentData.h" />
-    <ClInclude Include="src\DCOP.h" />
+    <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\Geometry.h" />
-    <ClInclude Include="src\GeometryData.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MatrixHelper.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\SimpleParser\ParserExceptions.h" />
     <ClInclude Include="src\SimpleParser\SimpleParser.h" />
-    <ClInclude Include="src\Simulation.h" />
     <ClInclude Include="src\SimulationErrors.h" />
     <ClInclude Include="src\Version.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />

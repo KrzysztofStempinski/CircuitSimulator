@@ -67,7 +67,7 @@ class Component {
 		int _rotationAngle;
 		QRect _boundingRect;
 
-		GeometryData _geometryObjects;
+		GeometryList _geometryObjects;
 
 		// simulation-related stuff
 		void _loadSimulationVariables(int voltageCount);
@@ -124,7 +124,7 @@ class Component {
 		bool requireCurrentEntry();
 
 		void prepareForSimulation(int voltageCount);
-		void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount, LogWindow* logWindow);
+		void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount);
 
 		std::tuple<QString, QString, double> getSimulationResult();
 

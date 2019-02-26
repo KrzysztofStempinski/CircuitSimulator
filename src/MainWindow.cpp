@@ -15,7 +15,6 @@
 #include "Geometry.h"
 #include "Circuit.h"
 #include "CircuitEditor.h"
-#include "Simulation.h"
 #include "Version.h"
 
 #include "../eigen//Dense"
@@ -49,7 +48,7 @@ void MainWindow::slot_simulationRun() {
 	Eigen::VectorXd solutions;
 	solutions.fill(0);
 
-	SimulationResult result = simulate(editor->circuit, SimulationMode::DCOP, solutions, logWindow);
+	SimulationResult result = editor->circuit.simulate();
 
 	if (result != SimulationResult::Success) {
 		logWindow->log("Simulation failed - " + getSimulationErrorMessage(result) + ".", LogEntryType::Error);

@@ -27,12 +27,14 @@ void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
 
 	for (auto& it : _circuit.components) {
 		if (it->hasSimulationResult()) {
+
 			const std::tuple<QString, QString, double> result = it->getSimulationResult();
 
 			table->insertRow(table->rowCount());
 			table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(std::get<0>(result)));
 			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(std::get<1>(result)));
 			table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(std::get<2>(result), 'g', 15)));
+
 		}
 	}
 

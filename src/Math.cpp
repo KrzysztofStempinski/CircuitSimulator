@@ -9,11 +9,11 @@
 
 //  ---------------------------------------------
 //
-//	Geometry.cpp
+//	Math.cpp
 // 
 //  ---------------------------------------------
 
-#include "Geometry.h"
+#include "Math.h"
 
 QPoint snapPointToGrid(const QPoint &pointToSnap, int gridSize, bool performSnap) {
 
@@ -68,41 +68,5 @@ bool isPointOnLine(const QPoint& lineStart, const QPoint& lineEnd, const QPoint&
 	float distPE = distanceBetweenPoints(point, lineEnd);
 
 	return (abs(distSE - (distSP + distPE)) <= precision);
-
-}
-
-void loadGeometryFromJSON(const rapidjson::Value& JSONdata, GeometryData& geometryData) {
-
-	geometryData.clear();
-
-	for (rapidjson::Value::ConstValueIterator itr = JSONdata.Begin(); itr != JSONdata.End(); ++itr) {
-		const rapidjson::Value& attribute = *itr;
-
-		if (attribute["type"] == "line") {
-
-			const rapidjson::Value& point1 = attribute["point1"];
-			const rapidjson::Value& point2 = attribute["point2"];
-
-			GeometryObject *line = new Line(QPoint(point1[0].GetInt(), point1[1].GetInt()),
-				QPoint(point2[0].GetInt(), point2[1].GetInt()));
-
-			geometryData.push_back(line);
-
-		} else if (attribute["type"] == "circle") {
-
-			const rapidjson::Value& center = attribute["center"];
-			const rapidjson::Value& radius = attribute["radius"];
-
-			GeometryObject *circle = new Circle(QPoint(center[0].GetInt(), center[1].GetInt()), radius.GetInt());
-
-			geometryData.push_back(circle);
-
-		} else if (attribute["type"] == "nametext") {
-
-			const rapidjson::Value& pos = attribute["pos"];
-
-		}
-	
-	}
 
 }

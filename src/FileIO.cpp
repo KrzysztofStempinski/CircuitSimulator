@@ -33,12 +33,17 @@ bool Circuit::saveToFile(const QString fileName) {
 
 	// assign each node and component a unique ID, which is essentially its index
 	int ID = 0;
-	for (auto &it : nodes)
-		it->ID = ID++;
+	for (auto &it : nodes) {
+		it->ID = ID;
+		ID++;
+	}
 
 	ID = 0;
-	for (auto &it : components)
-		it->ID = ID++;
+	for (auto &it : components) {
+		it->ID = ID;
+		ID++;
+	}
+
 
 	// initialize an emppty JSON doc
 	rapidjson::Document file;

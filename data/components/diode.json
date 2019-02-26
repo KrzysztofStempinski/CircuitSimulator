@@ -18,7 +18,7 @@
 				"row":  "this.node1.voltageIndex",
 				"column":  "this.node1.voltageIndex", 
 
-				"value": "(this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+				"value": "(this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt)"
 
 			},
 
@@ -29,7 +29,7 @@
 				"row":  "this.node1.voltageIndex",
 				"column":  "this.node0.voltageIndex", 
 
-				"value": "-1 * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+				"value": "-1 * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt)"
 
 			},
 
@@ -40,7 +40,7 @@
 				"row":  "this.node0.voltageIndex",
 				"column":  "this.node1.voltageIndex", 
 
-				"value": "-1 * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+				"value": "-1 * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt)"
 
 			},
 
@@ -51,7 +51,7 @@
 				"row":  "this.node0.voltageIndex",
 				"column":  "this.node0.voltageIndex", 
 
-				"value": "(this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt)"
+				"value": "(this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt)"
 
 			},
 
@@ -61,7 +61,7 @@
 
 				"row":  "this.node0.voltageIndex",
 
-				"value": "(this.node1.voltageValue.k - this.node0.voltageValue.k) * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) - this.properties.sat_curr * (exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) - 1)"
+				"value": "(this.node1.voltageValue - this.node0.voltageValue) * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt) - this.properties.sat_curr * (exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt) - 1)"
 
 			},
 
@@ -69,9 +69,9 @@
 
 				"matrix": "B",
 
-				"row":  "this.node0.voltageIndex",
+				"row":  "this.node1.voltageIndex",
 
-				"value": "-(this.node1.voltageValue.k - this.node0.voltageValue.k) * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) + this.properties.sat_curr * (exp((this.node1.voltageValue.k - this.node0.voltageValue.k) / this.properties.therm_volt) - 1)"
+				"value": "-(this.node1.voltageValue - this.node0.voltageValue) * (this.properties.sat_curr / this.properties.therm_volt) * exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt) + this.properties.sat_curr * (exp((this.node1.voltageValue - this.node0.voltageValue) / this.properties.therm_volt) - 1)"
 
 			}
 
@@ -85,13 +85,13 @@
 			"name": "sat_curr",
 			"displayName": "Saturation current",
 			"unit": "A",
-			"defaultValue": 0.02
+			"defaultValue": 1e-14
 		},
 		{
 			"name": "therm_volt",
 			"displayName": "Thermal voltage",
 			"unit": "V",
-			"defaultValue": 0.026
+			"defaultValue": 25.8e-3
 		},
 		{
 			"name": "n",

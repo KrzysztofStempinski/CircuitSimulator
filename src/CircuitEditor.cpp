@@ -143,7 +143,7 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 		pen.setColor(Qt::lightGray);
 		pen.setWidth(1);
 		painter.setPen(pen);
-		for (auto &it : _tempComponentGeometry)
+		for (auto &it : _tempComponentGeometry.objects)
 			it->draw(painter, _tempComponentPos, _tempComponentRotationAngle);
 	}
 
@@ -668,7 +668,7 @@ void CircuitEditor::setCurrentComponent(const QString component) {
 	rapidjson::Document componentData;
 	componentData.ParseStream(isw);
 
-	loadGeometryFromJSON(componentData["display"], _tempComponentGeometry);
+	_tempComponentGeometry.loadFromJSON(componentData["display"]);
 	_tempComponentRotationAngle = 0;
 
 }
@@ -692,7 +692,7 @@ void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {
             _mode = EditorMode::_default;
 
 			// cleanup
-			for (auto &it : _tempComponentGeometry)
+			for (auto &it : _tempComponentGeometry.objects)
 				delete it;
 
 		}

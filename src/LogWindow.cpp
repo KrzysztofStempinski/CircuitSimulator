@@ -109,29 +109,3 @@ void LogWindow::slot_clearLog() {
 
 }
 
-
-/*
-template<typename T>
-void LogWindow::exprTkError(exprtk::parser<T>& parser) {
-
-	for (std::size_t i = 0; i < parser.error_count(); ++i){
-
-		QString msg("exprTk ");
-
-		exprtk::parser_error::type error = parser.get_error(i);
-
-		// we convert to lowercase to get "syntax error" from less fancy "SYNTAX ERROR" (don't want the app shouting at us)
-		std::string parserErrorMode = exprtk::parser_error::to_str(error.mode);
-		std::transform(parserErrorMode.begin(), parserErrorMode.end(), parserErrorMode.begin(), ::tolower);
-
-		msg += QString::fromStdString(parserErrorMode + " at position ");
-		msg += QString::number(error.token.position);
-
-		msg += QString::fromStdString(": " + error.diagnostic);
-
-		log(msg, LogEntryType::Error);
-
-	}
-
-}
-*/

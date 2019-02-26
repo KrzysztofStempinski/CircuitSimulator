@@ -57,7 +57,7 @@ class CircuitEditor : public QWidget {
 		std::list<Node*> _selectedNodes;
 		std::list<Component*> _selectedComponents;
 
-		GeometryData _tempComponentGeometry;
+		GeometryList _tempComponentGeometry;
 		QPoint _tempComponentPos;
 		int _tempComponentRotationAngle;
 

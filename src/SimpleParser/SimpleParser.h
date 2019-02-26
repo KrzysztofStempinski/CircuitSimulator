@@ -73,10 +73,16 @@ namespace SimpleParser {
 		int _pos;
 		Token _currentToken;
 		char _currentChar;
+		int _value;
+		std::string _lastErrorMessage;
 
 	public:
 
 		VarTable* varTable;
+
+		int getValue() const {
+			return _value;
+		}
 
 		void advance() {
 
@@ -93,6 +99,12 @@ namespace SimpleParser {
 
 			while (_currentChar != '\0' && isspace(_currentChar))
 				advance();
+
+		}
+
+		std::string getErrorMessage() const {
+		
+			return _lastErrorMessage;
 
 		}
 
@@ -157,34 +169,44 @@ namespace SimpleParser {
 
 		}
 
-		int evaluate(const std::string expression) {
+		bool evaluate(const std::string expression) {
 
 			_expr = expression;
 			_pos = 0,
-			_currentToken = Token(TokenType::None); //  TODO cleanup etc.
+				_currentToken = Token(TokenType::None); //  TODO cleanup etc.
 			_currentChar = _expr[_pos];
 
 			_currentToken = getNextToken();
 
-			int result = term();
+			try {
 
-			while (in(_currentToken._type, TokenType::Plus, TokenType::Minus)) {
+				int result = term();
 
-				Token token = _currentToken;
+				while (in(_currentToken._type, TokenType::Plus, TokenType::Minus)) {
 
-				if (token._type == TokenType::Plus) {
-					eat(TokenType::Plus);
-					result += term();
+					Token token = _currentToken;
+
+					if (token._type == TokenType::Plus) {
+						eat(TokenType::Plus);
+						result += term();
+					}
+					else if (token._type == TokenType::Minus) {
+						eat(TokenType::Minus);
+						result -= term();
+
+					}
+
 				}
-				else if (token._type == TokenType::Minus) {
-					eat(TokenType::Minus);
-					result -= term();
 
-				}
+				_value = result;
+				return true;
+
+			} catch (ParserException e){
+					
+				_lastErrorMessage = e.what();
+				return false;
 
 			}
-
-			return result;
 
 		}
 
