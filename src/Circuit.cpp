@@ -40,6 +40,8 @@ void Circuit::createComponent(const QString componentName, const QPoint& pos, co
 	Component* newComponent = nullptr;
 	if (componentName == "resistor")
 		newComponent = new Resistor();
+	else if (componentName == "voltage_source")
+		newComponent = new VoltageSource();
 	//else 
 	//	newComponent = new Ground();
 

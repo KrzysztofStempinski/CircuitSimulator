@@ -65,7 +65,7 @@ class Node {
 		bool isWithinRectangle(const QRect& rect);
 		
 		// TODO refactor
-		//CircuitEfitor related stuff stuff
+		//CircuitEditor related stuff stuff
 		bool selected;
 		QPoint prevPos;
 

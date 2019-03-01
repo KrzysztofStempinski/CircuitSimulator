@@ -25,9 +25,7 @@
 
 #include "..//eigen//Dense"
 
-class Resistor;
-
-#include "../Node.h"
+#include "../Component.h"
 #include "../Property.h"
 #include "../Geometry.h"
 
@@ -90,8 +88,12 @@ class Resistor : public Component {
 
 		void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
 		
-		
-		
+			// TODO  division by zero etc
+			matrixA(coupledNodes[1]->voltageIndex, coupledNodes[1]->voltageIndex) = 1 / properties["resistance"].value;
+			matrixA(coupledNodes[1]->voltageIndex, coupledNodes[0]->voltageIndex) = - 1 / properties["resistance"].value;
+			matrixA(coupledNodes[0]->voltageIndex, coupledNodes[1]->voltageIndex) = -1 / properties["resistance"].value;
+			matrixA(coupledNodes[0]->voltageIndex, coupledNodes[0]->voltageIndex) = 1 / properties["resistance"].value;
+
 		}
 
 		QString displayNameBase() {

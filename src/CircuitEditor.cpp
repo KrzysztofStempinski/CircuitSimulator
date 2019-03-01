@@ -660,10 +660,11 @@ void CircuitEditor::paintEvent(QPaintEvent*) {
 }
 
 void CircuitEditor::setCurrentComponent(const QString component) {
-
+	//TODO get rid of this bullshit
 	if (component == "resistor")
 		_currentComponent = new Resistor();
-
+	else if (component == "voltage_source")
+		_currentComponent = new VoltageSource();
 }
 
 void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {
