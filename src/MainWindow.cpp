@@ -102,6 +102,8 @@ MainWindow::MainWindow() {
 	logWindow->log("CircuitSimulator v." + VersionInfo::getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
 	logWindow->log("This is free software, but comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it, subject to certain conditions. See license.md for more details.");
 
+	editor->circuit.logWindow = logWindow;
+
 }
 
 void MainWindow::slot_schematicPlaceComponent(QAction* action) {

@@ -30,6 +30,8 @@ class Circuit {
 
 	public:
 
+		LogWindow* logWindow;
+
 		std::vector<Node*> nodes;
 		std::vector<Component*> components;
 

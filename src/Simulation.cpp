@@ -1,5 +1,7 @@
 #include "Circuit.h"
 
+#include "MatrixHelper.h"
+
 void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
 
 	nodeBegin->voltageIndex = voltageIndex;
@@ -65,7 +67,7 @@ SimulationResult Circuit::_prepareDCOP() {
 
 SimulationResult Circuit::simulate() {
 
-	//logWindow->log("Starting simulation...");
+	logWindow->log("Starting simulation...");
 
 	SimulationResult preparationResult = _prepareDCOP();
 	if (preparationResult != SimulationResult::Success)
@@ -94,10 +96,10 @@ SimulationResult Circuit::simulate() {
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
 		// print out solutions
-	//	logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
-		//logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
-//
-	//	logWindow->log("Solutions = " + vectorToString(solutions), LogEntryType::Debug);
+		logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
+		logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
+
+		logWindow->log("Solutions = " + vectorToString(solutions), LogEntryType::Debug);
 
 	return SimulationResult::Success;
 

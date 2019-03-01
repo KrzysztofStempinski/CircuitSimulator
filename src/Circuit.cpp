@@ -37,6 +37,7 @@ void Circuit::deleteNode(Node* node) {
 }
 
 void Circuit::createComponent(const QString componentName, const QPoint& pos, const bool createNodes) {
+
 	Component* newComponent = nullptr;
 	if (componentName == "resistor")
 		newComponent = new Resistor();
@@ -46,15 +47,7 @@ void Circuit::createComponent(const QString componentName, const QPoint& pos, co
 		newComponent = new Ground();
 
 
-	int count = std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
-	// I actually find lambda expressions sexy, in a particular way
-	count++;
-
-	// TODO why is this shit hack necessary
-	if (count == 0)
-		count = 1;
-
-	newComponent->serialNumber = count;
+	newComponent->serialNumber = 1 + std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
 
 	newComponent->setPos(pos);
 

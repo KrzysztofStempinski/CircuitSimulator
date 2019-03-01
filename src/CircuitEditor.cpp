@@ -231,27 +231,14 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 		else
 			painter.drawLine(nodeLinkStart->pos(), adjustedPosition);
 
-		// TODO improve AND THEN commit
-		/*
-		for (const auto& it : circuit.nodes) {
+		// extended crosshair
+		pen.setColor(Qt::green);
+		pen.setWidth(1);
+		pen.setStyle(Qt::DashLine);
+		painter.setPen(pen);
 
-			if (it == nodeLinkStart)
-				continue;
-
-			if (it->pos().x() == snappedCursor.x() || it->pos().y() == snappedCursor.y()) {
-
-				pen.setStyle(Qt::DashLine);
-				pen.setColor(Qt::green);
-				painter.setPen(pen);
-
-				painter.drawLine(it->pos(), snappedCursor);
-
-				pen.setStyle(Qt::SolidLine);
-
-			}
-
-		}
-		*/
+		painter.drawLine(0, snappedCursor.y(), painter.window().right(), snappedCursor.y());
+		painter.drawLine(snappedCursor.x(), 0, snappedCursor.x(), painter.window().bottom());
 
 	}
 

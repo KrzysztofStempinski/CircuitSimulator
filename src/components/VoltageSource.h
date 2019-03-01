@@ -83,17 +83,17 @@ public:
 
 	// DCOP STUFF
 	bool requiresCurrentEntry() {
-		return false;
+		return true;
 	}
 
 	void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
 
-		addStampEntry(matrixA, 1, coupledNodes[1]->voltageIndex - 1, voltageCount + currentIndex - 2);
-		addStampEntry(matrixA, -1, coupledNodes[0]->voltageIndex - 1, voltageCount + currentIndex - 2);
-		addStampEntry(matrixA, 1, voltageCount + currentIndex - 2, coupledNodes[1]->voltageIndex - 1);
-		addStampEntry(matrixA, -1, voltageCount + currentIndex - 2, coupledNodes[0]->voltageIndex - 1);
+		addStampEntry(matrixA, 1, coupledNodes[1]->voltageIndex - 1, voltageCount + currentIndex - 1);
+		addStampEntry(matrixA, -1, coupledNodes[0]->voltageIndex - 1, voltageCount + currentIndex - 1);
+		addStampEntry(matrixA, 1, voltageCount + currentIndex - 1, coupledNodes[1]->voltageIndex - 1);
+		addStampEntry(matrixA, -1, voltageCount + currentIndex - 1, coupledNodes[0]->voltageIndex - 1);
 
-		addStampEntry(matrixB, properties["voltage"].value, voltageCount + currentIndex - 2);
+		addStampEntry(matrixB, properties["voltage"].value, voltageCount + currentIndex - 1);
 
 	}
 
