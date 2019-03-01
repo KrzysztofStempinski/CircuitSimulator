@@ -42,8 +42,8 @@ void Circuit::createComponent(const QString componentName, const QPoint& pos, co
 		newComponent = new Resistor();
 	else if (componentName == "voltage_source")
 		newComponent = new VoltageSource();
-	//else 
-	//	newComponent = new Ground();
+	else if (componentName == "ground")
+		newComponent = new Ground();
 
 
 	int count = std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });

@@ -23,6 +23,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainWindow.cpp" />
     <ClCompile Include="src\MainWindow_interface.cpp" />
+    <ClCompile Include="src\MatrixHelper.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\SimulationErrors.cpp" />

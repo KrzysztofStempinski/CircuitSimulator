@@ -40,6 +40,11 @@
     <Filter Include="Components">
       <UniqueIdentifier>{663497fa-0794-4320-8777-39dd56ae9a22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimulationErrors.cpp">
@@ -93,6 +98,9 @@
     <ClCompile Include="src\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\MatrixHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Log.h">
@@ -106,9 +114,6 @@
     </ClInclude>
     <ClInclude Include="src\Version.h">
       <Filter>Version Info</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MatrixHelper.h">
-      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Node.h">
       <Filter>Objects</Filter>
@@ -133,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="src\components\VoltageSource.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MatrixHelper.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

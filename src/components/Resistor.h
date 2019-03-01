@@ -28,6 +28,7 @@
 #include "../Component.h"
 #include "../Property.h"
 #include "../Geometry.h"
+#include "../MatrixHelper.h"
 
 #include "../LogWindow.h"
 
@@ -87,12 +88,14 @@ class Resistor : public Component {
 		}
 
 		void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
-		
+
 			// TODO  division by zero etc
-			matrixA(coupledNodes[1]->voltageIndex, coupledNodes[1]->voltageIndex) = 1 / properties["resistance"].value;
-			matrixA(coupledNodes[1]->voltageIndex, coupledNodes[0]->voltageIndex) = - 1 / properties["resistance"].value;
-			matrixA(coupledNodes[0]->voltageIndex, coupledNodes[1]->voltageIndex) = -1 / properties["resistance"].value;
-			matrixA(coupledNodes[0]->voltageIndex, coupledNodes[0]->voltageIndex) = 1 / properties["resistance"].value;
+			double val = 1 / properties["resistance"].value;
+
+			addStampEntry(matrixA, val, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+			addStampEntry(matrixA, -val, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+			addStampEntry(matrixA, -val, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+			addStampEntry(matrixA, val, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
 
 		}
 
@@ -106,7 +109,8 @@ class Resistor : public Component {
 
 		std::tuple<QString, QString, double> getSimulationResult() {
 		
-			return std::make_tuple("gg", "gg", 12);
+			return std::make_tuple("Device current", "A", (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value);
+
 		}
 
 		// TODO this is temporary

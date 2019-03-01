@@ -88,7 +88,12 @@ public:
 
 	void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
 
-		// TODO  division by zero etc
+		addStampEntry(matrixA, 1, coupledNodes[1]->voltageIndex - 1, voltageCount + currentIndex - 2);
+		addStampEntry(matrixA, -1, coupledNodes[0]->voltageIndex - 1, voltageCount + currentIndex - 2);
+		addStampEntry(matrixA, 1, voltageCount + currentIndex - 2, coupledNodes[1]->voltageIndex - 1);
+		addStampEntry(matrixA, -1, voltageCount + currentIndex - 2, coupledNodes[0]->voltageIndex - 1);
+
+		addStampEntry(matrixB, properties["voltage"].value, voltageCount + currentIndex - 2);
 
 	}
 
@@ -102,7 +107,8 @@ public:
 
 	std::tuple<QString, QString, double> getSimulationResult() {
 
-		return std::make_tuple("gg", "gg", 12);
+		return std::make_tuple("Device current", "A", currentValue);
+	
 	}
 
 	// TODO this is temporary

@@ -665,6 +665,8 @@ void CircuitEditor::setCurrentComponent(const QString component) {
 		_currentComponent = new Resistor();
 	else if (component == "voltage_source")
 		_currentComponent = new VoltageSource();
+	else if (component == "ground")
+		_currentComponent = new Ground();
 }
 
 void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {

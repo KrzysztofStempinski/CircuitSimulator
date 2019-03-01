@@ -4,29 +4,10 @@
 
 #include "../eigen/Dense"
 
-QString vectorToString(const Eigen::VectorXd& vector) {
+// TODO this is a  horrible wrapper, hopefully just for the time being
+void addStampEntry(Eigen::MatrixXd& matrix, const double value, const int row, const int column);
+void addStampEntry(Eigen::VectorXd& matrix, const double value, const int row);
 
-	QString S = "[ ";
-	for (int i = 0; i < vector.size(); ++i) 
-		S += QString::number(vector(i)) + " ";
-	//S += QString::number(vector(i), 'g', 15) + " ";
-	return S + "]";;
+QString vectorToString(const Eigen::VectorXd& vector);
 
-}
-
-QString matrixToString(const Eigen::MatrixXd& matrix) {
-
-	QString S = "\n\t[";
-	for (int i = 0; i < matrix.rows(); ++i) {
-
-		S += "\t";
-
-		for (int j = 0; j < matrix.cols(); ++j) 
-			S += QString::number(matrix(i, j)) + "\t";
-
-		S += ",\n";
-	}
-
-	return S + " ]";
-
-}
+QString matrixToString(const Eigen::MatrixXd& matrix);
