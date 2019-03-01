@@ -66,7 +66,7 @@ class Node {
 		
 		// TODO refactor
 		//CircuitEfitor related stuff stuff
-		bool isSelected;
+		bool selected;
 		QPoint prevPos;
 
 		void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);

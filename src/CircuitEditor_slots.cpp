@@ -24,13 +24,8 @@ void CircuitEditor::slot_componentRotate(int angle) {
 		break;
 
 		case EditorMode::componentCreation: {
-		
-			_tempComponentRotationAngle += angle;
 
-			if (_tempComponentRotationAngle == 360)
-				_tempComponentRotationAngle = 0;
-			if (_tempComponentRotationAngle == -90)
-				_tempComponentRotationAngle = 270;
+			_currentComponent->setRotationAngle(_currentComponent->getRotationAngle() + angle);
 		
 		}
 		break;

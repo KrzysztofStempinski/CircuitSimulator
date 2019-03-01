@@ -19,7 +19,7 @@
 
 Node::Node(const QPoint& newPos, Component* coupledComponent)
 	: _coupledComponent(coupledComponent),
-	isSelected(false),
+	selected(false),
 	voltageIndex(-1),
 	voltageValue(0),
 	_pos(newPos)

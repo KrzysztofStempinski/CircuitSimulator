@@ -26,12 +26,12 @@
 
 void CircuitEditor::selectComponent(Component* component) {
 	_selectedComponents.push_back(component);
-	component->isSelected = true;
+	component->selected = true;
 }
 
 void CircuitEditor::selectNode(Node* node) {
 	_selectedNodes.push_back(node);
-	node->isSelected = true;
+	node->selected = true;
 }
 
 //
@@ -123,7 +123,7 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 	// draw all the components
 	for (auto it = std::begin(circuit.components); it != std::end(circuit.components); ++it) {
 
-		if ((*it)->isSelected) {
+		if ((*it)->selected) {
 			pen.setColor(colorSelected);
 			pen.setWidth(2);
 		}
@@ -147,8 +147,9 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 		pen.setColor(Qt::lightGray);
 		pen.setWidth(1);
 		painter.setPen(pen);
-		for (auto &it : _tempComponentGeometry.objects)
-			it->draw(painter, _tempComponentPos, _tempComponentRotationAngle);
+
+		_currentComponent->draw(painter);
+
 	}
 
 	// draw nodes and links between them
@@ -178,7 +179,7 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 
 		}
 
-		if ((*it)->isSelected) {
+		if ((*it)->selected) {
 			pen.setColor(colorSelected);
 			pen.setWidth(2);
 		} else if ((*it) == mouseOverNode) {
@@ -275,12 +276,12 @@ void CircuitEditor::clearSelection() {
 	_selectedNodes.clear();
 
 	for (const auto &it : circuit.nodes) 
-		it->isSelected = false;
+		it->selected = false;
 
 	_selectedComponents.clear();
 
 	for (const auto &it : circuit.components) 
-		it->isSelected = false;
+		it->selected = false;
 
 }
 
@@ -350,7 +351,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 		case EditorMode::rectSelected: {
 
 			// start dragging components/nodes around if user does lmb down on one of the selected items
-			if ((mouseOverNode != nullptr && mouseOverNode->isSelected) || (mouseOverComponent != nullptr && mouseOverComponent->isSelected)) {
+			if ((mouseOverNode != nullptr && mouseOverNode->selected) || (mouseOverComponent != nullptr && mouseOverComponent->selected)) {
 
 				if (mouseOverNode != nullptr) 
 					_origin = mouseOverNode->pos();
@@ -380,7 +381,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 		case EditorMode::componentCreation: {
 		
 			circuit.createComponent(_currentComponent->getName(), snapPointToGrid(mousePos, GRID_SIZE));
-			circuit.components.back()->setRotationAngle(_tempComponentRotationAngle);
+			circuit.components.back()->setRotationAngle(_currentComponent->getRotationAngle());
 
 			update();
 	
@@ -396,7 +397,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 
 
 				_selectedNodes.push_back(mouseOverNode);
-				mouseOverNode->isSelected = true;
+				mouseOverNode->selected = true;
 				mouseOverNode->prevPos = mouseOverNode->pos();
 				_origin = mousePos;
 				_mode = EditorMode::moving;
@@ -410,7 +411,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 
 				clearSelection();
 				_selectedComponents.push_back(mouseOverComponent);
-				mouseOverComponent->isSelected = true;
+				mouseOverComponent->selected = true;
 				mouseOverComponent->prevPos = mouseOverComponent->pos();
 				_origin = mousePos;
 				_mode = EditorMode::moving;
@@ -489,7 +490,7 @@ void CircuitEditor::mouseMove(const QPoint& mousePos) {
 
 		case EditorMode::componentCreation: {
 
-			_tempComponentPos = snapPointToGrid(mousePos, GRID_SIZE);
+			_currentComponent->setPos(snapPointToGrid(mousePos, GRID_SIZE));
 			update();
 
 		}
@@ -534,11 +535,11 @@ void CircuitEditor::mouseMove(const QPoint& mousePos) {
 
 				if (it->isWithinRectangle(_selectionRect) && /*TODO nodes!*/ !it->isCoupled()) {
 
-					it->isSelected = true;
+					it->selected = true;
 					_selectedNodes.push_back(it);
 
 				} else 
-					it->isSelected = false;
+					it->selected = false;
 
 			}
 
@@ -546,19 +547,19 @@ void CircuitEditor::mouseMove(const QPoint& mousePos) {
 
 				if (it->isWithinRectangle(_selectionRect)) {
 
-					it->isSelected = true;
+					it->selected = true;
 
 					_selectedComponents.push_back(it);
 
 					for (const auto &nt : it->coupledNodes) 
-						nt->isSelected = true;
+						nt->selected = true;
 
 				} else {
 
-					it->isSelected = false;
+					it->selected = false;
 
 					for (const auto &nt : it->coupledNodes)
-						nt->isSelected = false;
+						nt->selected = false;
 
 
 				}
@@ -660,23 +661,8 @@ void CircuitEditor::paintEvent(QPaintEvent*) {
 
 void CircuitEditor::setCurrentComponent(const QString component) {
 
-	//_currentComponent = component;
-
-		if (component == "resistor")
-			_currentComponent = new Resistor();
-
-	// load component geometry from file
-	//QString fileName = "data\\components\\" + component + ".json"; 
-
-	// TODO error handling
-	//std::ifstream ifs(fileName.toStdString());
-	//rapidjson::IStreamWrapper isw(ifs);
-//
-	//rapidjson::Document componentData;
-	//componentData.ParseStream(isw);
-
-	//_tempComponentGeometry.loadFromJSON(componentData["display"]);
-	//_tempComponentRotationAngle = 0;
+	if (component == "resistor")
+		_currentComponent = new Resistor();
 
 }
 
@@ -699,8 +685,7 @@ void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {
             _mode = EditorMode::_default;
 
 			// cleanup
-			for (auto &it : _tempComponentGeometry.objects)
-				delete it;
+			delete _currentComponent;
 
 		}
 		break;
@@ -717,7 +702,7 @@ void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {
 		// if we have selected items, always display context menu
 		case EditorMode::rectSelected: {
 			
-			if ((mouseOverNode != nullptr && mouseOverNode->isSelected) || (mouseOverComponent != nullptr && mouseOverComponent->isSelected))
+			if ((mouseOverNode != nullptr && mouseOverNode->selected) || (mouseOverComponent != nullptr && mouseOverComponent->selected))
 				displayContextMenu(mapToGlobal(mousePos));
 			else {
 				clearSelection();

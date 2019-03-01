@@ -50,7 +50,7 @@ SimulationResult Circuit::_prepareDCOP() {
 	int currentIndex = 0;
 	for (const auto& it : components) {
 
-		if (it->requireCurrentEntry()) {
+		if (it->requiresCurrentEntry()) {
 			currentIndex++;
 			it->currentIndex = currentIndex;
 		}
@@ -90,7 +90,7 @@ SimulationResult Circuit::simulate() {
 				it->voltageValue = double(0);
 
 		for (auto& it : components)
-			if (it->requireCurrentEntry())
+			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
 		// print out solutions

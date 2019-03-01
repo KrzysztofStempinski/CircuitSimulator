@@ -52,7 +52,7 @@ class Component {
 		
 		//_
 			_rotationAngle = 0;
-			isSelected = false;
+			selected = false;
 			currentValue = double(0);
 			currentIndex = -1;
 		
@@ -64,8 +64,9 @@ class Component {
 		int ID;
 		int serialNumber;
 		QString getName();
-		virtual QString getDisplayNameBase() = 0;
-		virtual QString getLetterIdentifierBase() = 0;
+
+		virtual QString displayNameBase() = 0;
+		virtual QString letterIdentifierBase() = 0;
 
 		//
 		const QPoint pos() const;
@@ -80,8 +81,9 @@ class Component {
 		void setRotationAngle(const int angle);
 
 		//
-		virtual int getNumberOfNodes() = 0;
-
+		virtual int nodeCount() = 0;
+		virtual bool requiresCurrentEntry() = 0;
+			
 		//
 		std::map<QString, Property> properties;
 		
@@ -92,11 +94,8 @@ class Component {
 		int currentIndex;
 		double currentValue;
 
-		bool isSelected;
+		bool selected;
 		QPoint prevPos;
-
-		// DCOP STUFF
-		virtual bool requireCurrentEntry() = 0;
 
 		virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 

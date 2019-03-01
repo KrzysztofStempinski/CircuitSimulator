@@ -72,7 +72,7 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 	_formLayout = new QFormLayout;
 
 	// TODO dedicated routines in a component for getting various forms of its name
-	QGroupBox *formGroupBox = new QGroupBox(component.getLetterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.getDisplayNameBase() + ")");
+	QGroupBox *formGroupBox = new QGroupBox(component.letterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.displayNameBase() + ")");
 
 	for (auto &it : component.properties){
 

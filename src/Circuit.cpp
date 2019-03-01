@@ -58,7 +58,7 @@ void Circuit::createComponent(const QString componentName, const QPoint& pos, co
 
 	if (createNodes) {
 
-		for (int i = 0; i < newComponent->getNumberOfNodes(); ++i) {
+		for (int i = 0; i < newComponent->nodeCount(); ++i) {
 			createNode(QPoint(0, 0), newComponent);
 			newComponent->coupledNodes.push_back(nodes.back());
 		}

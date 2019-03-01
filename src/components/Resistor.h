@@ -40,13 +40,15 @@ class Resistor : public Component {
 
 	public:
 
-		Resistor() {
+		Resistor(){
+
+			ID = -1;
 
 			_name = "resistor";
 
 			properties.insert(std::pair<QString, Property>("resistance", 
 					Property("Resistance",
-						"\u03C9",
+						QString::fromUtf8("\u03C9"),
 						1000.0f)));
 
 
@@ -56,36 +58,33 @@ class Resistor : public Component {
 			
 		}
 
-		QString getDisplayNameBase() {
-			return "Resistor";
-		}
-		QString getLetterIdentifierBase() {
-			return "R";
-		}
-
 		//
 		void draw(QPainter& painter) {
 
 			QPoint path[8] = { { -24, 0 }, {-11, 0 }, {-7, -7}, {-2, 7}, {3, -7}, {8, 7}, {12, 0}, {24, 0} };
 
 			for (auto& it : path)
-				it += _pos;
+				it = rotatePoint(it + _pos, _pos, _rotationAngle);
 
 			for (int i = 1; i < 8; ++i)
 				painter.drawLine(path[i - 1], path[i]);
 
+			//TODO this is remporary
+
+			if (ID != -1) {
 			QPoint pos(0, 12);
-			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), getLetterIdentifierBase() + QString::number(serialNumber));
+			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		
+			
+			}
 		}
 
-		//
-		int getNumberOfNodes() {
+		int nodeCount() {
 			return 2;
 		}
 
 		// DCOP STUFF
-		bool requireCurrentEntry() {
+		bool requiresCurrentEntry() {
 			return false;
 		}
 
@@ -93,6 +92,14 @@ class Resistor : public Component {
 		
 		
 		
+		}
+
+		QString displayNameBase() {
+			return "Resistor";
+		} 
+
+		QString letterIdentifierBase() {
+			return "R";
 		}
 
 		std::tuple<QString, QString, double> getSimulationResult() {
