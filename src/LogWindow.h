@@ -17,8 +17,6 @@
 
 #include "Log.h"
 
-#include "..//exprtk//exprtk.hpp"
-
 #include <qdialog.h>
 #include <qlistwidget.h>
 

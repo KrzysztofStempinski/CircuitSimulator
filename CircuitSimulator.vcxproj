@@ -32,14 +32,15 @@
   <ItemGroup>
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\components\Ground.h" />
+    <ClInclude Include="src\components\Resistor.h" />
+    <ClInclude Include="src\components\VoltageSource.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MatrixHelper.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Property.h" />
-    <ClInclude Include="src\SimpleParser\ParserExceptions.h" />
-    <ClInclude Include="src\SimpleParser\SimpleParser.h" />
     <ClInclude Include="src\SimulationErrors.h" />
     <ClInclude Include="src\Version.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />

@@ -54,8 +54,6 @@ SimulationResult Circuit::_prepareDCOP() {
 			currentIndex++;
 			it->currentIndex = currentIndex;
 		}
-		// TODO NOTE REMOVED HERE!!!!!
-		//it->prepareForSimulation(circuit.voltageCount);
 
 	}
 
@@ -79,10 +77,9 @@ SimulationResult Circuit::simulate() {
 	matrixA.fill(0);
 	matrixB.fill(0);
 
-	for (auto &it : components) {
-		it->prepareForSimulation(voltageCount);
+	for (auto &it : components) 
 		it->applyComponentStamp(matrixA, matrixB, voltageCount);
-	}
+	//	it->prepareForSimulation(voltageCount);
 
 	Eigen::VectorXd solutions = matrixA.partialPivLu().solve(matrixB);
 

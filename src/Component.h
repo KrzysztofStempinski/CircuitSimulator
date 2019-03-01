@@ -25,8 +25,6 @@
 
 #include "..//eigen//Dense"
 
-#include "SimpleParser/SimpleParser.h"
-
 class Component;
 
 #include "Node.h"
@@ -37,29 +35,9 @@ class Component;
 
 #include <qpainter.h>
 
-enum class MNAmatrix {
-	A,
-	B
-};
-
-struct ComponentStamp {
-
-	MNAmatrix matrix;
-
-	int rowNumber;
-	int columnNumber;
-
-	exprtk::expression<double> expression;
-
-	double value;
-
-};
-
 class Component {
 
-	private:
-
-		rapidjson::Document _componentData;
+	protected:
 
 		QString _name;
 
@@ -67,37 +45,34 @@ class Component {
 		int _rotationAngle;
 		QRect _boundingRect;
 
-		GeometryList _geometryObjects;
-
-		// simulation-related stuff
-		void _loadSimulationVariables(int voltageCount);
-
-	//	TokenMap _simulationVariables;
-
-		void _loadComponentStamps();
-		std::list<ComponentStamp> _stamps;
-		exprtk::symbol_table<double> _symbolTableProperties;
-
-		SimpleParser::VarTable _varTableIndices;
 
 	public:
 
-		Component(QString name);
+		Component() {
+		
+		//_
+			_rotationAngle = 0;
+			isSelected = false;
+			currentValue = double(0);
+			currentIndex = -1;
+		
+		
+		}
 
 		LogWindow* logWindow; // TODO temp
 		
 		int ID;
 		int serialNumber;
 		QString getName();
-		QString getDisplayNameBase();
-		QString getLetterIdentifierBase();
+		virtual QString getDisplayNameBase() = 0;
+		virtual QString getLetterIdentifierBase() = 0;
 
 		//
 		const QPoint pos() const;
 		void setPos(const QPoint& newPos);
 
 		//
-		void draw(QPainter& painter);
+		virtual void draw(QPainter& painter) = 0;
 		bool isMouseOver(const QPoint& mousePos) const;
 		bool isWithinRectangle(const QRect& rect) const;
 		
@@ -105,7 +80,7 @@ class Component {
 		void setRotationAngle(const int angle);
 
 		//
-		int getNumberOfNodes();
+		virtual int getNumberOfNodes() = 0;
 
 		//
 		std::map<QString, Property> properties;
@@ -121,17 +96,16 @@ class Component {
 		QPoint prevPos;
 
 		// DCOP STUFF
-		bool requireCurrentEntry();
+		virtual bool requireCurrentEntry() = 0;
 
-		void prepareForSimulation(int voltageCount);
-		void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount);
+		virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 
-		std::tuple<QString, QString, double> getSimulationResult();
+		virtual std::tuple<QString, QString, double> getSimulationResult() = 0;
 
 		// TODO this is temporary
-        bool hasSimulationResult();
+        virtual bool hasSimulationResult() = 0;
 
-		void updateNodeOffsets();
+		virtual void updateNodeOffsets() = 0;
 
 		void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
 

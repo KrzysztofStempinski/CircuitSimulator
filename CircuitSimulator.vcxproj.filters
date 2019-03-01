@@ -34,11 +34,11 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{08edffe0-4b0e-47d2-93d7-4b6f6f99fb54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Parser">
-      <UniqueIdentifier>{acfbd126-e942-4ee5-ab54-288ac2b19801}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core %28circuit%29">
       <UniqueIdentifier>{b3fd2e39-4b7b-4d05-ab6e-0f38a2184c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{663497fa-0794-4320-8777-39dd56ae9a22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,12 +116,6 @@
     <ClInclude Include="src\Component.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\SimpleParser\ParserExceptions.h">
-      <Filter>Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SimpleParser\SimpleParser.h">
-      <Filter>Parser</Filter>
-    </ClInclude>
     <ClInclude Include="src\Circuit.h">
       <Filter>Core %28circuit%29</Filter>
     </ClInclude>
@@ -130,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="src\Geometry.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Ground.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Resistor.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\VoltageSource.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

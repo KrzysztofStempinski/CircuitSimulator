@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <qstatusbar.h>
+#include <fstream>
 
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/istreamwrapper.h"

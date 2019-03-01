@@ -15,6 +15,10 @@
 
 #include "Circuit.h"
 
+#include "components/Resistor.h"
+#include "components/VoltageSource.h"
+#include "components/Ground.h"
+
 void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
 
 	// TODO get rid of _isCoupled field, it's not necessary
@@ -33,8 +37,12 @@ void Circuit::deleteNode(Node* node) {
 }
 
 void Circuit::createComponent(const QString componentName, const QPoint& pos, const bool createNodes) {
+	Component* newComponent = nullptr;
+	if (componentName == "resistor")
+		newComponent = new Resistor();
+	//else 
+	//	newComponent = new Ground();
 
-	Component* newComponent = new Component(componentName);
 
 	int count = std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
 	// I actually find lambda expressions sexy, in a particular way

@@ -24,6 +24,9 @@
 #include "Circuit.h"
 #include "Version.h"
 
+#include <iostream>
+#include <fstream>
+
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/stringbuffer.h"
 #include "../rapidjson/istreamwrapper.h"

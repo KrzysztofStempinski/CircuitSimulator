@@ -20,6 +20,10 @@
 #include <qwidget.h>
 #include <QMenu>
 
+#include "components/Resistor.h"
+#include "components/VoltageSource.h"
+#include "components/Ground.h"
+
 void CircuitEditor::selectComponent(Component* component) {
 	_selectedComponents.push_back(component);
 	component->isSelected = true;
@@ -375,7 +379,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 
 		case EditorMode::componentCreation: {
 		
-			circuit.createComponent(_currentComponent, snapPointToGrid(mousePos, GRID_SIZE));
+			circuit.createComponent(_currentComponent->getName(), snapPointToGrid(mousePos, GRID_SIZE));
 			circuit.components.back()->setRotationAngle(_tempComponentRotationAngle);
 
 			update();
@@ -656,20 +660,23 @@ void CircuitEditor::paintEvent(QPaintEvent*) {
 
 void CircuitEditor::setCurrentComponent(const QString component) {
 
-	_currentComponent = component;
+	//_currentComponent = component;
+
+		if (component == "resistor")
+			_currentComponent = new Resistor();
 
 	// load component geometry from file
-	QString fileName = "data\\components\\" + component + ".json"; 
+	//QString fileName = "data\\components\\" + component + ".json"; 
 
 	// TODO error handling
-	std::ifstream ifs(fileName.toStdString());
-	rapidjson::IStreamWrapper isw(ifs);
+	//std::ifstream ifs(fileName.toStdString());
+	//rapidjson::IStreamWrapper isw(ifs);
+//
+	//rapidjson::Document componentData;
+	//componentData.ParseStream(isw);
 
-	rapidjson::Document componentData;
-	componentData.ParseStream(isw);
-
-	_tempComponentGeometry.loadFromJSON(componentData["display"]);
-	_tempComponentRotationAngle = 0;
+	//_tempComponentGeometry.loadFromJSON(componentData["display"]);
+	//_tempComponentRotationAngle = 0;
 
 }
 
