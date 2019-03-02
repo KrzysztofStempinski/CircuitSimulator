@@ -44,7 +44,7 @@ void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
 			table->insertRow(table->rowCount());
 			table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem("N" + QString::number(i + 1)));
 			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("Node Voltage [V]"));
-			table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(_solutions(i), 'g', 15)));
+			table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(_circuit.nodes[i]->voltageValue, 'g', 15)));
 
 		}
 	}

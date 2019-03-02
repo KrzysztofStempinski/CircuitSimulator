@@ -79,6 +79,7 @@ SimulationResult Circuit::simulate() {
 
 	int itno = 0;
 	int MAX = 50;
+
 	while (itno < MAX) {
 
 		itno++;
