@@ -46,7 +46,6 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
     </QtMoc>
     <ClInclude Include="src\Math.h" />
-    <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MatrixHelper.h" />
     <ClInclude Include="src\Node.h" />

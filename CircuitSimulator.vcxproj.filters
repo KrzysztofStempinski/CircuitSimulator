@@ -130,9 +130,6 @@
     <ClInclude Include="src\Math.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="src\Geometry.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\Ground.h">
       <Filter>Components</Filter>
     </ClInclude>
