@@ -19,6 +19,7 @@
 #include <qtabwidget.h>
 #include <qgroupbox.h>
 #include <qcombobox.h>
+#include <qlabel.h>
 
 #include "Circuit.h"
 
@@ -36,6 +37,9 @@ class DialogSimulationParameters : public QDialog {
 
 			QComboBox* comboComponent;
 			QComboBox* comboParameter;
+
+			QLabel* labelParameter;
+
 	public:
 
 		DialogSimulationParameters(Circuit& circuit);

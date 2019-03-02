@@ -4,9 +4,8 @@
 
 // TODO settings entry or sth like that?
 constexpr int MAX_ITERATIONS = 50; // should be enough
-constexpr double VOLTAGE_DELTA = 1e-3;
-constexpr double CURRENT_DELTA = 1e-6; 
-
+constexpr double DELTA = 1e-6;
+ 
 void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
 
 	nodeBegin->voltageIndex = voltageIndex;
@@ -94,14 +93,16 @@ SimulationResult Circuit::simulate() {
 		if (it->linear())
 			it->applyComponentStamp(matrixA_linear, matrixB_linear, voltageCount);
 
-	int iteration = 0;
+	int iteration = 1;
 
 	double previousMagnitude = 0;
 
 	bool convergedCurrents = false;
 	bool convergedVoltages = false;
 
-	while (iteration < MAX_ITERATIONS) {
+	bool stop = false;
+
+	while (iteration < MAX_ITERATIONS && !stop) {
 
 		matrixA_nonlinear.fill(0);
 		matrixB_nonlinear.fill(0);
@@ -111,6 +112,28 @@ SimulationResult Circuit::simulate() {
 				it->applyComponentStamp(matrixA_nonlinear, matrixB_nonlinear, voltageCount);
 
 		solutions = (matrixA_linear + matrixA_nonlinear).partialPivLu().solve(matrixB_linear + matrixB_nonlinear);
+
+		if (iteration == 1)
+		{
+			prevSolutions = solutions;
+	
+		}
+		else
+		{
+
+			double mydelta = (solutions - prevSolutions).squaredNorm();
+
+			if (mydelta < solutions.size() * DELTA) {
+				logWindow->log("delta was " + QString::number(mydelta) + ", stopping.");
+				stop = true;
+			}
+
+			prevSolutions = solutions;
+			
+		
+		
+		}
+
 
 		for (auto& it : nodes)
 			if (it->voltageIndex >= 1)
