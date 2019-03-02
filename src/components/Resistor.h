@@ -109,7 +109,9 @@ class Resistor : public Component {
 
 		std::tuple<QString, QString, double> getSimulationResult() {
 		
-			return std::make_tuple(displayNameBase() + QString::number(serialNumber), "Device current [A]", (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value);
+			double current = (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value;
+
+			return std::make_tuple(letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current);
 
 		}
 
