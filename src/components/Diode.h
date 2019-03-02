@@ -119,7 +119,6 @@ public:
 
 	std::tuple<QString, QString, double> getSimulationResult() {
 
-
 		double current = properties["sat_curr"].value * (std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["therm_volt"].value) - 1);
 		
 		return std::make_tuple(letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current);

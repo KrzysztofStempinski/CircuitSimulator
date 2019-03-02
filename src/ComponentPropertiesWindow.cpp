@@ -25,9 +25,9 @@ void ComponentPropertiesWindow::buttonAccept() {
 
 		QWidget *widget = _formLayout->itemAt(i)->widget();
 		if (widget != NULL){
-			if (QLineEdit *lineEdit = qobject_cast<QLineEdit*>(widget)) {
-				// TODO  (?) 
-				// TODO why is a TODO here
+			if (QLineEdit* lineEdit = qobject_cast<QLineEdit*>(widget)) {
+
+				// TODO optimize, refactor etc.
 
 				auto it = _component.properties.find(widget->property("key").toString());
 
@@ -72,18 +72,16 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 	_formLayout = new QFormLayout;
 
 	// TODO dedicated routines in a component for getting various forms of its name
-	QGroupBox *formGroupBox = new QGroupBox(component.letterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.displayNameBase() + ")");
+	QGroupBox* formGroupBox = new QGroupBox(component.letterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.displayNameBase() + ")");
 
 	for (auto &it : component.properties){
 
-		QString label;
+		QString label = it.second.displayName + " [" + it.second.unit + "]";
 
-		label = it.second.displayName + " [" + it.second.unit + "]";
-
-		QLineEdit *lineEdit = new QLineEdit(QString::number(it.second.value, 'g', 10)); // TODO precision, notation settings itd.
+		QLineEdit* lineEdit = new QLineEdit(QString::number(it.second.value, 'g', 10)); // TODO precision, notation settings itd.
 		lineEdit->setProperty("key", it.first);
 
-		auto dv = new QDoubleValidator();
+		QDoubleValidator* dv = new QDoubleValidator();
 		lineEdit->setValidator(dv);
 
 		_formLayout->addRow(new QLabel(label), lineEdit);

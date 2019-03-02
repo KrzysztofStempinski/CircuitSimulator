@@ -4,6 +4,8 @@
 
 // TODO settings entry or sth like that?
 constexpr int MAX_ITERATIONS = 50; // should be enough
+constexpr double VOLTAGE_DELTA = 1e-3;
+constexpr double CURRENT_DELTA = 1e-6; 
 
 void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
 
@@ -82,6 +84,7 @@ SimulationResult Circuit::simulate() {
 	Eigen::VectorXd matrixB_nonlinear(voltageCount + currentCount);
 
 	Eigen::VectorXd solutions;
+	Eigen::VectorXd prevSolutions;
 
 	// apply linear stamps
 	matrixA_linear.fill(0);
@@ -92,6 +95,12 @@ SimulationResult Circuit::simulate() {
 			it->applyComponentStamp(matrixA_linear, matrixB_linear, voltageCount);
 
 	int iteration = 0;
+
+	double previousMagnitude = 0;
+
+	bool convergedCurrents = false;
+	bool convergedVoltages = false;
+
 	while (iteration < MAX_ITERATIONS) {
 
 		matrixA_nonlinear.fill(0);
@@ -113,6 +122,9 @@ SimulationResult Circuit::simulate() {
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
+		// TODO optimize
+		//for (int i = 0; i < voltageCount; ++i)
+
 		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
 		iteration++;
@@ -122,7 +134,8 @@ SimulationResult Circuit::simulate() {
 		//logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
 		//logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
 
-		logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
+	logWindow->log("Converged in " + QString::number(iteration) + " iterations.");
+	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
 
 	return SimulationResult::Success;
 

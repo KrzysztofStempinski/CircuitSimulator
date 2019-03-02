@@ -18,6 +18,7 @@
 #include <qdialog.h>
 #include <qtabwidget.h>
 #include <qgroupbox.h>
+#include <qcombobox.h>
 
 #include "Circuit.h"
 
@@ -32,6 +33,9 @@ class DialogSimulationParameters : public QDialog {
 			QGroupBox* _groupBoxDCSweep;
 			const Circuit& _circuit;
 
+
+			QComboBox* comboComponent;
+			QComboBox* comboParameter;
 	public:
 
 		DialogSimulationParameters(Circuit& circuit);
@@ -39,6 +43,8 @@ class DialogSimulationParameters : public QDialog {
 	public slots:
 
 		void buttonRunClick();
+
+		void componentComboChanged();
 
 
 };
