@@ -29,7 +29,6 @@ class Component;
 
 #include "Node.h"
 #include "Property.h"
-#include "Geometry.h"
 
 #include "LogWindow.h"
 

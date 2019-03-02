@@ -17,6 +17,7 @@
 #include <string>
 
 #include "Component.h"
+#include "Math.h"
 
 QString Component::getName() {
 	return _name;

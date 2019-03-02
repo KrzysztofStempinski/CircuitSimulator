@@ -27,7 +27,6 @@
 
 #include "../Component.h"
 #include "../Property.h"
-#include "../Geometry.h"
 #include "../MatrixHelper.h"
 
 #include "../LogWindow.h"

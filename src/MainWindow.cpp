@@ -13,7 +13,6 @@
 #include "LogWindow.h"
 #include "SimulationErrors.h"
 
-#include "Geometry.h"
 #include "Circuit.h"
 #include "CircuitEditor.h"
 #include "Version.h"

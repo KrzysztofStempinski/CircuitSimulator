@@ -18,7 +18,6 @@
 class Circuit;
 
 #include "Node.h"
-#include "Geometry.h"
 #include "SimulationErrors.h"
 
 class Circuit {

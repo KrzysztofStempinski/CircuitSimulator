@@ -14,8 +14,8 @@
 //  ---------------------------------------------
 
 #include "Node.h"
-
 #include "Log.h"
+#include "Math.h"
 
 Node::Node(const QPoint& newPos, Component* coupledComponent)
 	: _coupledComponent(coupledComponent),

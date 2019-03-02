@@ -1,5 +1,7 @@
 #include "CircuitEditor.h"
 
+#include "Math.h"
+
 #include <qaction.h>
 
 void CircuitEditor::createActions() {

@@ -24,7 +24,6 @@
 class Node;
 
 #include "Component.h"
-#include "Geometry.h"
 
 constexpr int NODE_SIZE = 3;
 

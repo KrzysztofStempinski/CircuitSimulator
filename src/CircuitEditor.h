@@ -15,7 +15,6 @@
 
 #pragma once
 
-#include "Geometry.h"
 #include "Circuit.h"
 
 #include <qwidget.h>
