@@ -15,6 +15,7 @@
     <ClCompile Include="src\CircuitEditor.cpp" />
     <ClCompile Include="src\CircuitEditor_actions.cpp" />
     <ClCompile Include="src\CircuitEditor_slots.cpp" />
+    <ClCompile Include="src\DialogSimulationParameters.cpp" />
     <ClCompile Include="src\FileIO.cpp" />
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentPropertiesWindow.cpp" />
@@ -33,10 +34,17 @@
   <ItemGroup>
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\ComponentList.h" />
     <ClInclude Include="src\components\Diode.h" />
     <ClInclude Include="src\components\Ground.h" />
     <ClInclude Include="src\components\Resistor.h" />
     <ClInclude Include="src\components\VoltageSource.h" />
+    <QtMoc Include="src\dialogSimulationParameters.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\Log.h" />

@@ -101,6 +101,9 @@
     <ClCompile Include="src\MatrixHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\DialogSimulationParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Log.h">
@@ -145,6 +148,9 @@
     <ClInclude Include="src\components\Diode.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\ComponentList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ComponentPropertiesWindow.h">
@@ -161,6 +167,9 @@
     </QtMoc>
     <QtMoc Include="src\MainWindow.h">
       <Filter>Main</Filter>
+    </QtMoc>
+    <QtMoc Include="src\dialogSimulationParameters.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

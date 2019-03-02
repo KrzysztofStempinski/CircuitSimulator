@@ -15,6 +15,8 @@
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/istreamwrapper.h"
 
+#include "ComponentList.h"
+
 const QString ICON_PATH = "data\\icons\\";
 const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or sth like that
 
@@ -51,6 +53,12 @@ void MainWindow::createDockWidgets() {
 	dockSimulationResults = new QDockWidget("Simulation results", this);
 	dockSimulationResults->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
 	addDockWidget(Qt::LeftDockWidgetArea, dockSimulationResults);
+	dockSimulationResults->hide();
+
+	// simulation parameters
+	dockSimulationParameters = new QDockWidget("Simulation parameters", this);
+	dockSimulationParameters->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea | Qt::TopDockWidgetArea);
+	addDockWidget(Qt::TopDockWidgetArea, dockSimulationParameters);
 	dockSimulationResults->hide();
 
 }
@@ -187,65 +195,76 @@ void MainWindow::createMenu() {
 
 }
 
-// TODO ! error handling in JSON
 void MainWindow::populateComponents() {
 
+	//TODO rewrite this shit in an actually decent (or half-decent) way
 	toolbarComponents = new QToolBar();
 	toolbarComponents->setIconSize(QSize(40, 40));
 	toolbarComponents->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 	addToolBar(Qt::LeftToolBarArea, toolbarComponents);
 
-	bool foundFile = false;
+	QAction* action;
 
-	for (auto &p : std::filesystem::directory_iterator(COMPONENT_PATH)) {
-		if (p.path().extension() == L".json") {
+	QPixmap* pixmap = new QPixmap(36, 36);
+	pixmap->fill(Qt::transparent);
 
-			// load and parse the JSON component definition file
-			std::ifstream ifs(p.path());
-			rapidjson::IStreamWrapper isw(ifs);
+	QPainter* painter = new QPainter(pixmap);
+	painter->setPen(Qt::cyan);
+	
+	action = new QAction("Resistor");
+	action->setData(QString("resistor"));
 
-			rapidjson::Document file;
-			file.ParseStream(isw);
+	Component* tempComponent = new Resistor();
+	tempComponent->draw(*painter);
+	delete tempComponent;
 
-			// For instance "Voltage Source" - that's what's displayed in menu
-			QAction* action = new QAction(file["displayNameBase"].GetString());
+	action->setIcon(QIcon(*pixmap));
 
-			// TODO what in the name of the unholy fuck is with these strings
-			// TODO maybe we should just do "resistor", as in, chop 5 last chars here?
-			// for instance, resistor.json
-			action->setData(QString(p.path().filename().string().c_str())); 
+	menuComponents->addAction(action);
+	toolbarComponents->addAction(action);
 
-			// load geometry and draw it to produce a nice thumnbai/icon
-			GeometryList geometry(file["display"]);
+	pixmap->fill(Qt::transparent);
+	action = new QAction("Voltage Source");
+	action->setData(QString("voltage_source"));
 
-			QPixmap* pixmap = new QPixmap(36, 36);
-			pixmap->fill(Qt::transparent);
+	tempComponent = new VoltageSource();
+	tempComponent->draw(*painter);
+	delete tempComponent;
 
-			QPainter* painter = new QPainter(pixmap);
-			painter->setPen(Qt::cyan);	
-				   
-			for (const auto& it : geometry.objects)
-				it->draw(*painter, QPoint(18, 18));
+	action->setIcon(QIcon(*pixmap));
 
-			action->setIcon(QIcon(*pixmap));
+	menuComponents->addAction(action);
+	toolbarComponents->addAction(action);
 
-			// finalize
-			menuComponents->addAction(action);
-			toolbarComponents->addAction(action);
+	pixmap->fill(Qt::transparent);
+	action = new QAction("Ground");
+	action->setData(QString("ground"));
 
-			foundFile = true;
+	tempComponent = new Ground();
+	tempComponent->draw(*painter);
+	delete tempComponent;
 
-		}
-	}
+	action->setIcon(QIcon(*pixmap));
 
-	if (foundFile) {
-		connect(menuComponents, SIGNAL(triggered(QAction*)), this, SLOT(slot_schematicPlaceComponent(QAction*)));
-	} else {
-		QAction* temp = new QAction("No available components");
-		temp->setEnabled(false);
-		menuComponents->addAction(temp);
-	}
+	menuComponents->addAction(action);
+	toolbarComponents->addAction(action);
+
+	pixmap->fill(Qt::transparent);
+	action = new QAction("Diode");
+	action->setData(QString("diode"));
+
+	tempComponent = new Diode();
+	tempComponent->draw(*painter);
+	delete tempComponent;
+
+	action->setIcon(QIcon(*pixmap));
+
+	menuComponents->addAction(action);
+	toolbarComponents->addAction(action);
+
+
+	connect(menuComponents, SIGNAL(triggered(QAction*)), this, SLOT(slot_schematicPlaceComponent(QAction*)));
 
 }
 

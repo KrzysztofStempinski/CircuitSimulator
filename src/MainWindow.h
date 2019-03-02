@@ -41,6 +41,7 @@ class MainWindow : public QMainWindow {
 
 		QDockWidget *dockComponentProperties;
 		QDockWidget *dockSimulationResults;
+		QDockWidget *dockSimulationParameters;
 		QDockWidget *dockLog;
 
 		QAction* action_aboutQt;

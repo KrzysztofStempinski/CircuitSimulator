@@ -9,6 +9,7 @@
 
 #include "ComponentPropertiesWindow.h"
 #include "SimulationResultsWindow.h"
+#include "dialogSimulationParameters.h"
 #include "LogWindow.h"
 #include "SimulationErrors.h"
 
@@ -45,6 +46,14 @@ void MainWindow::slot_fileExit() {
 
 void MainWindow::slot_simulationRun() {
 
+	qDeleteAll(dockSimulationParameters->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
+
+	DialogSimulationParameters* d = new DialogSimulationParameters(editor->circuit);
+
+	dockSimulationParameters->setWidget(d);
+	dockSimulationParameters->show();
+
+	/*
 	Eigen::VectorXd solutions;
 	solutions.fill(0);
 
@@ -62,7 +71,7 @@ void MainWindow::slot_simulationRun() {
 	dockSimulationResults->setWidget(w);
 	dockSimulationResults->show();
 
-	update();
+	update();*/
 
 }
 
@@ -108,9 +117,8 @@ MainWindow::MainWindow() {
 
 void MainWindow::slot_schematicPlaceComponent(QAction* action) {
 
-	// chop 5 chars to get resistor to resistor.json
-	// TODO make it less retarded
-	editor->setCurrentComponent(action->data().toString().chopped(5));
+
+	editor->setCurrentComponent(action->data().toString());
 
 	editor->setMode(EditorMode::componentCreation);
 
