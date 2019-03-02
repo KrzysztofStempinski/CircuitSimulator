@@ -61,6 +61,38 @@ void CircuitEditor::createMidpointNode() {
 
 }
 
+
+void CircuitEditor::connectToClosest() {
+
+	if (_mode == EditorMode::linkDrawing) {
+		// TODO decent variable names
+		int dist1 = std::numeric_limits<int>::infinity();
+		int index = -1;
+
+		for (int i = 0; i < circuit.nodes.size(); ++i) {
+
+			int dist = QPoint::dotProduct(circuit.nodes[i]->pos() - mapFromGlobal(QCursor::pos()), circuit.nodes[i]->pos() - mapFromGlobal(QCursor::pos()));
+
+			if (dist < dist1) {
+				dist1 = dist;
+				index = i;
+			}
+
+		}
+		
+		if (index = -1) //TODO when will that happen?
+			return;
+			
+		
+		nodeLinkStart->connectTo(circuit.nodes[index]);
+		nodeLinkStart = circuit.nodes[index];
+
+		update();
+
+	}
+
+}
+
 void CircuitEditor::deleteElement() {
 
 

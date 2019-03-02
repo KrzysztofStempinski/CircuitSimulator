@@ -33,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
+    <ClInclude Include="src\components\Diode.h" />
     <ClInclude Include="src\components\Ground.h" />
     <ClInclude Include="src\components\Resistor.h" />
     <ClInclude Include="src\components\VoltageSource.h" />

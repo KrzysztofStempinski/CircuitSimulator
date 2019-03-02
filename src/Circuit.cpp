@@ -18,6 +18,7 @@
 #include "components/Resistor.h"
 #include "components/VoltageSource.h"
 #include "components/Ground.h"
+#include "components/Diode.h"
 
 void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
 
@@ -45,6 +46,8 @@ void Circuit::createComponent(const QString componentName, const QPoint& pos, co
 		newComponent = new VoltageSource();
 	else if (componentName == "ground")
 		newComponent = new Ground();
+	else if (componentName == "diode")
+		newComponent = new Diode();
 
 
 	newComponent->serialNumber = 1 + std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });

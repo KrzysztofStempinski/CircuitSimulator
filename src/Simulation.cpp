@@ -75,15 +75,24 @@ SimulationResult Circuit::simulate() {
 
 	Eigen::MatrixXd matrixA(voltageCount + currentCount, voltageCount + currentCount);
 	Eigen::VectorXd matrixB(voltageCount + currentCount);
+	Eigen::VectorXd solutions;
 
-	matrixA.fill(0);
-	matrixB.fill(0);
+	int itno = 0;
+	int MAX = 50;
+	while (itno < MAX) {
 
-	for (auto &it : components) 
-		it->applyComponentStamp(matrixA, matrixB, voltageCount);
-	//	it->prepareForSimulation(voltageCount);
+		itno++;
 
-	Eigen::VectorXd solutions = matrixA.partialPivLu().solve(matrixB);
+		matrixA.fill(0);
+		matrixB.fill(0);
+
+		for (auto &it : components)
+			it->applyComponentStamp(matrixA, matrixB, voltageCount);
+		//	it->prepareForSimulation(voltageCount);
+
+		solutions = matrixA.partialPivLu().solve(matrixB);
+
+		logWindow->log("Solutions at iteration " + QString::number(itno) + "=" + vectorToString(solutions), LogEntryType::Debug);
 
 		for (auto& it : nodes)
 			if (it->voltageIndex >= 1)
@@ -95,6 +104,8 @@ SimulationResult Circuit::simulate() {
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
+
+	}
 		// print out solutions
 		logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
 		logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);

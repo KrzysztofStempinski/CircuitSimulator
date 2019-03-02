@@ -142,6 +142,9 @@
     <ClInclude Include="src\MatrixHelper.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\components\Diode.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ComponentPropertiesWindow.h">

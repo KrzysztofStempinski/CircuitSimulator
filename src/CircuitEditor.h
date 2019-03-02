@@ -112,6 +112,7 @@ class CircuitEditor : public QWidget {
 	public:
 
 		void createMidpointNode();
+		void connectToClosest();
 		void deleteElement();
 
 		LogWindow* logWindow;

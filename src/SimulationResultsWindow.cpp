@@ -62,7 +62,7 @@ SimulationResultsWindow::SimulationResultsWindow(Circuit& circuit, Eigen::Vector
 
 	table = new QTableWidget;
 	
-	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	//table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	table->setColumnCount(3);
 	QStringList header = { "Element", "Value Type", "Value" };

@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow {
 
 		QAction* action_createMidpointNode;
 		QAction* action_nextNode;
-		QAction* action_connectToClosestNode;
+		QAction* action_connectToClosest;
 				 
 		QAction* action_fileNew;
 		QAction* action_fileOpen;

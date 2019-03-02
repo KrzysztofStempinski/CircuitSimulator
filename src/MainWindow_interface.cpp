@@ -71,6 +71,11 @@ void MainWindow::createMenu() {
 	connect(action_createMidpointNode, SIGNAL(triggered()), this, SLOT(slot_createMidpointNode()));
 	addAction(action_createMidpointNode);
 
+	action_connectToClosest = new QAction("Connect to closest node", this);
+	action_connectToClosest->setShortcut(QKeySequence("C"));
+	connect(action_connectToClosest, SIGNAL(triggered()), this, SLOT(editor->connectToClosest()));
+	addAction(action_connectToClosest);
+
 	// file actions
 	action_fileNew = new QAction("New", this);
 	action_fileNew->setIcon(QIcon(ICON_PATH + "fileNew.ico"));

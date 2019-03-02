@@ -23,6 +23,7 @@
 #include "components/Resistor.h"
 #include "components/VoltageSource.h"
 #include "components/Ground.h"
+#include "components/Diode.h"
 
 void CircuitEditor::selectComponent(Component* component) {
 	_selectedComponents.push_back(component);
@@ -654,6 +655,8 @@ void CircuitEditor::setCurrentComponent(const QString component) {
 		_currentComponent = new VoltageSource();
 	else if (component == "ground")
 		_currentComponent = new Ground();
+	else if (component == "diode")
+		_currentComponent = new Diode();
 }
 
 void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {

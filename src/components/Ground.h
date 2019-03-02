@@ -63,7 +63,7 @@ public:
 
 		//TODO this is remporary
 
-		if (ID != -1) {
+		if (serialNumber > 0) {
 			QPoint pos(0, -24);
 			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 

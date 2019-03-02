@@ -70,7 +70,7 @@ class Resistor : public Component {
 
 			//TODO this is remporary
 
-			if (ID != -1) {
+			if (serialNumber > 0) {
 			QPoint pos(0, 12);
 			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		
@@ -109,7 +109,7 @@ class Resistor : public Component {
 
 		std::tuple<QString, QString, double> getSimulationResult() {
 		
-			return std::make_tuple("Device current", "A", (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value);
+			return std::make_tuple(displayNameBase() + QString::number(serialNumber), "Device current [A]", (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value);
 
 		}
 
