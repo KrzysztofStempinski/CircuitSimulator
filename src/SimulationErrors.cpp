@@ -16,8 +16,13 @@ QString getSimulationErrorMessage(SimulationResult result) {
 			return QString("invalid (or unimplemented?) mode of operation");
 		break;
 
+		case SimulationResult::Error_NewtonTimedOut:
+			return QString("Newton's method failed to converge");
+			break;
+
+		// should never happen
 		default:
-			return QString("Unknown error.");
+			return QString("unknown error.");
 		break;
 
 	}

@@ -127,4 +127,9 @@ class Resistor : public Component {
 
 		}
 
+
+		bool linear() {
+			return true;
+		}
+
 };

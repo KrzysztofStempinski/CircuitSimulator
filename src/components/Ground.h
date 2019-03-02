@@ -106,4 +106,9 @@ public:
 
 	}
 
+	bool linear() {
+		// well technically that's true
+		return true;
+	}
+
 };

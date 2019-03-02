@@ -2,6 +2,9 @@
 
 #include "MatrixHelper.h"
 
+// TODO settings entry or sth like that?
+constexpr int MAX_ITERATIONS = 50; // should be enough
+
 void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
 
 	nodeBegin->voltageIndex = voltageIndex;
@@ -73,27 +76,32 @@ SimulationResult Circuit::simulate() {
 	if (preparationResult != SimulationResult::Success)
 		return preparationResult;
 
-	Eigen::MatrixXd matrixA(voltageCount + currentCount, voltageCount + currentCount);
-	Eigen::VectorXd matrixB(voltageCount + currentCount);
+	Eigen::MatrixXd matrixA_linear(voltageCount + currentCount, voltageCount + currentCount);
+	Eigen::MatrixXd matrixA_nonlinear(voltageCount + currentCount, voltageCount + currentCount);
+	Eigen::VectorXd matrixB_linear(voltageCount + currentCount);
+	Eigen::VectorXd matrixB_nonlinear(voltageCount + currentCount);
+
 	Eigen::VectorXd solutions;
 
-	int itno = 0;
-	int MAX = 50;
+	// apply linear stamps
+	matrixA_linear.fill(0);
+	matrixB_linear.fill(0);
 
-	while (itno < MAX) {
+	for (auto &it : components)
+		if (it->linear())
+			it->applyComponentStamp(matrixA_linear, matrixB_linear, voltageCount);
 
-		itno++;
+	int iteration = 0;
+	while (iteration < MAX_ITERATIONS) {
 
-		matrixA.fill(0);
-		matrixB.fill(0);
+		matrixA_nonlinear.fill(0);
+		matrixB_nonlinear.fill(0);
 
 		for (auto &it : components)
-			it->applyComponentStamp(matrixA, matrixB, voltageCount);
-		//	it->prepareForSimulation(voltageCount);
+			if (!it->linear())
+				it->applyComponentStamp(matrixA_nonlinear, matrixB_nonlinear, voltageCount);
 
-		solutions = matrixA.partialPivLu().solve(matrixB);
-
-		logWindow->log("Solutions at iteration " + QString::number(itno) + "=" + vectorToString(solutions), LogEntryType::Debug);
+		solutions = (matrixA_linear + matrixA_nonlinear).partialPivLu().solve(matrixB_linear + matrixB_nonlinear);
 
 		for (auto& it : nodes)
 			if (it->voltageIndex >= 1)
@@ -105,12 +113,16 @@ SimulationResult Circuit::simulate() {
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
+		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
+
+		iteration++;
+
 	}
 		// print out solutions
-		logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
-		logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
+		//logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
+		//logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
 
-		logWindow->log("Solutions = " + vectorToString(solutions), LogEntryType::Debug);
+		logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
 
 	return SimulationResult::Success;
 

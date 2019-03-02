@@ -82,6 +82,7 @@ class Component {
 		//
 		virtual int nodeCount() = 0;
 		virtual bool requiresCurrentEntry() = 0;
+		virtual bool linear() = 0;
 			
 		//
 		std::map<QString, Property> properties;

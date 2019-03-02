@@ -121,4 +121,8 @@ public:
 
 	}
 
+	bool linear() {
+		return true;
+	}
+
 };

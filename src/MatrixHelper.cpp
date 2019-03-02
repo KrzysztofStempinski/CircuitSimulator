@@ -20,7 +20,7 @@ QString vectorToString(const Eigen::VectorXd& vector) {
 	for (int i = 0; i < vector.size(); ++i)
 		S += QString::number(vector(i)) + " ";
 	//S += QString::number(vector(i), 'g', 15) + " ";
-	return S + "]";;
+	return S + "]";
 
 }
 
