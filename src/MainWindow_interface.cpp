@@ -55,12 +55,6 @@ void MainWindow::createDockWidgets() {
 	addDockWidget(Qt::LeftDockWidgetArea, dockSimulationResults);
 	dockSimulationResults->hide();
 
-	// simulation parameters
-	dockSimulationParameters = new QDockWidget("Simulation parameters", this);
-	dockSimulationParameters->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea | Qt::TopDockWidgetArea);
-	addDockWidget(Qt::TopDockWidgetArea, dockSimulationParameters);
-	dockSimulationResults->hide();
-
 }
 
 // 
@@ -216,6 +210,7 @@ void MainWindow::populateComponents() {
 	action->setData(QString("resistor"));
 
 	Component* tempComponent = new Resistor();
+	tempComponent->setPos(QPoint(18, 18));
 	tempComponent->draw(*painter);
 	delete tempComponent;
 
@@ -228,7 +223,8 @@ void MainWindow::populateComponents() {
 	action = new QAction("Voltage Source");
 	action->setData(QString("voltage_source"));
 
-	tempComponent = new VoltageSource();
+	tempComponent = new VoltageSource();	
+	tempComponent->setPos(QPoint(18, 18));
 	tempComponent->draw(*painter);
 	delete tempComponent;
 
@@ -242,6 +238,7 @@ void MainWindow::populateComponents() {
 	action->setData(QString("ground"));
 
 	tempComponent = new Ground();
+	tempComponent->setPos(QPoint(18, 18));
 	tempComponent->draw(*painter);
 	delete tempComponent;
 
@@ -255,6 +252,7 @@ void MainWindow::populateComponents() {
 	action->setData(QString("diode"));
 
 	tempComponent = new Diode();
+	tempComponent->setPos(QPoint(18, 18));
 	tempComponent->draw(*painter);
 	delete tempComponent;
 

@@ -16,8 +16,8 @@
 #pragma once
 
 #include <qdialog.h>
-#include <qtablewidget.h>
-#include <qcheckbox.h>
+#include <qtabwidget.h>
+#include <qgroupbox.h>
 
 #include "Circuit.h"
 
@@ -27,8 +27,9 @@ class DialogSimulationParameters : public QDialog {
 
 		private:
 
-			QTableWidget* table;
-
+			QTabWidget* _tabs;
+			QGroupBox* _groupBoxDCOP;
+			QGroupBox* _groupBoxDCSweep;
 			const Circuit& _circuit;
 
 	public:
@@ -36,6 +37,8 @@ class DialogSimulationParameters : public QDialog {
 		DialogSimulationParameters(Circuit& circuit);
 
 	public slots:
+
+		void buttonRunClick();
 
 
 };

@@ -46,14 +46,11 @@ void MainWindow::slot_fileExit() {
 
 void MainWindow::slot_simulationRun() {
 
-	qDeleteAll(dockSimulationParameters->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
-
 	DialogSimulationParameters* d = new DialogSimulationParameters(editor->circuit);
 
-	dockSimulationParameters->setWidget(d);
-	dockSimulationParameters->show();
-
-	/*
+	if (d->exec() != QDialog::Accepted)
+		return;
+	
 	Eigen::VectorXd solutions;
 	solutions.fill(0);
 
@@ -71,7 +68,7 @@ void MainWindow::slot_simulationRun() {
 	dockSimulationResults->setWidget(w);
 	dockSimulationResults->show();
 
-	update();*/
+	update();
 
 }
 
@@ -116,7 +113,6 @@ MainWindow::MainWindow() {
 }
 
 void MainWindow::slot_schematicPlaceComponent(QAction* action) {
-
 
 	editor->setCurrentComponent(action->data().toString());
 

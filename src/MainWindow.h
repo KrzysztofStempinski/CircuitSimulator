@@ -39,10 +39,9 @@ class MainWindow : public QMainWindow {
 				 
 		QAction* action_simulationRun;
 
-		QDockWidget *dockComponentProperties;
-		QDockWidget *dockSimulationResults;
-		QDockWidget *dockSimulationParameters;
-		QDockWidget *dockLog;
+		QDockWidget* dockComponentProperties;
+		QDockWidget* dockSimulationResults;
+		QDockWidget* dockLog;
 
 		QAction* action_aboutQt;
 
@@ -80,6 +79,5 @@ class MainWindow : public QMainWindow {
 		void slot_componentProperties();
 
 		void slot_aboutQt();
-
 
 };

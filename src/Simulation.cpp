@@ -105,7 +105,6 @@ SimulationResult Circuit::simulate() {
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
-
 	}
 		// print out solutions
 		logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);

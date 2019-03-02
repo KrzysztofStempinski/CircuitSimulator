@@ -102,7 +102,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\DialogSimulationParameters.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,8 +168,8 @@
     <QtMoc Include="src\MainWindow.h">
       <Filter>Main</Filter>
     </QtMoc>
-    <QtMoc Include="src\dialogSimulationParameters.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="src\DialogSimulationParameters.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
