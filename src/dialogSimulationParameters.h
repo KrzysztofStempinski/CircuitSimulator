@@ -20,8 +20,10 @@
 #include <qgroupbox.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qlineedit.h>
 
 #include "Circuit.h"
+#include "SimulationParameters.h"
 
 class DialogSimulationParameters : public QDialog {
 
@@ -36,9 +38,17 @@ class DialogSimulationParameters : public QDialog {
 			QLabel* labelComponent;
 			QLabel* labelParameter;
 
+			QTabWidget* tabs;
+
+			QLineEdit* editInitialValue;
+			QLineEdit* editFinalValue;
+			QLineEdit* editDelta;
+
 	public:
 
 		DialogSimulationParameters(Circuit& circuit);
+
+		SimulationParameters parameters;
 
 	public slots:
 

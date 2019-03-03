@@ -29,7 +29,7 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 	setWindowTitle("Simulation parameters");
 
 	// create interface
-	QTabWidget* tabs = new QTabWidget;
+	tabs = new QTabWidget;
 
 	QWidget* tabDCOP = new QWidget(tabs);
 	QWidget* tabDCSweep = new QWidget(tabs);
@@ -71,9 +71,14 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 
 	// form layout for sweep numeric parameters
 	QFormLayout* layoutSweepParameters = new QFormLayout;
-	layoutSweepParameters->addRow("Initial value:", new QLineEdit());
-	layoutSweepParameters->addRow("Final value:", new QLineEdit());
-	layoutSweepParameters->addRow("Delta:", new QLineEdit());
+
+	editInitialValue = new QLineEdit();
+	editFinalValue = new QLineEdit();
+	editDelta = new QLineEdit();
+
+	layoutSweepParameters->addRow("Initial value:", editInitialValue);
+	layoutSweepParameters->addRow("Final value:", editFinalValue);
+	layoutSweepParameters->addRow("Delta:", editDelta);
 
 	// main layout for DC sweep tab
 	QVBoxLayout* sweepMainLayout = new QVBoxLayout;
@@ -102,8 +107,36 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 
 void DialogSimulationParameters::buttonRunClick() {
 
-	QDialog::accept();
+	switch (tabs->currentIndex()) {
 
+		// standard DCOP
+		case 0:
+
+			parameters.mode = SimulationMode::DCOP;
+
+			QDialog::accept();
+			//return;
+
+		break;
+
+		// DC sweep
+		case 1: 
+
+			parameters.mode = SimulationMode::DCSweep;
+			// TODO consistent variable naming
+			// TODO error handling
+			parameters.start = editInitialValue->text().toDouble();
+			parameters.end = editFinalValue->text().toDouble();
+			parameters.delta = editDelta->text().toDouble();
+
+
+			parameters.componentToSweep = _circuit.components[comboComponent->currentData().toInt()];
+			parameters.propertyToSweep = comboParameter->currentData().toString();
+			QDialog::accept();
+
+		break;
+
+	}
 }
 
 void DialogSimulationParameters::componentComboChanged() {
@@ -116,6 +149,6 @@ void DialogSimulationParameters::componentComboChanged() {
 	comboParameter->clear();
 	
 	for (auto& it : _circuit.components[comboComponent->currentData().toInt()]->properties)
-		comboParameter->addItem(it.second.displayName);
+		comboParameter->addItem(it.second.displayName, it.first);
 
 }

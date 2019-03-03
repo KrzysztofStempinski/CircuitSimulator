@@ -17,6 +17,8 @@
 #include "CircuitEditor.h"
 #include "Version.h"
 
+#include <windows.h>
+
 #include "../eigen//Dense"
 
 void MainWindow::slot_componentProperties() {
@@ -49,25 +51,81 @@ void MainWindow::slot_simulationRun() {
 
 	if (d->exec() != QDialog::Accepted)
 		return;
+
+	switch (d->parameters.mode) {
 	
-	Eigen::VectorXd solutions;
-	solutions.fill(0);
+		case SimulationMode::DCOP: {
 
-	SimulationResult result = editor->circuit.simulate();
+			Eigen::VectorXd solutions;
+			solutions.fill(0);
 
-	if (result != SimulationResult::Success) {
-		logWindow->log("Simulation failed - " + getSimulationErrorMessage(result) + ".", LogEntryType::Error);
-		return;
+			SimulationResult result = editor->circuit.simulate();
+
+			if (result != SimulationResult::Success) {
+				logWindow->log("Simulation failed - " + getSimulationErrorMessage(result) + ".", LogEntryType::Error);
+				return;
+			}
+
+			qDeleteAll(dockSimulationResults->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
+
+			SimulationResultsWindow* w = new SimulationResultsWindow(editor->circuit, solutions, editor->circuit.voltageCount);
+
+			dockSimulationResults->setWidget(w);
+			dockSimulationResults->show();
+
+			update();
+
+		}
+
+		break;
+
+		case SimulationMode::DCSweep: {
+
+			int MAX = (d->parameters.end - d->parameters.start) / d->parameters.delta;
+
+			int i = 0;
+
+			while (i <= MAX) {
+
+				double currval = d->parameters.start + i * d->parameters.delta;
+
+				d->parameters.componentToSweep->properties[d->parameters.propertyToSweep].value = currval;
+
+				Eigen::VectorXd solutions;
+				solutions.fill(0);
+
+				SimulationResult result = editor->circuit.simulate();
+
+				if (result != SimulationResult::Success) {
+					logWindow->log("Simulation failed - " + getSimulationErrorMessage(result) + ".", LogEntryType::Error);
+					return;
+				}
+
+				//qDeleteAll(dockSimulationResults->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
+
+				//SimulationResultsWindow* w = new SimulationResultsWindow(editor->circuit, solutions, editor->circuit.voltageCount);
+
+			//	dockSimulationResults->setWidget(w);
+				//dockSimulationResults->show();
+
+			//	update();
+
+				++i;
+
+				OutputDebugStringA((std::to_string(d->parameters.componentToSweep->currentValue) + "\n").c_str());
+			
+			
+			}
+
+			
+		
+		
+		}
+		
+	
 	}
-
-	qDeleteAll(dockSimulationResults->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
-
-	SimulationResultsWindow* w = new SimulationResultsWindow(editor->circuit, solutions, editor->circuit.voltageCount);
-
-	dockSimulationResults->setWidget(w);
-	dockSimulationResults->show();
-
-	update();
+	
+	
 
 }
 

@@ -51,6 +51,7 @@
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\SimulationErrors.h" />
+    <ClInclude Include="src\SimulationParameters.h" />
     <ClInclude Include="src\Version.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />
     <QtMoc Include="src\MainWindow.h" />

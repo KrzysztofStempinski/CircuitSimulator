@@ -3,7 +3,7 @@
 #include "MatrixHelper.h"
 
 // TODO settings entry or sth like that?
-constexpr int MAX_ITERATIONS = 50; // should be enough
+constexpr int MAX_ITERATIONS = 150; // should be enough
 constexpr double DELTA = 1e-6;
  
 void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
@@ -100,9 +100,9 @@ SimulationResult Circuit::simulate() {
 	bool convergedCurrents = false;
 	bool convergedVoltages = false;
 
-	bool stop = false;
+	bool converged = false;
 
-	while (iteration < MAX_ITERATIONS && !stop) {
+	while (!converged && iteration < MAX_ITERATIONS) {
 
 		matrixA_nonlinear.fill(0);
 		matrixB_nonlinear.fill(0);
@@ -113,27 +113,17 @@ SimulationResult Circuit::simulate() {
 
 		solutions = (matrixA_linear + matrixA_nonlinear).partialPivLu().solve(matrixB_linear + matrixB_nonlinear);
 
-		if (iteration == 1)
-		{
-			prevSolutions = solutions;
-	
+
+		if (iteration > 1) {
+
+			double delta = (solutions - prevSolutions).squaredNorm();
+		//	logWindow->log("delta was " + QString::number(delta));
+
+			converged = delta <= solutions.size() * DELTA * DELTA;
+
 		}
-		else
-		{
-
-			double mydelta = (solutions - prevSolutions).squaredNorm();
-			logWindow->log("delta was " + QString::number(mydelta));
-
-			if (mydelta <= solutions.size() * DELTA * DELTA) {
 		
-				stop = true;
-			}
-
-			prevSolutions = solutions;
-			
-		
-		
-		}
+		prevSolutions = solutions;
 
 
 		for (auto& it : nodes)
@@ -149,18 +139,28 @@ SimulationResult Circuit::simulate() {
 		// TODO optimize
 		//for (int i = 0; i < voltageCount; ++i)
 
-		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
+	//	logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
 		iteration++;
 
 	}
+
+	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
 		// print out solutions
 		//logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
 		//logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
+	if (converged) {
+		logWindow->log("Converged in " + QString::number(iteration) + " iterations.");	
+		return SimulationResult::Success;
+	
+	} else {
+		return SimulationResult::Error_NewtonTimedOut;
+	}
 
-	logWindow->log("Converged in " + QString::number(iteration) + " iterations.");
-	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
+	//else 
+//
 
-	return SimulationResult::Success;
+
+
 
 }
