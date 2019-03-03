@@ -34,8 +34,8 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 	QWidget* tabDCOP = new QWidget(tabs);
 	QWidget* tabDCSweep = new QWidget(tabs);
 
-	tabs->addTab(tabDCSweep, "Linear DC sweep");
 	tabs->addTab(tabDCOP, "DC operating point");
+	tabs->addTab(tabDCSweep, "Linear DC sweep");
 
 	// create the DCOP tab (currently, contains only a simple description)
 	QVBoxLayout* layoutDCOPdescription = new QVBoxLayout;
