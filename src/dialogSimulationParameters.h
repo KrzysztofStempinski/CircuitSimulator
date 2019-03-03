@@ -26,18 +26,14 @@
 class DialogSimulationParameters : public QDialog {
 
 		Q_OBJECT
-
 		private:
 
-			QTabWidget* _tabs;
-			QGroupBox* _groupBoxDCOP;
-			QGroupBox* _groupBoxDCSweep;
 			const Circuit& _circuit;
-
 
 			QComboBox* comboComponent;
 			QComboBox* comboParameter;
 
+			QLabel* labelComponent;
 			QLabel* labelParameter;
 
 	public:

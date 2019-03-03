@@ -122,9 +122,10 @@ SimulationResult Circuit::simulate() {
 		{
 
 			double mydelta = (solutions - prevSolutions).squaredNorm();
+			logWindow->log("delta was " + QString::number(mydelta));
 
-			if (mydelta < solutions.size() * DELTA) {
-				logWindow->log("delta was " + QString::number(mydelta) + ", stopping.");
+			if (mydelta <= solutions.size() * DELTA * DELTA) {
+		
 				stop = true;
 			}
 
