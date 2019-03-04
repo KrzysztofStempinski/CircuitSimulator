@@ -78,10 +78,12 @@ SimulationResult Circuit::simulate() {
 		if (it->linear())
 			it->applyComponentStamp(matrixA_linear, matrixB_linear, voltageCount);
 
-	int iteration = 1;
+	int iteration = 0;
 	bool converged = false;
 
 	while (!converged && iteration <= MAX_ITERATIONS) {
+
+		iteration++;
 
 		matrixA_nonlinear.fill(0);
 		matrixB_nonlinear.fill(0);
@@ -116,8 +118,6 @@ SimulationResult Circuit::simulate() {
 		// DEBUG
 		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
-		iteration++;
-
 	}
 
 	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
@@ -125,7 +125,6 @@ SimulationResult Circuit::simulate() {
 	if (converged) {
 		logWindow->log("Newton's method converged in " + QString::number(iteration) + " iterations.");	
 		return SimulationResult::Success;
-	
 	} else {
 		return SimulationResult::Error_NewtonTimedOut;
 	}

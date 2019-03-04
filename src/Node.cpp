@@ -156,7 +156,7 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 
 void Node::markAdjacentNodes(const int _voltageIndex) {
 
-	voltageIndex = voltageIndex;
+	voltageIndex = _voltageIndex;
 
 	for (const auto &it : connectedNodes)
 		if (it->voltageIndex == -1) // if a node wasn't visited yet
