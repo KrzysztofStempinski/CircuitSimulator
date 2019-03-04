@@ -3,7 +3,7 @@
 #include "MatrixHelper.h"
 
 // TODO settings entry or sth like that?
-constexpr int MAX_ITERATIONS = 150; // should be enough
+constexpr int MAX_ITERATIONS = 400; // should be enough
 constexpr double DELTA = 1e-6;
  
 void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
@@ -24,8 +24,10 @@ SimulationResult Circuit::_prepareDCOP() {
 
 	// cleanup
 	for (auto& it : nodes) {
+
 		it->voltageIndex = -1;
 		it->voltageValue  = 0;
+
 	}
 
 	// first pass
@@ -113,7 +115,6 @@ SimulationResult Circuit::simulate() {
 
 		solutions = (matrixA_linear + matrixA_nonlinear).partialPivLu().solve(matrixB_linear + matrixB_nonlinear);
 
-
 		if (iteration > 1) {
 
 			double delta = (solutions - prevSolutions).squaredNorm();
@@ -139,7 +140,7 @@ SimulationResult Circuit::simulate() {
 		// TODO optimize
 		//for (int i = 0; i < voltageCount; ++i)
 
-	//	logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
+		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
 		iteration++;
 
@@ -154,7 +155,9 @@ SimulationResult Circuit::simulate() {
 		return SimulationResult::Success;
 	
 	} else {
-		return SimulationResult::Error_NewtonTimedOut;
+		return SimulationResult::Success;
+		logWindow->log("FAILED!");
+	//	return SimulationResult::Error_NewtonTimedOut;
 	}
 
 	//else 

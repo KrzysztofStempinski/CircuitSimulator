@@ -151,6 +151,12 @@
     <ClInclude Include="src\SimulationParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SimulableObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ComponentPropertiesWindow.h">

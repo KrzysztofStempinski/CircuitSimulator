@@ -56,6 +56,7 @@ void MainWindow::slot_simulationRun() {
 	
 		case SimulationMode::DCOP: {
 
+
 			Eigen::VectorXd solutions;
 			solutions.fill(0);
 
@@ -101,19 +102,9 @@ void MainWindow::slot_simulationRun() {
 					return;
 				}
 
-				//qDeleteAll(dockSimulationResults->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
-
-				//SimulationResultsWindow* w = new SimulationResultsWindow(editor->circuit, solutions, editor->circuit.voltageCount);
-
-			//	dockSimulationResults->setWidget(w);
-				//dockSimulationResults->show();
-
-			//	update();
-
 				++i;
 
-				OutputDebugStringA((std::to_string(d->parameters.componentToSweep->currentValue) + "\n").c_str());
-			
+				OutputDebugStringA((std::to_string(currval) + ", " + std::to_string(d->parameters.componentToSweep->currentValue) + "\n").c_str());
 			
 			}
 

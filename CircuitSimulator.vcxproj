@@ -32,6 +32,8 @@
     <ClCompile Include="src\Version.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditorObject.h" />
+    <ClInclude Include="SimulableObject.h" />
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
     <ClInclude Include="src\ComponentList.h" />

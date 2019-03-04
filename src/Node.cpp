@@ -18,13 +18,9 @@
 #include "Math.h"
 
 Node::Node(const QPoint& newPos, Component* coupledComponent)
-	: _coupledComponent(coupledComponent),
-	selected(false),
-	voltageIndex(-1),
-	voltageValue(0),
-	_pos(newPos)
+	: _coupledComponent(coupledComponent)
 {
-
+_pos = newPos;
 	int size = NODE_SIZE + isCoupled();
 	_boundingRect.setCoords(-size, size, size, -size);
 
@@ -60,9 +56,7 @@ void Node::setOffset(const QPoint& offset) {
 
 bool Node::isMouseOver(const QPoint& mousePos) {
 
-	int size = NODE_SIZE + isCoupled() + 1; // we add 1 so that bounding rect is slightly bigger, hence easier to select
-
-	return (abs(mousePos.x() - (_pos.x())) <= size && abs(mousePos.y() - (_pos.y())) <= size);
+	return _boundingRect.translated(_pos).contains(mousePos);
 
 }
 

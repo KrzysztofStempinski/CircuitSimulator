@@ -73,7 +73,6 @@ public:
 			painter.drawLine(path[i], path[i + 1]);
 
 		//TODO this is remporary
-
 		if (serialNumber > 0) {
 			QPoint pos(0, -12);
 			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
@@ -99,14 +98,25 @@ public:
 		double Go = (sat / vt) * std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / vt);
 		double Ieq = curr - Go * (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue);
 
-		addStampEntry(matrixA, Go, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
-		addStampEntry(matrixA, Go, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
-		addStampEntry(matrixA, -Go, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
-		addStampEntry(matrixA, -Go, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+		//double vcrit = vt * log(vt / (sqrt(2) * sat));
+
+		//double vdiff = coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue;
 		
-		addStampEntry(matrixB, -Ieq, coupledNodes[1]->voltageIndex - 1);
-		addStampEntry(matrixB, Ieq, coupledNodes[0]->voltageIndex - 1);
+		//if (vdiff <= vcrit) {
+			addStampEntry(matrixA, Go, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+			addStampEntry(matrixA, Go, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+			addStampEntry(matrixA, -Go, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+			addStampEntry(matrixA, -Go, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+
+			addStampEntry(matrixB, -Ieq, coupledNodes[1]->voltageIndex - 1);
+			addStampEntry(matrixB, Ieq, coupledNodes[0]->voltageIndex - 1);
+	//	}
+	//	else {
 		
+			//double vnew = vdiff + vt * log(1 + )
+		
+	//	}
+
 	}
 
 	QString displayNameBase() {

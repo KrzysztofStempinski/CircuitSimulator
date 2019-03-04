@@ -25,6 +25,9 @@
 
 #include "..//eigen//Dense"
 
+#include "SimulableObject.h"
+#include "EditorObject.h"
+
 class Component;
 
 #include "Node.h"
@@ -34,13 +37,12 @@ class Component;
 
 #include <qpainter.h>
 
-class Component {
+class Component : public SimulableObject, public EditorObject {
 
 	protected:
 
 		QString _name;
 
-		QPoint _pos;
 		int _rotationAngle;
 		QRect _boundingRect;
 
@@ -48,13 +50,8 @@ class Component {
 	public:
 
 		Component() {
-		
-		//_
+	
 			_rotationAngle = 0;
-			selected = false;
-			currentValue = double(0);
-			currentIndex = -1;
-		
 		
 		}
 
@@ -89,13 +86,6 @@ class Component {
 		
 		//
 		std::vector<Node*> coupledNodes;
-
-		//TODO refactor
-		int currentIndex;
-		double currentValue;
-
-		bool selected;
-		QPoint prevPos;
 
 		virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 

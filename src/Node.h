@@ -21,17 +21,19 @@
 
 #include "../rapidjson/rapidjson.h"
 
+#include "SimulableObject.h"
+#include "EditorObject.h"
+
 class Node;
 
 #include "Component.h"
 
 constexpr int NODE_SIZE = 3;
 
-class Node {
+class Node : public SimulableObject, public EditorObject {
 
 	private:
 
-		QPoint _pos; 
 		QPoint _posOffset;
 		QRect _boundingRect;
 		Component* _coupledComponent;
@@ -62,17 +64,8 @@ class Node {
 
 		bool isMouseOver(const QPoint& mousePos);
 		bool isWithinRectangle(const QRect& rect);
-		
-		// TODO refactor
-		//CircuitEditor related stuff stuff
-		bool selected;
-		QPoint prevPos;
 
 		void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);
-
-		// SIMULATION STUFF
-		int voltageIndex;
-		double voltageValue;
 
 };
 

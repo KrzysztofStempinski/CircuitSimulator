@@ -34,7 +34,7 @@ void Component::setPos(const QPoint& newPos){
 
 bool Component::isMouseOver(const QPoint& mousePos) const {
 
-	return (abs(mousePos.x() - _pos.x()) <= _boundingRect.width() / 2 && abs(mousePos.y() - _pos.y()) <= _boundingRect.height() / 2);
+	return _boundingRect.translated(_pos).contains(mousePos);
 
 }
 
