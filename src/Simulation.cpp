@@ -23,9 +23,9 @@ SimulationResult Circuit::_prepareDCOP() {
 			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
 
 				it->markAdjacentNodes(0);
-
-				//it->voltageValue = 0;// perhaps node->isGround() ???	
+				
 				foundGround = true;
+
 			}
 		}
 	}
@@ -44,14 +44,9 @@ SimulationResult Circuit::_prepareDCOP() {
 	voltageCount = voltageIndex;
 
 	int currentIndex = 0;
-	for (const auto& it : components) {
-
-		if (it->requiresCurrentEntry()) {
-			currentIndex++;
-			it->currentIndex = currentIndex;
-		}
-
-	}
+	for (const auto& it : components) 
+		if (it->requiresCurrentEntry()) 
+			it->currentIndex = ++currentIndex;
 
 	currentCount = currentIndex;
 
@@ -75,46 +70,39 @@ SimulationResult Circuit::simulate() {
 	Eigen::VectorXd solutions;
 	Eigen::VectorXd prevSolutions;
 
-	// apply linear stamps
 	matrixA_linear.fill(0);
 	matrixB_linear.fill(0);
 
+	// apply stamps from linear components (resistors etc.)
 	for (auto &it : components)
 		if (it->linear())
 			it->applyComponentStamp(matrixA_linear, matrixB_linear, voltageCount);
 
 	int iteration = 1;
-
-	double previousMagnitude = 0;
-
-	bool convergedCurrents = false;
-	bool convergedVoltages = false;
-
 	bool converged = false;
 
-	while (!converged && iteration < MAX_ITERATIONS) {
+	while (!converged && iteration <= MAX_ITERATIONS) {
 
 		matrixA_nonlinear.fill(0);
 		matrixB_nonlinear.fill(0);
 
+		// apply stamps from non-linear components (like diodes)
 		for (auto &it : components)
 			if (!it->linear())
 				it->applyComponentStamp(matrixA_nonlinear, matrixB_nonlinear, voltageCount);
 
+		// solve the assembled MNA matrix
 		solutions = (matrixA_linear + matrixA_nonlinear).partialPivLu().solve(matrixB_linear + matrixB_nonlinear);
 
-		if (iteration > 1) {
-
-			double delta = (solutions - prevSolutions).squaredNorm();
-		//	logWindow->log("delta was " + QString::number(delta));
-
-			converged = delta <= solutions.size() * DELTA * DELTA;
-
-		}
+		// we want x^(n+1)_i - x^(n)_i to be <= DELTA for all i (for every pair of voltages/currents),
+		// then we claim that we have achieved  convergence. It is equivalent to checking whether norm^2
+		// of solutions(at (n+1)-iteration) - solutions(at (n)-iteration) is <= dim(solutions) * DELTA^2. 
+		if (iteration > 1) 
+			converged = (solutions - prevSolutions).squaredNorm() <= solutions.size() * DELTA * DELTA;
 		
 		prevSolutions = solutions;
-
-
+		
+		// update node voltages/component currents
 		for (auto& it : nodes)
 			if (it->voltageIndex >= 1)
 				it->voltageValue = solutions(it->voltageIndex - 1);
@@ -125,9 +113,7 @@ SimulationResult Circuit::simulate() {
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
-		// TODO optimize
-		//for (int i = 0; i < voltageCount; ++i)
-
+		// DEBUG
 		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
 		iteration++;
@@ -135,23 +121,13 @@ SimulationResult Circuit::simulate() {
 	}
 
 	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
-		// print out solutions
-		//logWindow->log("Matrix A = " + matrixToString(matrixA), LogEntryType::Debug);
-		//logWindow->log("Matrix B = " + matrixToString(matrixB), LogEntryType::Debug);
+
 	if (converged) {
-		logWindow->log("Converged in " + QString::number(iteration) + " iterations.");	
+		logWindow->log("Newton's method converged in " + QString::number(iteration) + " iterations.");	
 		return SimulationResult::Success;
 	
 	} else {
-		return SimulationResult::Success;
-		logWindow->log("FAILED!");
-	//	return SimulationResult::Error_NewtonTimedOut;
+		return SimulationResult::Error_NewtonTimedOut;
 	}
-
-	//else 
-//
-
-
-
 
 }
