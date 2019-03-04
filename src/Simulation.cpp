@@ -5,16 +5,6 @@
 // TODO settings entry or sth like that?
 constexpr int MAX_ITERATIONS = 400; // should be enough
 constexpr double DELTA = 1e-6;
- 
-void Circuit::_markAdjacentNodes(Node* nodeBegin, const int voltageIndex) {
-
-	nodeBegin->voltageIndex = voltageIndex;
-
-	for (const auto &it : nodeBegin->connectedNodes)
-		if (it->voltageIndex == -1) // if a node wasn't visited yet
-			_markAdjacentNodes(it, voltageIndex);
-
-}
 
 SimulationResult Circuit::_prepareDCOP() {
 
@@ -23,33 +13,31 @@ SimulationResult Circuit::_prepareDCOP() {
 		return SimulationResult::Error_NoComponents;
 
 	// cleanup
-	for (auto& it : nodes) {
-
-		it->voltageIndex = -1;
-		it->voltageValue  = 0;
-
-	}
+	for (auto& it : nodes) 
+		it->reset();
 
 	// first pass
 	bool foundGround = false;
 	for (const auto& it : nodes) {
 		if (it->voltageIndex == -1) {
 			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
-				_markAdjacentNodes(it, 0);
+
+				it->markAdjacentNodes(0);
+
 				//it->voltageValue = 0;// perhaps node->isGround() ???	
 				foundGround = true;
 			}
 		}
-	}		
+	}
 
 	if (!foundGround)
 		return SimulationResult::Error_NoGroundNode;
-																	
+
 	int voltageIndex = 0;
 	for (auto& it : nodes) {
 		if (it->voltageIndex == -1) {
 			voltageIndex++;
-			_markAdjacentNodes(it, voltageIndex);
+			it->markAdjacentNodes(voltageIndex);
 		}
 	}
 

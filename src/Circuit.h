@@ -24,7 +24,6 @@ class Circuit {
 
 	private:
 
-		void _markAdjacentNodes(Node* nodeBegin, const int voltageIndex);
 		SimulationResult _prepareDCOP();
 
 	public:

@@ -67,6 +67,9 @@ class Node : public SimulableObject, public EditorObject {
 
 		void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);
 
+		// TODO decent argument names?
+		void markAdjacentNodes(const int _voltageIndex);
+
 };
 
 

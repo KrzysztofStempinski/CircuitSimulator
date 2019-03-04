@@ -54,7 +54,6 @@ public:
 				QString::fromUtf8("V"),
 				26e-3)));
 
-
 		_boundingRect.setCoords(-24, 12, 24, -12);
 
 		_boundingRect = _boundingRect.normalized();
