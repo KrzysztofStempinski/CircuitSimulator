@@ -1,24 +1,30 @@
+/*
+
+	This file is part of CircuitSimulator
+	Copyright (C) 2018 Krzysztof Stempinski
+
+	Refer to main.cpp or License.md for licensing info
+
+*/
+
+//  ---------------------------------------------
+//
+//	MainWindow_interface.h
+// 
+//  ---------------------------------------------
+
 #include "MainWindow.h"
 
+#include <qdockwidget.h>
+#include <qmenubar.h>
+#include <qstatusbar.h>
+
+#include "ComponentList.h"
 #include "SimulationResultsWindow.h"
 #include "Version.h"
 
-#include <filesystem>
-
-#include <qdockwidget.h>
-#include <qcombobox.h>
-#include <QMenu>
-#include <QMenuBar>
-#include <qstatusbar.h>
-#include <fstream>
-
-#include "../rapidjson/rapidjson.h"
-#include "../rapidjson/istreamwrapper.h"
-
-#include "ComponentList.h"
-
 const QString ICON_PATH = "data\\icons\\";
-const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or sth like that
+const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or something like that
 
 void MainWindow::createInterface() {
 
