@@ -191,76 +191,45 @@ void MainWindow::createMenu() {
 
 void MainWindow::populateComponents() {
 
-	//TODO rewrite this shit in an actually decent (or half-decent) way
 	toolbarComponents = new QToolBar();
 	toolbarComponents->setIconSize(QSize(40, 40));
 	toolbarComponents->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 	addToolBar(Qt::LeftToolBarArea, toolbarComponents);
 
-	QAction* action;
-
 	QPixmap* pixmap = new QPixmap(36, 36);
 	pixmap->fill(Qt::transparent);
 
 	QPainter* painter = new QPainter(pixmap);
 	painter->setPen(Qt::cyan);
+
+	// lambda magic
+	auto getComponentAction = [pixmap, painter](QString const& name) -> QAction* {
 	
-	action = new QAction("Resistor");
-	action->setData(QString("resistor"));
+		Component* tempComponent = getComponentFromName(name);
+		tempComponent->setPos(QPoint(18, 18));
 
-	Component* tempComponent = new Resistor();
-	tempComponent->setPos(QPoint(18, 18));
-	tempComponent->draw(*painter);
-	delete tempComponent;
+		pixmap->fill(Qt::transparent);
+		tempComponent->draw(*painter);
 
-	action->setIcon(QIcon(*pixmap));
+		QAction* action = new QAction(tempComponent->displayNameBase());
+		action->setData(name);
+		action->setIcon(QIcon(*pixmap));
 
-	menuComponents->addAction(action);
-	toolbarComponents->addAction(action);
+		delete tempComponent;
 
-	pixmap->fill(Qt::transparent);
-	action = new QAction("Voltage Source");
-	action->setData(QString("voltage_source"));
+		return action;
 
-	tempComponent = new VoltageSource();	
-	tempComponent->setPos(QPoint(18, 18));
-	tempComponent->draw(*painter);
-	delete tempComponent;
+	};
 
-	action->setIcon(QIcon(*pixmap));
 
-	menuComponents->addAction(action);
-	toolbarComponents->addAction(action);
+	for (const auto& it : COMPONENT_LIST) {
 
-	pixmap->fill(Qt::transparent);
-	action = new QAction("Ground");
-	action->setData(QString("ground"));
+		QAction* act = getComponentAction(it);
+		menuComponents->addAction(act);
+		toolbarComponents->addAction(act);
 
-	tempComponent = new Ground();
-	tempComponent->setPos(QPoint(18, 18));
-	tempComponent->draw(*painter);
-	delete tempComponent;
-
-	action->setIcon(QIcon(*pixmap));
-
-	menuComponents->addAction(action);
-	toolbarComponents->addAction(action);
-
-	pixmap->fill(Qt::transparent);
-	action = new QAction("Diode");
-	action->setData(QString("diode"));
-
-	tempComponent = new Diode();
-	tempComponent->setPos(QPoint(18, 18));
-	tempComponent->draw(*painter);
-	delete tempComponent;
-
-	action->setIcon(QIcon(*pixmap));
-
-	menuComponents->addAction(action);
-	toolbarComponents->addAction(action);
-
+	}
 
 	connect(menuComponents, SIGNAL(triggered(QAction*)), this, SLOT(slot_schematicPlaceComponent(QAction*)));
 

@@ -15,10 +15,7 @@
 
 #include "Circuit.h"
 
-#include "components/Resistor.h"
-#include "components/VoltageSource.h"
-#include "components/Ground.h"
-#include "components/Diode.h"
+#include "ComponentList.h"
 
 void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
 
@@ -39,16 +36,7 @@ void Circuit::deleteNode(Node* node) {
 
 void Circuit::createComponent(const QString componentName, const QPoint& pos, const bool createNodes) {
 
-	Component* newComponent = nullptr;
-	if (componentName == "resistor")
-		newComponent = new Resistor();
-	else if (componentName == "voltage_source")
-		newComponent = new VoltageSource();
-	else if (componentName == "ground")
-		newComponent = new Ground();
-	else if (componentName == "diode")
-		newComponent = new Diode();
-
+	Component* newComponent = getComponentFromName(componentName);
 
 	newComponent->serialNumber = 1 + std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
 

@@ -10,6 +10,8 @@ class SimulableObject {
 		int voltageIndex;
 		double voltageValue;
 
+		double prevVoltageValue;
+
 		SimulableObject() {
 			reset();
 		}
@@ -21,6 +23,7 @@ class SimulableObject {
 
 			currentValue = double(0);
 			voltageValue = double(0);
+			prevVoltageValue = double(0);
 
 		}
 

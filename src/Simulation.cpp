@@ -1,5 +1,4 @@
 #include "Circuit.h"
-
 #include "MatrixHelper.h"
 
 // TODO settings entry or sth like that?
@@ -56,7 +55,7 @@ SimulationResult Circuit::_prepareDCOP() {
 
 SimulationResult Circuit::simulate() {
 
-	logWindow->log("Starting simulation...");
+	// logWindow->log("Starting simulation...");
 
 	SimulationResult preparationResult = _prepareDCOP();
 	if (preparationResult != SimulationResult::Success)
@@ -106,17 +105,21 @@ SimulationResult Circuit::simulate() {
 		
 		// update node voltages/component currents
 		for (auto& it : nodes)
-			if (it->voltageIndex >= 1)
+			if (it->voltageIndex >= 1) {
+				it->prevVoltageValue = it->voltageValue;
 				it->voltageValue = solutions(it->voltageIndex - 1);
-			else
-				it->voltageValue = double(0);
+			}
+			else {
+				it->voltageValue = it->prevVoltageValue = double(0);
+			}
+			
 
 		for (auto& it : components)
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
 		// DEBUG
-		logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
+		// logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
 	}
 

@@ -54,7 +54,6 @@ class Component : public SimulableObject, public EditorObject {
 			_rotationAngle = 0;
 		
 		}
-
 		LogWindow* logWindow; // TODO temp
 		
 		int ID;

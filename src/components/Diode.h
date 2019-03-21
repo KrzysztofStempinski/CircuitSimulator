@@ -97,11 +97,20 @@ public:
 		double Go = (sat / vt) * std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / vt);
 		double Ieq = curr - Go * (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue);
 
-		//double vcrit = vt * log(vt / (sqrt(2) * sat));
 
-		//double vdiff = coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue;
+		double vdk = coupledNodes[1]->prevVoltageValue - coupledNodes[0]->prevVoltageValue;
+
+		double vtilde = coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue;
+
+
+		double vcrit = vt * log(vt / (sqrt(2) * sat));
+
+		//double vwould = 
+
+		//double vdiff = 
 		
-		//if (vdiff <= vcrit) {
+		if (vtilde <= vcrit) {
+		// no overflow occured, we may proceed without any PN junction damping
 			addStampEntry(matrixA, Go, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
 			addStampEntry(matrixA, Go, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
 			addStampEntry(matrixA, -Go, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
@@ -109,12 +118,21 @@ public:
 
 			addStampEntry(matrixB, -Ieq, coupledNodes[1]->voltageIndex - 1);
 			addStampEntry(matrixB, Ieq, coupledNodes[0]->voltageIndex - 1);
-	//	}
-	//	else {
+		}
+		else {
 		
-			//double vnew = vdiff + vt * log(1 + )
-		
-	//	}
+			double vdkp1 = vdk + vt * std::log(1 + (vtilde - vdk) / vt);
+
+			addStampEntry(matrixA, 1, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+			addStampEntry(matrixA, 1, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+			addStampEntry(matrixA, -1, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+			addStampEntry(matrixA, -1, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+
+			addStampEntry(matrixB, -vdkp1, coupledNodes[1]->voltageIndex - 1);
+			addStampEntry(matrixB, vdkp1, coupledNodes[0]->voltageIndex - 1);
+
+
+		}
 
 	}
 

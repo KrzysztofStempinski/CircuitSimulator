@@ -20,10 +20,7 @@
 #include <qwidget.h>
 #include <QMenu>
 
-#include "components/Resistor.h"
-#include "components/VoltageSource.h"
-#include "components/Ground.h"
-#include "components/Diode.h"
+#include "ComponentList.h"
 
 void CircuitEditor::selectComponent(Component* component) {
 	_selectedComponents.push_back(component);
@@ -648,15 +645,9 @@ void CircuitEditor::paintEvent(QPaintEvent*) {
 }
 
 void CircuitEditor::setCurrentComponent(const QString component) {
-	//TODO get rid of this bullshit
-	if (component == "resistor")
-		_currentComponent = new Resistor();
-	else if (component == "voltage_source")
-		_currentComponent = new VoltageSource();
-	else if (component == "ground")
-		_currentComponent = new Ground();
-	else if (component == "diode")
-		_currentComponent = new Diode();
+
+	_currentComponent = getComponentFromName(component);
+
 }
 
 void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {

@@ -39,6 +39,7 @@
     <ClInclude Include="src\ComponentList.h" />
     <ClInclude Include="src\components\Diode.h" />
     <ClInclude Include="src\components\Ground.h" />
+    <ClInclude Include="src\components\IdealOpAmp.h" />
     <ClInclude Include="src\components\Resistor.h" />
     <ClInclude Include="src\components\VoltageSource.h" />
     <QtMoc Include="src\DialogSimulationParameters.h">
