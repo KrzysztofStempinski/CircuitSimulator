@@ -62,7 +62,7 @@ void MainWindow::createDockWidgets() {
 //
 void MainWindow::createMenu() {
 
-	auto getAction = [](QString const& title, QString const& shortcut = "", QString const& iconName = "") -> QAction* {
+	auto getAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction* {
 		
 		QAction* action = new QAction(title);
 
@@ -72,65 +72,54 @@ void MainWindow::createMenu() {
 		if (!shortcut.isEmpty())
 			action->setShortcut(QKeySequence(shortcut));
 
+		QObject::connect(action, SIGNAL(triggered()), this, slot);
+
 		return action;
 	
 	};
 
-	action_componentProperties = getAction("Component properties", "P", "properties.ico");
-	connect(action_componentProperties, SIGNAL(triggered()), this, SLOT(slot_componentProperties()));
+	action_componentProperties = getAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
 	addAction(action_componentProperties);
 
-	action_createMidpointNode = getAction("Create node at midpoint", "M");
-	connect(action_createMidpointNode, SIGNAL(triggered()), this, SLOT(slot_createMidpointNode()));
+	action_createMidpointNode = getAction("Create node at midpoint", SLOT(slot_createMidpointNode()), "M");
 	addAction(action_createMidpointNode);
 
-	action_connectToClosest = getAction("Connect to closest node", "C");
-	connect(action_connectToClosest, SIGNAL(triggered()), this, SLOT(editor->connectToClosest()));
+	action_connectToClosest = getAction("Connect to closest node", SLOT(editor->connectToClosest()), "C");
 	addAction(action_connectToClosest);
 
 	// file actions
-	action_fileNew = getAction("New", "Ctrl+N", "fileNew.ico");
-	connect(action_fileNew, SIGNAL(triggered()), this, SLOT(slot_fileNew()));
+	action_fileNew = getAction("New", SLOT(slot_fileNew()), "Ctrl+N", "fileNew.ico");
 	addAction(action_fileNew);
 
-	action_fileOpen = getAction("Open", "Ctrl+O", "fileOpen.ico");
-	connect(action_fileOpen, SIGNAL(triggered()), this, SLOT(slot_fileOpen()));
+	action_fileOpen = getAction("Open", SLOT(slot_fileOpen()), "Ctrl+O", "fileOpen.ico");
 	addAction(action_fileOpen);
 
-	action_fileSave = getAction("Save", "Ctrl+S", "fileSave.ico");
-	connect(action_fileSave, SIGNAL(triggered()), this, SLOT(slot_fileSave()));
+	action_fileSave = getAction("Save", SLOT(slot_fileSave()), "Ctrl+S", "fileSave.ico");
 	addAction(action_fileSave);
 
-	action_fileSaveAs = getAction("Save As...", "Ctrl+Shift+S", "fileSaveAs.ico");
-	connect(action_fileSaveAs, SIGNAL(triggered()), this, SLOT(slot_fileSaveAs()));
+	action_fileSaveAs = getAction("Save As...", SLOT(slot_fileSaveAs()), "Ctrl+Shift+S", "fileSaveAs.ico");
 	addAction(action_fileSaveAs);
 
-	action_fileExit = getAction("Exit", "Alt+F4");
-	connect(action_fileExit, SIGNAL(triggered()), this, SLOT(slot_fileExit()));
+	action_fileExit = getAction("Exit", SLOT(slot_fileExit()), "Alt+F4");
 	addAction(action_fileExit);
 
 	// edit actions
-	action_editUndo = getAction("Undo", "Ctrl+Z", "editUndo.ico");
-	connect(action_editUndo, SIGNAL(triggered()), this, SLOT(slot_editUndo()));
+	action_editUndo = getAction("Undo", SLOT(slot_editUndo()), "Ctrl+Z", "editUndo.ico");
 	addAction(action_editUndo);
 
-	action_editRedo = getAction("Redo", "Ctrl+Y", "editRedo.ico");
-	connect(action_editRedo, SIGNAL(triggered()), this, SLOT(slot_editRedo()));
+	action_editRedo = getAction("Redo", SLOT(slot_editRedo()), "Ctrl+Y", "editRedo.ico");
 	addAction(action_editRedo);
 
-	action_editSelectAll = getAction("Select All", "Ctrl+A", "editSelectAll.ico");
-	connect(action_editSelectAll, SIGNAL(triggered()), this, SLOT(slot_editSelectAll()));
+	action_editSelectAll = getAction("Select All", SLOT(slot_editSelectAll()), "Ctrl+A", "editSelectAll.ico");
 	addAction(action_editSelectAll);
 
 	// simulation actions
-	action_simulationRun = getAction("Run", "F5", "simulationRun.ico");
+	action_simulationRun = getAction("Run", SLOT(slot_simulationRun()), "F5", "simulationRun.ico");
 	action_simulationRun->setToolTip("Run simulation");
-	connect(action_simulationRun, SIGNAL(triggered()), this, SLOT(slot_simulationRun()));
 	addAction(action_simulationRun);
 
 	// help actions
-	action_aboutQt = getAction("About Qt");
-	connect(action_aboutQt, SIGNAL(triggered()), this, SLOT(slot_aboutQt()));
+	action_aboutQt = getAction("About Qt", SLOT(slot_aboutQt()));
 
 	QMenu* menuFile = menuBar()->addMenu("File");
 	menuFile->addAction(action_fileNew);
