@@ -47,7 +47,6 @@ bool Circuit::saveToFile(const QString fileName) {
 		ID++;
 	}
 
-
 	// initialize an emppty JSON doc
 	rapidjson::Document file;
 	file.SetObject();

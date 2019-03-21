@@ -31,24 +31,6 @@ void Component::setPos(const QPoint& newPos){
 
 };
 
-bool Component::isMouseOver(const QPoint& mousePos) const {
-
-	return _boundingRect.translated(_pos).contains(mousePos);
-
-}
-
-bool Component::isWithinRectangle(const QRect& rect) const {
-
-	return _boundingRect.translated(_pos).intersects(rect);
-
-}
-
-const QPoint Component::pos() const {
-
-	return _pos;
-
-}
-
 int Component::getRotationAngle() const {
 
 	return this->_rotationAngle;

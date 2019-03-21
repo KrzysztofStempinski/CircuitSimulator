@@ -20,7 +20,7 @@
 Node::Node(const QPoint& newPos, Component* coupledComponent)
 	: _coupledComponent(coupledComponent)
 {
-_pos = newPos;
+	_pos = newPos;
 	int size = NODE_SIZE + isCoupled();
 	_boundingRect.setCoords(-size, size, size, -size);
 
@@ -35,11 +35,6 @@ Component* Node::getCoupledComponent() {
 	return _coupledComponent;
 }
 
-
-const QPoint Node::pos() const {
-	return _pos;
-}
-
 void Node::setPos(const QPoint &newPos) {
 	_pos = newPos;
 }
@@ -52,12 +47,6 @@ void Node::setOffset(const QPoint& offset) {
 	
 	_posOffset = offset;
 		
-}
-
-bool Node::isMouseOver(const QPoint& mousePos) {
-
-	return _boundingRect.translated(_pos).contains(mousePos);
-
 }
 
 void Node::connectTo(Node* node) {
@@ -98,12 +87,6 @@ void Node::draw(QPainter *painter){
 	if (DEBUG)
 		painter->drawText(QPoint(_pos.x() + 6, _pos.y() + 6), QString::number(voltageIndex));
 	
-}
-
-bool Node::isWithinRectangle(const QRect& rect){
-			    		
-	return _boundingRect.translated(_pos).intersects(rect);
-
 }
 
 void Node::removeInboundLinks(){

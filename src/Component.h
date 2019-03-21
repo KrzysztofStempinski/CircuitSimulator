@@ -44,8 +44,6 @@ class Component : public SimulableObject, public EditorObject {
 		QString _name;
 
 		int _rotationAngle;
-		QRect _boundingRect;
-
 
 	public:
 
@@ -59,12 +57,9 @@ class Component : public SimulableObject, public EditorObject {
 		virtual QString displayNameBase() = 0;
 		virtual QString letterIdentifierBase() = 0;
 
-		const QPoint pos() const;
 		void setPos(const QPoint& newPos);
 
 		virtual void draw(QPainter& painter) = 0;
-		bool isMouseOver(const QPoint& mousePos) const;
-		bool isWithinRectangle(const QRect& rect) const;
 		
 		int getRotationAngle() const;
 		void setRotationAngle(const int angle);

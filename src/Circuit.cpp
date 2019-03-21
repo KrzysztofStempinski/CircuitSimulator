@@ -19,7 +19,6 @@
 
 void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
 
-	// TODO get rid of _isCoupled field, it's not necessary
 	nodes.push_back(new Node(pos, _coupledComponent));
 
 }

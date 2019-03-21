@@ -35,7 +35,6 @@ class Node : public SimulableObject, public EditorObject {
 	private:
 
 		QPoint _posOffset;
-		QRect _boundingRect;
 		Component* _coupledComponent;
 
 	public:
@@ -47,7 +46,6 @@ class Node : public SimulableObject, public EditorObject {
 		std::vector<Node*> connectedNodes;
 
 		void setPos(const QPoint& newPos);
-		const QPoint pos() const;
 		void updatePos();
 		void setOffset(const QPoint& offset);
 
@@ -61,9 +59,6 @@ class Node : public SimulableObject, public EditorObject {
 		Component* getCoupledComponent();
 		
 		void draw(QPainter* painter);
-
-		bool isMouseOver(const QPoint& mousePos);
-		bool isWithinRectangle(const QRect& rect);
 
 		void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);
 
