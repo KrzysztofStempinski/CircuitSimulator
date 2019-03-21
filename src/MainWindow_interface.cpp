@@ -62,86 +62,75 @@ void MainWindow::createDockWidgets() {
 //
 void MainWindow::createMenu() {
 
-	action_componentProperties = new QAction("Component properties", this);
-	action_componentProperties->setIcon(QIcon(ICON_PATH + "properties.ico"));
-	action_componentProperties->setShortcut(QKeySequence("P"));
+	auto getAction = [](QString const& title, QString const& shortcut = "", QString const& iconName = "") -> QAction* {
+		
+		QAction* action = new QAction(title);
+
+		if (!iconName.isEmpty())
+			action->setIcon(QIcon(ICON_PATH + iconName));
+
+		if (!shortcut.isEmpty())
+			action->setShortcut(QKeySequence(shortcut));
+
+		return action;
+	
+	};
+
+	action_componentProperties = getAction("Component properties", "P", "properties.ico");
 	connect(action_componentProperties, SIGNAL(triggered()), this, SLOT(slot_componentProperties()));
 	addAction(action_componentProperties);
 
-	action_createMidpointNode = new QAction("Create midpoint node", this);
-	action_createMidpointNode->setShortcut(QKeySequence("M"));
+	action_createMidpointNode = getAction("Create node at midpoint", "M");
 	connect(action_createMidpointNode, SIGNAL(triggered()), this, SLOT(slot_createMidpointNode()));
 	addAction(action_createMidpointNode);
 
-	action_connectToClosest = new QAction("Connect to closest node", this);
-	action_connectToClosest->setShortcut(QKeySequence("C"));
+	action_connectToClosest = getAction("Connect to closest node", "C");
 	connect(action_connectToClosest, SIGNAL(triggered()), this, SLOT(editor->connectToClosest()));
 	addAction(action_connectToClosest);
 
 	// file actions
-	action_fileNew = new QAction("New", this);
-	action_fileNew->setIcon(QIcon(ICON_PATH + "fileNew.ico"));
-	action_fileNew->setShortcut(QKeySequence("Ctrl+N"));
+	action_fileNew = getAction("New", "Ctrl+N", "fileNew.ico");
 	connect(action_fileNew, SIGNAL(triggered()), this, SLOT(slot_fileNew()));
 	addAction(action_fileNew);
 
-	action_fileOpen = new QAction("Open", this);
-	action_fileOpen->setIcon(QIcon(ICON_PATH + "fileOpen.ico"));
-	action_fileOpen->setShortcut(QKeySequence("Ctrl+O"));
+	action_fileOpen = getAction("Open", "Ctrl+O", "fileOpen.ico");
 	connect(action_fileOpen, SIGNAL(triggered()), this, SLOT(slot_fileOpen()));
 	addAction(action_fileOpen);
 
-	action_fileSave = new QAction("Save", this);
-	action_fileSave->setIcon(QIcon(ICON_PATH + "fileSave.ico"));
-	action_fileSave->setShortcut(QKeySequence("Ctrl+S"));
+	action_fileSave = getAction("Save", "Ctrl+S", "fileSave.ico");
 	connect(action_fileSave, SIGNAL(triggered()), this, SLOT(slot_fileSave()));
 	addAction(action_fileSave);
 
-	action_fileSaveAs = new QAction("Save As...", this);
-	action_fileSaveAs->setIcon(QIcon(ICON_PATH + "fileSaveAs.ico"));
-	action_fileSaveAs->setShortcut(QKeySequence("Ctrl+Shift+S"));
+	action_fileSaveAs = getAction("Save As...", "Ctrl+Shift+S", "fileSaveAs.ico");
 	connect(action_fileSaveAs, SIGNAL(triggered()), this, SLOT(slot_fileSaveAs()));
 	addAction(action_fileSaveAs);
 
-	action_fileExit = new QAction("Exit", this);
-	action_fileExit->setShortcut(QKeySequence("Alt+F4"));
+	action_fileExit = getAction("Exit", "Alt+F4");
 	connect(action_fileExit, SIGNAL(triggered()), this, SLOT(slot_fileExit()));
 	addAction(action_fileExit);
-	//
 
 	// edit actions
-	action_editUndo = new QAction("Undo", this);
-	action_editUndo->setIcon(QIcon(ICON_PATH + "editUndo.ico"));
-	action_editUndo->setShortcut(QKeySequence(Qt::Key_Control + Qt::Key_Z));
+	action_editUndo = getAction("Undo", "Ctrl+Z", "editUndo.ico");
 	connect(action_editUndo, SIGNAL(triggered()), this, SLOT(slot_editUndo()));
 	addAction(action_editUndo);
 
-	action_editRedo = new QAction("Redo", this);
-	action_editRedo->setIcon(QIcon(ICON_PATH + "editRedo.ico"));
-	action_editRedo->setShortcut(QKeySequence(Qt::Key_Control + Qt::Key_Y));
+	action_editRedo = getAction("Redo", "Ctrl+Y", "editRedo.ico");
 	connect(action_editRedo, SIGNAL(triggered()), this, SLOT(slot_editRedo()));
 	addAction(action_editRedo);
 
-	action_editSelectAll = new QAction("Select All", this);
-	action_editSelectAll->setIcon(QIcon(ICON_PATH + "editSelectAll.ico"));
-	action_editSelectAll->setShortcut(QKeySequence(Qt::Key_Control + Qt::Key_A));
+	action_editSelectAll = getAction("Select All", "Ctrl+A", "editSelectAll.ico");
 	connect(action_editSelectAll, SIGNAL(triggered()), this, SLOT(slot_editSelectAll()));
 	addAction(action_editSelectAll);
-	//
 
 	// simulation actions
-	action_simulationRun = new QAction("Run", this);
-	action_simulationRun->setIcon(QIcon(ICON_PATH + "simulationRun.ico"));
-	action_simulationRun->setShortcut(QKeySequence("F5"));
+	action_simulationRun = getAction("Run", "F5", "simulationRun.ico");
 	action_simulationRun->setToolTip("Run simulation");
 	connect(action_simulationRun, SIGNAL(triggered()), this, SLOT(slot_simulationRun()));
 	addAction(action_simulationRun);
-	//
 
 	// help actions
-	action_aboutQt = new QAction("About Qt", this);
+	action_aboutQt = getAction("About Qt");
 	connect(action_aboutQt, SIGNAL(triggered()), this, SLOT(slot_aboutQt()));
-	//
 
 	QMenu* menuFile = menuBar()->addMenu("File");
 	menuFile->addAction(action_fileNew);
