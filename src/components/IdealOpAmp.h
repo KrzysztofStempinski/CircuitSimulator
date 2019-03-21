@@ -40,8 +40,6 @@ public:
 
 	IdealOpAmp() {
 
-		ID = -1;
-
 		_name = "ideal_op_amp";
 
 		_boundingRect.setCoords(-38, 44, 82, -44);
@@ -53,12 +51,12 @@ public:
 	//
 	void draw(QPainter& painter) {
 
-		std::vector<QPoint> path = {	{ -38, 18 }, { -12, 18 }, 
-										{ -38, -18 }, { -12, -18 }, 
+		std::vector<QPoint> path = {	{ -40, 16 }, { -12, 16 }, 
+										{ -40, -16 }, { -12, -16 }, 
 										{ -12, 44 }, { -12, -44 }, 
 										{ -12, 44 }, { 62, 0 }, 
 										{ -12, -44 }, { 62, 0}, 
-										{ 62, 0 }, { 82, 0 }, 
+										{ 62, 0 }, { 80, 0 }, 
 										// plus sign
 										{ -6, 18 }, { 6, 18 },
 										{ 0, -24 }, { 0, -12 },
@@ -116,9 +114,9 @@ public:
 
 	void updateNodeOffsets() {
 
-		coupledNodes[0]->setOffset(QPoint(-38, 18)); // V-
-		coupledNodes[1]->setOffset(QPoint(-38, -18)); // V_
-		coupledNodes[2]->setOffset(QPoint(82, 0)); // Vout
+		coupledNodes[0]->setOffset(QPoint(-40, 16));	// V-
+		coupledNodes[1]->setOffset(QPoint(-40, -16));	// V+
+		coupledNodes[2]->setOffset(QPoint(80, 0));		// Vout
 
 	}
 

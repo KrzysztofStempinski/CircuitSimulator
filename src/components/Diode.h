@@ -40,8 +40,6 @@ public:
 
 	Diode() {
 
-		ID = -1;
-
 		_name = "diode";
 
 		properties.insert(std::pair<QString, Property>("sat_curr",
@@ -63,12 +61,12 @@ public:
 	//
 	void draw(QPainter& painter) {
 
-		QPoint path[12] = { { -24, 0 }, {-6, 0 }, {-6, 12}, {-6, -12}, {-6, 0}, {6, 12}, {-6, 0}, {6, -12}, {6, 12}, {6, -12}, {6, 0}, {24, 0} };
+		std::vector<QPoint> path = { { -24, 0 }, {-6, 0 }, {-6, 12}, {-6, -12}, {-6, 0}, {6, 12}, {-6, 0}, {6, -12}, {6, 12}, {6, -12}, {6, 0}, {24, 0} };
 
 		for (auto& it : path)
 			it = rotatePoint(it + _pos, _pos, _rotationAngle);
 
-		for (int i = 0; i < 11; i += 2)
+		for (int i = 0; i < path.size(); i += 2)
 			painter.drawLine(path[i], path[i + 1]);
 
 		//TODO this is remporary

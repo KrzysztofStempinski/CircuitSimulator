@@ -39,8 +39,6 @@ public:
 
 	VoltageSource() {
 
-		ID = -1;
-
 		_name = "voltage_source";
 
 		properties.insert(std::pair<QString, Property>("voltage",
@@ -58,12 +56,12 @@ public:
 	//
 	void draw(QPainter& painter) {
 
-		QPoint path[10] = { { -3, -10 }, { -3, 10 }, {3, -4}, {3, 4}, {4, -4}, {4, 4}, {4, 0}, {24, 0}, {-4, 0}, { -24, 0 } };
+		std::vector<QPoint> path = { { -3, -10 }, { -3, 10 }, {3, -4}, {3, 4}, {4, -4}, {4, 4}, {4, 0}, {24, 0}, {-4, 0}, { -24, 0 } };
 
 		for (auto& it : path)
 			it = rotatePoint(it + _pos, _pos, _rotationAngle);
 
-		for (int i = 0; i < 9; i += 2)
+		for (int i = 0; i < path.size(); i += 2)
 			painter.drawLine(path[i], path[i + 1]);
 
 		//TODO this is remporary

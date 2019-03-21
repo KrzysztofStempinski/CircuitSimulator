@@ -158,7 +158,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\components\IdealOpAmp.h">
-      <Filter>Header Files</Filter>
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

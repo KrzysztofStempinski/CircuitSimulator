@@ -49,11 +49,7 @@ class Component : public SimulableObject, public EditorObject {
 
 	public:
 
-		Component() {
-	
-			_rotationAngle = 0;
-		
-		}
+		Component() : _rotationAngle(0), ID(-1) {}
 		LogWindow* logWindow; // TODO temp
 		
 		int ID;
@@ -63,11 +59,9 @@ class Component : public SimulableObject, public EditorObject {
 		virtual QString displayNameBase() = 0;
 		virtual QString letterIdentifierBase() = 0;
 
-		//
 		const QPoint pos() const;
 		void setPos(const QPoint& newPos);
 
-		//
 		virtual void draw(QPainter& painter) = 0;
 		bool isMouseOver(const QPoint& mousePos) const;
 		bool isWithinRectangle(const QRect& rect) const;
@@ -75,15 +69,12 @@ class Component : public SimulableObject, public EditorObject {
 		int getRotationAngle() const;
 		void setRotationAngle(const int angle);
 
-		//
 		virtual int nodeCount() = 0;
 		virtual bool requiresCurrentEntry() = 0;
 		virtual bool linear() = 0;
 			
-		//
 		std::map<QString, Property> properties;
 		
-		//
 		std::vector<Node*> coupledNodes;
 
 		virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;

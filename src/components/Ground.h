@@ -39,8 +39,6 @@ public:
 
 	Ground() {
 
-		ID = -1;
-
 		_name = "ground";
 
 		_boundingRect.setCoords(-12, 15, 12, -15);
@@ -51,12 +49,12 @@ public:
 
 	void draw(QPainter& painter) {
 
-		QPoint path[16] = { { -12, 0 }, { 12, 0 }, { -12, -1 }, { 12, -1 }, {-10, 3}, {10, 3}, {-8, 6}, {8, 6}, {-6, 9}, { 6, 9 }, { -4, 12}, {4, 12}, {-2, 15}, {2, 15}, {0, 0}, {0, -15} };
+		std::vector<QPoint> path = { { -12, 0 }, { 12, 0 }, { -12, -1 }, { 12, -1 }, {-10, 3}, {10, 3}, {-8, 6}, {8, 6}, {-6, 9}, { 6, 9 }, { -4, 12}, {4, 12}, {-2, 15}, {2, 15}, {0, 0}, {0, -15} };
 
 		for (auto& it : path)
 			it = rotatePoint(it + _pos, _pos, _rotationAngle);
 
-		for (int i = 0; i < 15; i += 2)
+		for (int i = 0; i < path.size(); i += 2)
 			painter.drawLine(path[i], path[i + 1]);
 
 		//TODO this is remporary
