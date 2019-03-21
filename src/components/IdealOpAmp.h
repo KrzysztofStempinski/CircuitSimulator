@@ -44,7 +44,7 @@ public:
 
 		_name = "ideal_op_amp";
 
-		_boundingRect.setCoords(-24, 12, 24, -12);
+		_boundingRect.setCoords(-38, 44, 82, -44);
 
 		_boundingRect = _boundingRect.normalized();
 
@@ -53,24 +53,35 @@ public:
 	//
 	void draw(QPainter& painter) {
 
-		QPoint path[12] = { { -24, 0 }, {-6, 0 }, {-6, 12}, {-6, -12}, {-6, 0}, {6, 12}, {-6, 0}, {6, -12}, {6, 12}, {6, -12}, {6, 0}, {24, 0} };
-
+		std::vector<QPoint> path = {	{ -38, 18 }, { -12, 18 }, 
+										{ -38, -18 }, { -12, -18 }, 
+										{ -12, 44 }, { -12, -44 }, 
+										{ -12, 44 }, { 62, 0 }, 
+										{ -12, -44 }, { 62, 0}, 
+										{ 62, 0 }, { 82, 0 }, 
+										// plus sign
+										{ -6, 18 }, { 6, 18 },
+										{ 0, -24 }, { 0, -12 },
+										// minus sign
+										{ -6, -18 }, { 6, -18 },
+									}; 
+		
 		for (auto& it : path)
 			it = rotatePoint(it + _pos, _pos, _rotationAngle);
 
-		for (int i = 0; i < 11; i += 2)
+		for (int i = 0; i < path.size(); i += 2)
 			painter.drawLine(path[i], path[i + 1]);
 
 		//TODO this is remporary
 		if (serialNumber > 0) {
-			QPoint pos(0, -12);
+			QPoint pos(30, -30);
 			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		}
 
 	}
 
 	int nodeCount() {
-		return 2;
+		return 3;
 	}
 
 	// DCOP STUFF
@@ -85,18 +96,16 @@ public:
 	}
 
 	QString displayNameBase() {
-		return "Ideal (Schockley) diode";
+		return "Ideal op-amp";
 	}
 
 	QString letterIdentifierBase() {
-		return "D";
+		return "OP";
 	}
 
 	std::tuple<QString, QString, double> getSimulationResult() {
 
-		double current = properties["sat_curr"].value * (std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["therm_volt"].value) - 1);
-
-		return std::make_tuple(letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current);
+		return std::make_tuple("", "", 0);
 
 	}
 
@@ -107,8 +116,9 @@ public:
 
 	void updateNodeOffsets() {
 
-		coupledNodes[0]->setOffset(QPoint(-24, 0));
-		coupledNodes[1]->setOffset(QPoint(24, 0));
+		coupledNodes[0]->setOffset(QPoint(-38, 18)); // V-
+		coupledNodes[1]->setOffset(QPoint(-38, -18)); // V_
+		coupledNodes[2]->setOffset(QPoint(82, 0)); // Vout
 
 	}
 

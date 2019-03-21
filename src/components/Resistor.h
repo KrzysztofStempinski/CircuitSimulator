@@ -71,10 +71,8 @@ class Resistor : public Component {
 			//TODO this is remporary
 
 			if (serialNumber > 0) {
-			QPoint pos(0, 12);
-			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
-		
-			
+				QPoint pos(-4, -16);
+				painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 			}
 		}
 
