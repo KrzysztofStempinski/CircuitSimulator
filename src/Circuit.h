@@ -24,7 +24,7 @@ class Circuit {
 
 	private:
 
-		SimulationResult _prepareDCOP();
+		void prepareDCOP();
 
 	public:
 
@@ -48,7 +48,7 @@ class Circuit {
 		int voltageCount;
 		int currentCount;
 
-		SimulationResult simulate();
+		void simulate();
 
 };
 

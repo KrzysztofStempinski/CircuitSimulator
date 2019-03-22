@@ -13,10 +13,6 @@
 // 
 //  ---------------------------------------------
 
-// NOTE: this is ugly, and unsafe, lacks error checking
-// (and generally is in poor taste)
-// HOWEVER, I need file IO methods up and running
-
 // TODO: http://rapidjson.org/md_doc_stream.html, change from i/ofstream to dedicated streams
 // TODO: error handling
 // TODO(?): check for version compatibility in loadFromFile(...)
@@ -53,8 +49,8 @@ bool Circuit::saveToFile(const QString fileName) {
 	rapidjson::Document::AllocatorType& allocator = file.GetAllocator();
 
 	// save version info for comparision between releases
-	rapidjson::Value version(VersionInfo::getVersionString().toStdString().c_str(),
-								VersionInfo::getVersionString().toStdString().size(),
+	rapidjson::Value version(VersionInfo::getVersionString().toUtf8(),
+								VersionInfo::getVersionString().size(),
 								allocator);
 	file.AddMember("version", version, allocator);
 
@@ -106,12 +102,16 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 		components.back()->setRotationAngle((*it)["rotationAngle"].GetInt());
 
-		// TODO load properties from file
 		if ((*it).HasMember("properties")) {
 
-			const rapidjson::Value& arrayProperties = (*it)["properties"];
+			//const rapidjson::Value& arrayProperties = (*it)["properties"];
 
+
+			//for (int i = 0; i < arrayProperties.Size(); ++i) {
+			//	components.back()->properties.at()
+			//}
 			//for (rapidjson::Value::ConstValueIterator itp = arrayProperties.Begin(); itp != arrayProperties.End(); ++itp)
+				
 				//components.back()->properties.set
 			//for (int i = 0; i < components[components.size() - 1]->properties.getPropertyCount(); i++) {
 
@@ -119,7 +119,7 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 			//	components[components.size() - 1]->properties.setPropertyValue(i, component["properties"][i].GetDouble());
 
-			//}
+		//	}
 		}
 
 	}
@@ -140,7 +140,7 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 	}
 
-	// now we're sure that every component has as many coupled nodes as required
+	// now that we're sure that every component has as many coupled nodes as required
 	for (const auto& it : components)
 		it->updateNodeOffsets();
 
@@ -150,7 +150,6 @@ bool Circuit::loadFromFile(const QString fileName) {
 			for (rapidjson::Value::ConstValueIterator jt = (*it)["connectedNodes"].Begin(); jt != (*it)["connectedNodes"].End(); ++jt) 
 				nodes[(*it)["ID"].GetInt()]->connectTo(nodes[(*jt).GetInt()]);
 
-	
 	return true;
 
 }

@@ -5,11 +5,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
-      <Extensions>qrc;*</Extensions>
-      <ParseFiles>false</ParseFiles>
-    </Filter>
     <Filter Include="Simulation">
       <UniqueIdentifier>{6f77f049-e242-4984-a67c-afcfc28cf764}</UniqueIdentifier>
     </Filter>
@@ -47,9 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\SimulationErrors.cpp">
-      <Filter>Simulation</Filter>
-    </ClCompile>
     <ClCompile Include="src\Version.cpp">
       <Filter>Version Info</Filter>
     </ClCompile>

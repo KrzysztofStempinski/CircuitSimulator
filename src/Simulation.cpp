@@ -5,11 +5,11 @@
 constexpr int MAX_ITERATIONS = 400; // should be enough
 constexpr double DELTA = 1e-6;
 
-SimulationResult Circuit::_prepareDCOP() {
+void Circuit::prepareDCOP() {
 
 	// sanity check
 	if (components.empty())
-		return SimulationResult::Error_NoComponents;
+		throw SimulationException("no components present in the circuit");
 
 	// cleanup
 	for (auto& it : nodes) 
@@ -30,7 +30,7 @@ SimulationResult Circuit::_prepareDCOP() {
 	}
 
 	if (!foundGround)
-		return SimulationResult::Error_NoGroundNode;
+		throw SimulationException("no ground node present in the circuit");
 
 	int voltageIndex = 0;
 	for (auto& it : nodes) {
@@ -49,17 +49,11 @@ SimulationResult Circuit::_prepareDCOP() {
 
 	currentCount = currentIndex;
 
-	return SimulationResult::Success;
-
 }
 
-SimulationResult Circuit::simulate() {
+void Circuit::simulate() {
 
-	// logWindow->log("Starting simulation...");
-
-	SimulationResult preparationResult = _prepareDCOP();
-	if (preparationResult != SimulationResult::Success)
-		return preparationResult;
+	prepareDCOP();
 
 	Eigen::MatrixXd matrixA_linear(voltageCount + currentCount, voltageCount + currentCount);
 	Eigen::MatrixXd matrixA_nonlinear(voltageCount + currentCount, voltageCount + currentCount);
@@ -118,8 +112,6 @@ SimulationResult Circuit::simulate() {
 			if (it->requiresCurrentEntry())
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 
-		// DEBUG
-		// logWindow->log("Solutions at iteration " + QString::number(iteration) + " = " + vectorToString(solutions), LogEntryType::Debug);
 
 	}
 
@@ -127,9 +119,8 @@ SimulationResult Circuit::simulate() {
 
 	if (converged) {
 		logWindow->log("Newton's method converged in " + QString::number(iteration) + " iterations.");	
-		return SimulationResult::Success;
 	} else {
-		return SimulationResult::Error_NewtonTimedOut;
+		throw SimulationException("Newton's method failed to converge");
 	}
 
 }

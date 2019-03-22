@@ -42,15 +42,9 @@ public:
 
 		_name = "diode";
 
-		properties.insert(std::pair<QString, Property>("sat_curr",
-			Property("Saturation current",
-				QString::fromUtf8("A"),
-				1e-14)));
+		properties["sat_curr"] = { "Saturation current", "A", 1e-14 };
 
-		properties.insert(std::pair<QString, Property>("therm_volt",
-			Property("Thermal voltage",
-				QString::fromUtf8("V"),
-				26e-3)));
+		properties["therm_volt"] = { "Thermal voltage", "V", 26e-3 };
 
 		_boundingRect.setCoords(-24, 12, 24, -12);
 
@@ -58,7 +52,6 @@ public:
 
 	}
 
-	//
 	void draw(QPainter& painter) {
 
 		std::vector<QPoint> path = { { -24, 0 }, {-6, 0 }, {-6, 12}, {-6, -12}, {-6, 0}, {6, 12}, {-6, 0}, {6, -12}, {6, 12}, {6, -12}, {6, 0}, {24, 0} };

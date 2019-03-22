@@ -68,7 +68,7 @@ class Component : public SimulableObject, public EditorObject {
 		virtual bool requiresCurrentEntry() = 0;
 		virtual bool linear() = 0;
 			
-		std::map<QString, Property> properties;
+		PropertyMap properties;
 		
 		std::vector<Node*> coupledNodes;
 

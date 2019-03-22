@@ -41,11 +41,7 @@ public:
 
 		_name = "voltage_source";
 
-		properties.insert(std::pair<QString, Property>("voltage",
-			Property("Voltage",
-				"V",
-				12)));
-
+		properties["voltage"] = { "Voltage", "V", 12 };
 
 		_boundingRect.setCoords(-24, 10, 24, -10);
 
@@ -53,7 +49,6 @@ public:
 
 	}
 
-	//
 	void draw(QPainter& painter) {
 
 		std::vector<QPoint> path = { { -3, -10 }, { -3, 10 }, {3, -4}, {3, 4}, {4, -4}, {4, 4}, {4, 0}, {24, 0}, {-4, 0}, { -24, 0 } };

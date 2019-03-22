@@ -24,12 +24,8 @@ struct PropertyGeneric {
 	QString unit;
 	T value;
 
-		PropertyGeneric(QString newDisplayName, QString newUnit, T newValue) 
-			: displayName(newDisplayName), unit(newUnit), value(newValue) {};
-
-		PropertyGeneric() 
-			: displayName("unspecified"), unit("unspecified"), value(T(0)) {};
-
 };
 
 using Property = PropertyGeneric<double>;
+
+using PropertyMap = std::map<QString, Property>;

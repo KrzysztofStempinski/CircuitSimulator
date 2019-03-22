@@ -43,11 +43,7 @@ class Resistor : public Component {
 
 			_name = "resistor";
 
-			properties.insert(std::pair<QString, Property>("resistance", 
-					Property("Resistance",
-						QString::fromUtf8("\u03C9"),
-						1000)));
-
+			properties["resistance"] = { "Resistance", QString::fromWCharArray(L"\u03A9"), 1000 };
 
 			_boundingRect.setCoords(-24, 12, 24, -12);
 

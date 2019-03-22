@@ -48,7 +48,6 @@ public:
 
 	}
 
-	//
 	void draw(QPainter& painter) {
 
 		std::vector<QPoint> path = {	{ -40, 16 }, { -12, 16 }, 

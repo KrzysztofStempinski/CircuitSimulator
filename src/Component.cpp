@@ -55,13 +55,13 @@ void Component::setRotationAngle(const int angle) {
 }
 
 void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator) {
-	/*
+	
 	rapidjson::Value valueComponent;
 	valueComponent.SetObject();
 
 	valueComponent.AddMember("ID", ID, allocator);
 
-	rapidjson::Value name(_name.toStdString().c_str(), _name.toStdString().size(), allocator); // TODO wtf is with those strings
+	rapidjson::Value name(_name.toUtf8(), _name.size(), allocator); 
 	valueComponent.AddMember("name", name, allocator);
 
 	rapidjson::Value position(rapidjson::kArrayType);
@@ -71,17 +71,20 @@ void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Documen
 
 	valueComponent.AddMember("rotationAngle", _rotationAngle, allocator);
 
-	if (!properties.empty()) {
+	// TODO save properties to file
+	/*if (!properties.empty()) {
 
-		rapidjson::Value arrayProperties(rapidjson::kArrayType);
+		rapidjson::Value propertiesVal;
+		for (auto& it : properties) {
+			rapidjson::Value valueProperty(it.first.toUtf8(), it.second.value, allocator);
+			propertiesVal.AddMember(, valueProperty);
+		}
+	
 
-		for (auto &it : properties)
-			arrayProperties.PushBack(it.second.value, allocator);
+		valueComponent.AddMember("properties", valueComponent, allocator);
 
-		valueComponent.AddMember("properties", arrayProperties, allocator);
-
-	}
+	}*/
 
 	arrayComponents.PushBack(valueComponent, allocator);
-	*/
+	
 }

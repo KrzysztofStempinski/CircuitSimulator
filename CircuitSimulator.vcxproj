@@ -27,7 +27,6 @@
     <ClCompile Include="src\MatrixHelper.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
-    <ClCompile Include="src\SimulationErrors.cpp" />
     <ClCompile Include="src\SimulationResultsWindow.cpp" />
     <ClCompile Include="src\Version.cpp" />
   </ItemGroup>

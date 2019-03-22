@@ -68,7 +68,7 @@ void MainWindow::createDockWidgets() {
 //
 void MainWindow::createMenu() {
 
-	auto getAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction* {
+	auto createAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction* {
 		
 		QAction* action = new QAction(title);
 
@@ -84,48 +84,48 @@ void MainWindow::createMenu() {
 	
 	};
 
-	action_componentProperties = getAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
+	action_componentProperties = createAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
 	addAction(action_componentProperties);
 
-	action_createMidpointNode = getAction("Create node at midpoint", SLOT(slot_createMidpointNode()), "M");
+	action_createMidpointNode = createAction("Create node at midpoint", SLOT(editor->slot_createMidpointNode()), "M");
 	addAction(action_createMidpointNode);
 
-	action_connectToClosest = getAction("Connect to closest node", SLOT(editor->connectToClosest()), "C");
+	action_connectToClosest = createAction("Connect to closest node", SLOT(editor->connectToClosest()), "C");
 	addAction(action_connectToClosest);
 
 	// file actions
-	action_fileNew = getAction("New", SLOT(slot_fileNew()), "Ctrl+N", "fileNew.ico");
+	action_fileNew = createAction("New", SLOT(slot_fileNew()), "Ctrl+N", "fileNew.ico");
 	addAction(action_fileNew);
 
-	action_fileOpen = getAction("Open", SLOT(slot_fileOpen()), "Ctrl+O", "fileOpen.ico");
+	action_fileOpen = createAction("Open", SLOT(slot_fileOpen()), "Ctrl+O", "fileOpen.ico");
 	addAction(action_fileOpen);
 
-	action_fileSave = getAction("Save", SLOT(slot_fileSave()), "Ctrl+S", "fileSave.ico");
+	action_fileSave = createAction("Save", SLOT(slot_fileSave()), "Ctrl+S", "fileSave.ico");
 	addAction(action_fileSave);
 
-	action_fileSaveAs = getAction("Save As...", SLOT(slot_fileSaveAs()), "Ctrl+Shift+S", "fileSaveAs.ico");
+	action_fileSaveAs = createAction("Save As...", SLOT(slot_fileSaveAs()), "Ctrl+Shift+S", "fileSaveAs.ico");
 	addAction(action_fileSaveAs);
 
-	action_fileExit = getAction("Exit", SLOT(slot_fileExit()), "Alt+F4");
+	action_fileExit = createAction("Exit", SLOT(slot_fileExit()), "Alt+F4");
 	addAction(action_fileExit);
 
 	// edit actions
-	action_editUndo = getAction("Undo", SLOT(slot_editUndo()), "Ctrl+Z", "editUndo.ico");
+	action_editUndo = createAction("Undo", SLOT(slot_editUndo()), "Ctrl+Z", "editUndo.ico");
 	addAction(action_editUndo);
 
-	action_editRedo = getAction("Redo", SLOT(slot_editRedo()), "Ctrl+Y", "editRedo.ico");
+	action_editRedo = createAction("Redo", SLOT(slot_editRedo()), "Ctrl+Y", "editRedo.ico");
 	addAction(action_editRedo);
 
-	action_editSelectAll = getAction("Select All", SLOT(slot_editSelectAll()), "Ctrl+A", "editSelectAll.ico");
+	action_editSelectAll = createAction("Select All", SLOT(slot_editSelectAll()), "Ctrl+A", "editSelectAll.ico");
 	addAction(action_editSelectAll);
 
 	// simulation actions
-	action_simulationRun = getAction("Run", SLOT(slot_simulationRun()), "F5", "simulationRun.ico");
+	action_simulationRun = createAction("Run", SLOT(slot_simulationRun()), "F5", "simulationRun.ico");
 	action_simulationRun->setToolTip("Run simulation");
 	addAction(action_simulationRun);
 
 	// help actions
-	action_aboutQt = getAction("About Qt", SLOT(slot_aboutQt()));
+	action_aboutQt = createAction("About Qt", SLOT(slot_aboutQt()));
 
 	QMenu* menuFile = menuBar()->addMenu("File");
 	menuFile->addAction(action_fileNew);
@@ -188,7 +188,7 @@ void MainWindow::populateComponents() {
 	painter->setPen(Qt::cyan);
 
 	// lambda magic
-	auto getComponentAction = [pixmap, painter](QString const& name) -> QAction* {
+	auto createComponentAction = [pixmap, painter](QString const& name) -> QAction* {
 	
 		Component* tempComponent = getComponentFromName(name);
 		tempComponent->setPos(QPoint(18, 18));
@@ -209,7 +209,7 @@ void MainWindow::populateComponents() {
 
 	for (const auto& it : COMPONENT_LIST) {
 
-		QAction* act = getComponentAction(it);
+		QAction* act = createComponentAction(it);
 		menuComponents->addAction(act);
 		toolbarComponents->addAction(act);
 

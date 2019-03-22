@@ -110,7 +110,7 @@ class CircuitEditor : public QWidget {
 
 	public:
 
-		void createMidpointNode();
+
 		void connectToClosest();
 		void deleteElement();
 
@@ -119,6 +119,8 @@ class CircuitEditor : public QWidget {
 
 	signals:
 		public slots:
+
+			void slot_createMidpointNode();
 
 			void slot_componentRotate(int angle);
 			void slot_delete();

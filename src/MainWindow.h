@@ -48,17 +48,17 @@ class MainWindow : public QMainWindow {
 		QMenu* menuComponents;
 		QToolBar* toolbarComponents;
 
-    Q_OBJECT
-	public:
-		
-		explicit MainWindow();
-
 		void populateComponents();
 		void createInterface();
 		void createDockWidgets();
 		void createMenu();
 		void createToolBar();
 		void createStatusBar();
+
+    Q_OBJECT
+	public:
+		
+		explicit MainWindow();
 
 		CircuitEditor* editor;
 
@@ -71,8 +71,6 @@ class MainWindow : public QMainWindow {
 		void slot_fileExit();
 
 		void slot_schematicPlaceComponent(QAction *action);
-
-		void slot_createMidpointNode();
 
 		void slot_simulationRun();
 

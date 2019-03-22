@@ -1,6 +1,23 @@
+/*
+
+	This file is part of CircuitSimulator
+	Copyright (C) 2018 Krzysztof Stempinski
+
+	Refer to main.cpp or License.md for licensing info
+
+*/
+
+//  ---------------------------------------------
+//
+//	CircuitEditor_slots.h
+// 
+//  ---------------------------------------------
+
 #include "CircuitEditor.h"
 
 #include <QAction>
+
+#include "Math.h"
 
 void CircuitEditor::slot_componentRotate(int angle) {
 
@@ -121,6 +138,28 @@ void CircuitEditor::slot_nextNode() {
 			update();
 
 		}
+	}
+
+}
+
+void CircuitEditor::slot_createMidpointNode() {
+
+	if (mouseOverLink.first != nullptr) {
+
+		QPoint p1 = mouseOverLink.first->pos();
+		QPoint p2 = mouseOverLink.second->pos();
+
+		circuit.createNode(snapPointToGrid((p1 + p2) / 2, GRID_SIZE));
+		mouseOverLink.first->disconnectFrom(mouseOverLink.second);
+
+		mouseOverLink.first->connectTo(circuit.nodes.back());
+		mouseOverLink.second->connectTo(circuit.nodes.back());
+
+		setMode(EditorMode::linkDrawing);
+		nodeLinkStart = circuit.nodes.back();
+
+		update();
+
 	}
 
 }

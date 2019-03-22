@@ -27,7 +27,9 @@ QPoint snapPointToGrid(const QPoint &pointToSnap, int gridSize, bool performSnap
 		return QPoint(snappedX, snappedY);
 
 	} else {
+
 		return pointToSnap;
+
 	}
 
 }
