@@ -34,11 +34,10 @@ class SimulationResultsWindow : public QDialog {
 
 		const Circuit& _circuit;
 		const Eigen::VectorXd _solutions;
-		const int _voltageCount;
 
 	public:
 
-		SimulationResultsWindow(Circuit& circuit, Eigen::VectorXd solutions, int voltageCount);
+		SimulationResultsWindow(Circuit& circuit, Eigen::VectorXd solutions);
 
 	public slots:
 

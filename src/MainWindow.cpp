@@ -59,9 +59,10 @@ void MainWindow::slot_simulationRun() {
 
 				editor->circuit.simulate();
 
+				// display dock with simulation results
 				qDeleteAll(dockSimulationResults->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
 
-				SimulationResultsWindow* w = new SimulationResultsWindow(editor->circuit, solutions, editor->circuit.voltageCount);
+				SimulationResultsWindow* w = new SimulationResultsWindow(editor->circuit, solutions);
 
 				dockSimulationResults->setWidget(w);
 				dockSimulationResults->show();

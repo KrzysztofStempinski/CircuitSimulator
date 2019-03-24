@@ -88,9 +88,10 @@ public:
 		return "GND";
 	}
 
-	std::tuple<QString, QString, double> getSimulationResult() {
+	SimulationResult getSimulationResult() {
 
-		return std::make_tuple("gg", "gg", 12);
+		throw "SHOULD NOT HAPPEN!";
+		return {};
 	}
 
 	// TODO this is temporary

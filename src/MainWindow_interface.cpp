@@ -225,8 +225,6 @@ void MainWindow::createToolBar() {
 
 	toolbar->setWindowTitle("Toolbar");
 
-	//toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
-
 	addToolBar(toolbar);
 
 	toolbar->addAction(action_fileNew);
@@ -253,7 +251,6 @@ void MainWindow::createToolBar() {
 void MainWindow::createStatusBar() {
 	
 	QStatusBar* statusbar = new QStatusBar(this);
-
 	setStatusBar(statusbar);	
 	statusbar->show();
 

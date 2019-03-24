@@ -96,9 +96,9 @@ public:
 		return "V";
 	}
 
-	std::tuple<QString, QString, double> getSimulationResult() {
+	SimulationResult getSimulationResult() {
 
-		return std::make_tuple(letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", currentValue);
+		return { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", currentValue };
 	
 	}
 

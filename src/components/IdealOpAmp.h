@@ -100,9 +100,10 @@ public:
 		return "OP";
 	}
 
-	std::tuple<QString, QString, double> getSimulationResult() {
+	SimulationResult getSimulationResult() {
 
-		return std::make_tuple("", "", 0);
+		throw "DUPA!";
+		return { };
 
 	}
 

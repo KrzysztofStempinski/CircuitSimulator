@@ -21,6 +21,18 @@
 #include <qspinbox.h>
 #include <qlabel.h>
 
+// goddamnit fold expressions are sexy
+// unfold me daddy uwu
+template<typename ...Args>
+void addRow(QTableWidget* table, Args... args) {
+
+	table->insertRow(table->rowCount());
+
+	int i = 0;
+	(table->setItem(table->rowCount() - 1, i++, new QTableWidgetItem(args)), ...);
+
+};
+
 void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
 
 	table->setRowCount(0);
@@ -28,56 +40,44 @@ void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
 	for (auto& it : _circuit.components) {
 		if (it->hasSimulationResult()) {
 
-			const std::tuple<QString, QString, double> result = it->getSimulationResult();
+			const SimulationResult result = it->getSimulationResult();
 
-			table->insertRow(table->rowCount());
-			table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem(std::get<0>(result)));
-			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem(std::get<1>(result)));
-			//table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(std::get<2>(result), 'g', 15)));
-			table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(std::get<2>(result))));
+			addRow(table, result.name, result.unit, QString::number(result.value));
 
 		}
 	}
 
-	if (displayNodeVoltages) {
-		for (int i = 0; i < _voltageCount; ++i) {
+	// TODO fix out of bounds bug
+	// it is because solutions are passed by reference, and solutions in mainWindow goes out of scope,
+	// so here _solutions is empty
+	if (displayNodeVoltages) 
+		for (int i = 0; i < _circuit.voltageCount; ++i) 
+			addRow(table, "N" + QString::number(i + 1), "Node Voltage [V]", QString::number(_solutions(i)));
 
-			table->insertRow(table->rowCount());
-			table->setItem(table->rowCount() - 1, 0, new QTableWidgetItem("N" + QString::number(i + 1)));
-			table->setItem(table->rowCount() - 1, 1, new QTableWidgetItem("Node Voltage [V]"));
-	//		table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(_circuit.nodes[i]->voltageValue, 'g', 15)));
-			table->setItem(table->rowCount() - 1, 2, new QTableWidgetItem(QString::number(_circuit.nodes[i]->voltageValue)));
-
-		}
-	}
 
 	table->sortByColumn(0, Qt::AscendingOrder);
 
 }
 
-SimulationResultsWindow::SimulationResultsWindow(Circuit& circuit, Eigen::VectorXd solutions, int voltageCount)
+SimulationResultsWindow::SimulationResultsWindow(Circuit& circuit, Eigen::VectorXd solutions)
 	: _circuit(circuit),
-	_solutions(solutions),
-	_voltageCount(voltageCount){
+	_solutions(solutions)
+{
 
 	setWindowTitle("Simulation results | Circuit Simulator");
 
 	table = new QTableWidget;
 	
-	//table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
+	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	table->setColumnCount(3);
-	QStringList header = { "Element", "Value Type", "Value" };
-
-	table->setHorizontalHeaderLabels(header);	
+	table->setHorizontalHeaderLabels({ "Element", "Value Type", "Value" });
 
 	table->show();
 	displayResults();
 
 	QVBoxLayout* mainLayout = new QVBoxLayout;
-
-	QHBoxLayout *layoutBottom = new QHBoxLayout;
-	QHBoxLayout *layoutTop = new QHBoxLayout;
+	QHBoxLayout* layoutBottom = new QHBoxLayout;
+	QHBoxLayout* layoutTop = new QHBoxLayout;
 
 	QSpinBox* precisionSpin = new QSpinBox;
 	precisionSpin->setMinimum(1);

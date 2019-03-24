@@ -18,6 +18,8 @@
 #include <vector>
 #include <string>
 
+#include <qpainter.h>
+
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/document.h"
 #include "../rapidjson/filereadstream.h"
@@ -27,15 +29,20 @@
 
 #include "SimulableObject.h"
 #include "EditorObject.h"
+#include "Property.h"
+#include "LogWindow.h"
 
 class Component;
 
 #include "Node.h"
-#include "Property.h"
 
-#include "LogWindow.h"
+struct SimulationResult {
 
-#include <qpainter.h>
+	QString name = QString::null;
+	QString unit = QString::null;
+	double value = double(0);
+
+};
 
 class Component : public SimulableObject, public EditorObject {
 
@@ -74,7 +81,7 @@ class Component : public SimulableObject, public EditorObject {
 
 		virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 
-		virtual std::tuple<QString, QString, double> getSimulationResult() = 0;
+		virtual SimulationResult getSimulationResult() = 0;
 
 		// TODO this is temporary
         virtual bool hasSimulationResult() = 0;
