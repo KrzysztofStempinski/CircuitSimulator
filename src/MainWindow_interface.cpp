@@ -19,14 +19,13 @@
 #include <qmenubar.h>
 #include <qstatusbar.h>
 
+#include "Config.h"
 #include "ComponentList.h"
 #include "SimulationResultsWindow.h"
-
-const QString ICON_PATH = "data\\icons\\";
-const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or something like that
+#include "util/QActionHelper.h"
 
 void MainWindow::createInterface() {
-	setWindowIcon(QIcon(ICON_PATH + "appicon.ico"));
+	setWindowIcon(QIcon(Config::Paths::Icon + "appicon.ico"));
 	setWindowTitle("untitled.esf - CircuitSimulator");
 	resize(QSize(MAINWINDOW_DEF_WIDTH, MAINWINDOW_DEF_HEIGHT));
 
@@ -55,20 +54,8 @@ void MainWindow::createDockWidgets() {
 // MainWindow::createMenus()
 //
 void MainWindow::createMenu() {
-	auto createAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction * {
-		QAction* action = new QAction(title);
 
-		if (!iconName.isEmpty())
-			action->setIcon(QIcon(ICON_PATH + iconName));
-
-		if (!shortcut.isEmpty())
-			action->setShortcut(QKeySequence(shortcut));
-
-		QObject::connect(action, SIGNAL(triggered()), this, slot);
-
-		return action;
-	};
-
+	//TODO connecte to slots!!!!!
 	action_componentProperties = createAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
 	addAction(action_componentProperties);
 

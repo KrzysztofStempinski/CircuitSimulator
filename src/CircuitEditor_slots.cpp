@@ -25,19 +25,19 @@ void CircuitEditor::slot_componentRotate(int angle) {
 		if (mouseOverComponent != nullptr)
 			mouseOverComponent->setRotationAngle(mouseOverComponent->getRotationAngle() + angle);
 	}
-							   break;
+	break;
 
 	case EditorMode::moving:
 	case EditorMode::rectSelected: {
 		for (const auto& it : _selectedComponents)
 			it->setRotationAngle(it->getRotationAngle() + angle);
 	}
-								   break;
+		break;
 
 	case EditorMode::componentCreation: {
 		_currentComponent->setRotationAngle(_currentComponent->getRotationAngle() + angle);
 	}
-										break;
+	break;
 	}
 
 	update();
@@ -77,7 +77,7 @@ void CircuitEditor::slot_delete() {
 			break;
 		}
 	}
-							   break;
+	break;
 
 	case EditorMode::moving:
 	case EditorMode::rectSelected: {
@@ -89,7 +89,7 @@ void CircuitEditor::slot_delete() {
 
 		_mode = EditorMode::idle;
 	}
-								   break;
+		break;
 	}
 
 	update();
@@ -99,8 +99,8 @@ void CircuitEditor::slot_nextNode() {
 	if (_mode == EditorMode::linkDrawing) {
 		if (nodeLinkStart->isCoupled()) {
 			auto it = std::find(std::begin(nodeLinkStart->getCoupledComponent()->coupledNodes),
-				std::end(nodeLinkStart->getCoupledComponent()->coupledNodes),
-				nodeLinkStart);
+			                    std::end(nodeLinkStart->getCoupledComponent()->coupledNodes),
+			                    nodeLinkStart);
 
 			// last node, switch to first
 			if (it == std::next(nodeLinkStart->getCoupledComponent()->coupledNodes.end(), -1))

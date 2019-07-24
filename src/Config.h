@@ -4,10 +4,11 @@
 #include <Qpen.h>
 
 namespace Config {
-	const QColor colorGrid = Qt::darkGray;
-	const QColor colorNormal = Qt::cyan;
-	const QColor colorHighlighted = Qt::blue;
-	const QColor colorSelected = Qt::red;
+
+	namespace Paths {
+		const QString Icons = "data\\icons\\";
+		const std::string Components = "data\\components\\";
+	}
 
 	namespace Pens {
 		const QPen grid(Qt::darkGray, 1);

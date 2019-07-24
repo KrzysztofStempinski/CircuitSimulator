@@ -96,6 +96,9 @@
     <ClCompile Include="src\Simulation.cpp">
       <Filter>Simulation</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\QActionHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Property.h">
@@ -147,6 +150,9 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\QActionHelper.h">
       <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>

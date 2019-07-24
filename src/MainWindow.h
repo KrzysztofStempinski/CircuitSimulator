@@ -11,7 +11,6 @@ constexpr int MAINWINDOW_DEF_WIDTH = 1440;
 constexpr int MAINWINDOW_DEF_HEIGHT = 900;
 
 class MainWindow : public QMainWindow {
-private:
 
 	QAction* action_componentProperties;
 

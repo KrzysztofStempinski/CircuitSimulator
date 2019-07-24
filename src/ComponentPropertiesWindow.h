@@ -28,9 +28,6 @@
 class ComponentPropertiesWindow : public QDialog {
 Q_OBJECT
 
-private:
-
-	QDialogButtonBox* buttonBox;
 	QFormLayout* _formLayout;
 
 	Component& _component;
