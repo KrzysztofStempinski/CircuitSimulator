@@ -13,6 +13,8 @@
 // 
 //  ---------------------------------------------
 
+#include "Config.h"
+
 #include "Log.h"
 
 #include "CircuitEditor.h"
@@ -78,15 +80,13 @@ void CircuitEditor::mouseDoubleClickEvent(QMouseEvent* event) {
 // 
 CircuitEditor::CircuitEditor() {
 
+	setMouseTracking(true);
+
 	nodeLinkStart = nullptr;
 	mouseOverNode = nullptr;
 	mouseOverComponent = nullptr;
 
     _mode = EditorMode::_default;
-
-	setMouseTracking(true); 
-
-	_scale = 1.0;
 
 	createActions();
 
@@ -94,110 +94,76 @@ CircuitEditor::CircuitEditor() {
 
 }
 
-//
-// CircuitEditor::drawEverything()
-//
-void CircuitEditor::drawEverything(QPainter &painter) {
+/*
+	CircuitEditor::drawEverything()
+*/
+void CircuitEditor::drawEverything(QPainter& painter) {
 
-	QColor colorNormal, colorHighlighted, colorSelected;
-
-	colorNormal = Qt::cyan;
-	colorHighlighted = Qt::blue;
-	colorSelected = Qt::red;
-
-	painter.translate(QPoint(_scale, _scale));
 	painter.setRenderHint(QPainter::HighQualityAntialiasing);
 
-	QPen pen;
-
 	// draw grid
-	pen.setColor(Qt::darkGray);
-	pen.setWidth(1);
-	painter.setPen(pen);
+	painter.setPen(Config::Pens::grid);
 	for (int i = 0; i < painter.window().right() - painter.window().left(); i += GRID_SIZE)
 		for (int j = 0; j < painter.window().bottom() - painter.window().top(); j += GRID_SIZE)
 			painter.drawPoint(i, j);
 
 	// draw all the components
-	for (auto it = std::begin(circuit.components); it != std::end(circuit.components); ++it) {
+	for (const auto& it : circuit.components) {
 
-		if ((*it)->selected) {
-			pen.setColor(colorSelected);
-			pen.setWidth(2);
-		}
-		else if ((*it) == mouseOverComponent && _mode != EditorMode::linkDrawing) {
-			pen.setColor(colorHighlighted);
-			pen.setWidth(2);
-		}
-		else {
-			pen.setColor(colorNormal);
-			pen.setWidth(1);
-		}
+		if (it->selected)
+			painter.setPen(Config::Pens::selected);
+		else if (it == mouseOverComponent && _mode != EditorMode::linkDrawing)
+			painter.setPen(Config::Pens::highlighted);
+		else
+			painter.setPen(Config::Pens::normal);
 
-		painter.setPen(pen);
+		it->draw(painter);
 
-		(*it)->draw(painter);
 	}
 
 
 	// if we're in component creation mode, draw the currently selected one
 	if (_mode == EditorMode::componentCreation) {
-		pen.setColor(Qt::lightGray);
-		pen.setWidth(1);
-		painter.setPen(pen);
 
+		painter.setPen(Config::Pens::outline);
 		_currentComponent->draw(painter);
 
 	}
 
 	// draw nodes and links between them
-	for (auto it = std::begin(circuit.nodes); it != std::end(circuit.nodes); ++it) {
+	for (const auto& it : circuit.nodes) {
 
-		pen.setColor(colorNormal);
-		pen.setWidth(1);
-		painter.setPen(pen);
+		painter.setPen(Config::Pens::normal);
 
-		for (const auto &it2 : (*it)->connectedNodes) {
+		for (const auto &it2 : it->connectedNodes) {
 			//  TODO refactor, optimize etc.
-			if ((mouseOverLink.first == it2 && mouseOverLink.second == (*it)) || (mouseOverLink.first == (*it) && mouseOverLink.second == it2)) {
+			if ((mouseOverLink.first == it2 && mouseOverLink.second == it) || (mouseOverLink.first == it && mouseOverLink.second == it2)) {
 
-				pen.setColor(colorHighlighted);
-				pen.setWidth(2);
-				painter.setPen(pen);
+				painter.setPen(Config::Pens::highlighted);
 
-				painter.drawLine((*it)->pos(), it2->pos());
+				painter.drawLine(it->pos(), it2->pos());
 
-				pen.setColor(colorNormal);
-				pen.setWidth(1);
-				painter.setPen(pen);
+				painter.setPen(Config::Pens::normal);
 
-			} else {
-				painter.drawLine((*it)->pos(), it2->pos());
-			}
+			} else 
+				painter.drawLine(it->pos(), it2->pos());
 
 		}
 
-		if ((*it)->selected) {
-			pen.setColor(colorSelected);
-			pen.setWidth(2);
-		} else if ((*it) == mouseOverNode) {
-			pen.setColor(colorHighlighted);
-			pen.setWidth(2);
-		} else {
-			pen.setColor(colorNormal);
-			pen.setWidth(1);
-		}
+		if (it->selected)
+			painter.setPen(Config::Pens::selected);
+		else if (it == mouseOverNode)
+			painter.setPen(Config::Pens::highlighted);
+		else 
+			painter.setPen(Config::Pens::normal);
 
-		painter.setPen(pen);
-
-		(*it)->draw(&painter);
+		it->draw(&painter);
 
 	}
 
 	// paint the selection rect
 	if (_mode == EditorMode::rectSelect) {
-		pen.setColor(colorSelected);
-		painter.setPen(pen);
+		painter.setPen(Config::Pens::selected);
 		painter.drawRect(_selectionRect);
 	}
 
@@ -207,8 +173,7 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 		QPoint snappedCursor = snapPointToGrid(mapFromGlobal(QCursor::pos()), GRID_SIZE);
 		QPoint adjustedPosition = snappedCursor;
 
-		pen.setColor(colorNormal);
-		painter.setPen(pen); 
+		painter.setPen(Config::Pens::normal); 
 
 		// we allow the user only to draw straight connections,
 		// i.e. either y = y_o or x=x_o, where (x_o, y_o) is position
@@ -230,6 +195,8 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 			painter.drawLine(nodeLinkStart->pos(), adjustedPosition);
 
 		// extended crosshair
+		//TODO actually implement...
+		/*
 		pen.setColor(Qt::green);
 		pen.setWidth(1);
 		pen.setStyle(Qt::DashLine);
@@ -237,6 +204,7 @@ void CircuitEditor::drawEverything(QPainter &painter) {
 
 		painter.drawLine(0, snappedCursor.y(), painter.window().right(), snappedCursor.y());
 		painter.drawLine(snappedCursor.x(), 0, snappedCursor.x(), painter.window().bottom());
+		*/
 
 	}
 
@@ -638,8 +606,6 @@ void  CircuitEditor::mouseButtonLeftDblClick(const QPoint& mousePos) {
 void CircuitEditor::paintEvent(QPaintEvent*) {
 
 	QPainter painter(this);
-	painter.scale(_scale, _scale);
-
 	drawEverything(painter);
 
 }

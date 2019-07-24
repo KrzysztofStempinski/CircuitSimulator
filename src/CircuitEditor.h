@@ -46,7 +46,6 @@ class CircuitEditor : public QWidget {
 	private:
 
 		Component* _currentComponent;
-		qreal _scale;
 		QPoint _rectStartPoint;
 
 		QRect _selectionRect;

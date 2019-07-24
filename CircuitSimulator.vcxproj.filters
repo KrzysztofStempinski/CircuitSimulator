@@ -161,6 +161,9 @@
     <ClInclude Include="src\util\SimpleDarkFusion.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="src\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ComponentPropertiesWindow.h">
