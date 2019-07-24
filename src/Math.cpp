@@ -58,11 +58,8 @@ float distanceBetweenPoints(const QPoint& p1, const QPoint& p2) {
 }
 
 // NOTE this is rather inefficient, but has one major advantage over all the other methods 
-// I tried in this two-hour-long crusade towards decent mouseOverLink detection
-//
-// the advantage is that
 // *IT* *JUST* *WORKS*
-bool isPointOnLine(const QPoint& lineStart, const QPoint& lineEnd, const QPoint& point, double precision){
+bool isPointOnLine(const QPoint& lineStart, const QPoint& lineEnd, const QPoint& point, const double precision){
 
 	// S -- P -- E
 	float distSE = distanceBetweenPoints(lineEnd, lineStart);

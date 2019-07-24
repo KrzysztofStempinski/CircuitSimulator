@@ -71,11 +71,9 @@ class CircuitEditor : public QWidget {
 		QAction* action_componentRotateLeft;
 		QAction* action_delete;
 		QAction* action_nextNode;
-		//
+		QAction* action_createMidpointNode;
 
-		// iterators
 		Node* nodeLinkStart;
-
 		Node* mouseOverNode;
 		Component* mouseOverComponent;
 
@@ -94,7 +92,6 @@ class CircuitEditor : public QWidget {
 
 		void clearSelection();
 
-
 		// TODO refactor
 		std::pair<Node*, Node*> isMouseOverLink(const QPoint& mousePos);
 
@@ -110,18 +107,14 @@ class CircuitEditor : public QWidget {
 
 	public:
 
-
-		void connectToClosest();
-		void deleteElement();
-
 		LogWindow* logWindow;
 
 
 	signals:
+
 		public slots:
 
 			void slot_createMidpointNode();
-
 			void slot_componentRotate(int angle);
 			void slot_delete();
 			void slot_nextNode();

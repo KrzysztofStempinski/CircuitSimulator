@@ -29,7 +29,7 @@ const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Setting
 void MainWindow::createInterface() {
 
 	setWindowIcon(QIcon(ICON_PATH + "appicon.ico"));
-	setWindowTitle("untitled.esf - Schematic Editor | CircuitSimulator v." + VersionInfo::getVersionString());
+	setWindowTitle("untitled.esf - CircuitSimulator v." + VersionInfo::getVersionString());
 	resize(QSize(MAINWINDOW_DEF_WIDTH, MAINWINDOW_DEF_HEIGHT));
 
 	createDockWidgets();
@@ -87,12 +87,6 @@ void MainWindow::createMenu() {
 	action_componentProperties = createAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
 	addAction(action_componentProperties);
 
-	action_createMidpointNode = createAction("Create node at midpoint", SLOT(editor->slot_createMidpointNode()), "M");
-	addAction(action_createMidpointNode);
-
-	action_connectToClosest = createAction("Connect to closest node", SLOT(editor->connectToClosest()), "C");
-	addAction(action_connectToClosest);
-
 	// file actions
 	action_fileNew = createAction("New", SLOT(slot_fileNew()), "Ctrl+N", "fileNew.ico");
 	addAction(action_fileNew);
@@ -116,8 +110,11 @@ void MainWindow::createMenu() {
 	action_editRedo = createAction("Redo", SLOT(slot_editRedo()), "Ctrl+Y", "editRedo.ico");
 	addAction(action_editRedo);
 
-	action_editSelectAll = createAction("Select All", SLOT(slot_editSelectAll()), "Ctrl+A", "editSelectAll.ico");
-	addAction(action_editSelectAll);
+	action_editCopy = createAction("Copy", SLOT(slot_editCopy()), "Ctrl+C", "fileCopy.ico");
+	addAction(action_editCopy);
+
+	action_editPaste = createAction("Paste", SLOT(slot_editPaste()), "Ctrl+P", "filePaste.ico");
+	addAction(action_editPaste);
 
 	// simulation actions
 	action_simulationRun = createAction("Run", SLOT(slot_simulationRun()), "F5", "simulationRun.ico");

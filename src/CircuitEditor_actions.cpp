@@ -24,7 +24,7 @@ void CircuitEditor::createActions() {
 	action_componentRotateRight->setIcon(QIcon("data\\icons\\editRotateRight.ico"));
 	action_componentRotateRight->setShortcut(QKeySequence("E"));	
 	action_componentRotateRight->setData("right");
-	connect(action_componentRotateRight, &QAction::triggered, this, [this] { slot_componentRotate(+90); }); // C++17 lambdas + Qt5. It's better than sex.
+	connect(action_componentRotateRight, &QAction::triggered, this, [this] { slot_componentRotate(+90); }); 
 
 	addAction(action_componentRotateRight);
 
@@ -52,15 +52,10 @@ void CircuitEditor::createActions() {
 
 	addAction(action_nextNode);
 
-}
+	action_createMidpointNode = new QAction("Create node at midpoint\tM", this);
+	action_createMidpointNode->setShortcut(QKeySequence("M"));
+	connect(action_createMidpointNode, SIGNAL(triggered()), this, SLOT(slot_createMidpointNode()));
 
-void CircuitEditor::connectToClosest() {
-	// TODO implement
-
-}
-
-void CircuitEditor::deleteElement() {
-
-
+	addAction(action_createMidpointNode);
 
 }

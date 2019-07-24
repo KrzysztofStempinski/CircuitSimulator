@@ -40,6 +40,12 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="Components\Components">
+      <UniqueIdentifier>{6b3dd872-97a6-499a-80fb-3b9e77ad9b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{3090d501-6938-4bd8-a8f1-5b22643daf69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Version.cpp">
@@ -72,9 +78,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="src\Component.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="src\Node.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -96,6 +99,9 @@
     <ClCompile Include="src\DialogSimulationParameters.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Log.h">
@@ -113,44 +119,47 @@
     <ClInclude Include="src\Node.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\Component.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\Circuit.h">
       <Filter>Core %28circuit%29</Filter>
     </ClInclude>
     <ClInclude Include="src\Math.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\Ground.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\Resistor.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\VoltageSource.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\MatrixHelper.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\components\Diode.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ComponentList.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SimulationParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SimulableObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="EditorObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Diode.h">
+      <Filter>Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Ground.h">
+      <Filter>Components\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\components\IdealOpAmp.h">
+      <Filter>Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Resistor.h">
+      <Filter>Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\VoltageSource.h">
+      <Filter>Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComponentList.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\SimpleDarkFusion.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

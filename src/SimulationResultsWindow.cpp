@@ -47,21 +47,17 @@ void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
 		}
 	}
 
-	// TODO fix out of bounds bug
-	// it is because solutions are passed by reference, and solutions in mainWindow goes out of scope,
-	// so here _solutions is empty
-	if (displayNodeVoltages) 
-		for (int i = 0; i < _circuit.voltageCount; ++i) 
-			addRow(table, "N" + QString::number(i + 1), "Node Voltage [V]", QString::number(_solutions(i)));
+	//if (displayNodeVoltages) 
+		//for (int i = 0; i < _circuit.voltageCount; ++i) 
+			//addRow(table, "N" + QString::number(i + 1), "Node Voltage [V]", QString::number(_solutions(i)));
 
 
 	table->sortByColumn(0, Qt::AscendingOrder);
 
 }
 
-SimulationResultsWindow::SimulationResultsWindow(Circuit& circuit, Eigen::VectorXd solutions)
-	: _circuit(circuit),
-	_solutions(solutions)
+SimulationResultsWindow::SimulationResultsWindow(Circuit& circuit)
+	: _circuit(circuit)
 {
 
 	setWindowTitle("Simulation results | Circuit Simulator");

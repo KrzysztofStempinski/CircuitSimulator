@@ -19,10 +19,6 @@ class MainWindow : public QMainWindow {
 		LogWindow* logWindow;
 
 		QAction* action_componentProperties;
-
-		QAction* action_createMidpointNode;
-		QAction* action_nextNode;
-		QAction* action_connectToClosest;
 				 
 		QAction* action_fileNew;
 		QAction* action_fileOpen;
@@ -34,6 +30,8 @@ class MainWindow : public QMainWindow {
 				 
 		QAction* action_editUndo;
 		QAction* action_editRedo;
+		QAction* action_editCopy;
+		QAction* action_editPaste;
 				 
 		QAction* action_editSelectAll;
 				 
@@ -62,6 +60,8 @@ class MainWindow : public QMainWindow {
 
 		CircuitEditor* editor;
 
+		rapidjson::Document file;
+
 	signals:
 		
 	public slots:
@@ -69,6 +69,9 @@ class MainWindow : public QMainWindow {
 		void slot_fileOpen();
 		void slot_fileSaveAs();
 		void slot_fileExit();
+
+		void slot_editCopy();
+		void slot_editPaste();
 
 		void slot_schematicPlaceComponent(QAction *action);
 

@@ -33,11 +33,10 @@ class SimulationResultsWindow : public QDialog {
 		QCheckBox* checkboxNodeVoltages;
 
 		const Circuit& _circuit;
-		const Eigen::VectorXd _solutions;
 
 	public:
 
-		SimulationResultsWindow(Circuit& circuit, Eigen::VectorXd solutions);
+		SimulationResultsWindow(Circuit& circuit);
 
 	public slots:
 
