@@ -14,7 +14,6 @@
 //  ---------------------------------------------
 
 #include "Node.h"
-#include "Log.h"
 #include "Math.h"
 
 Node::Node(const QPoint& newPos, Component* coupledComponent)
@@ -37,7 +36,7 @@ void Node::setPos(const QPoint& newPos){
 }
 
 void Node::updatePos(){
-	_pos = rotatePoint(_coupledComponent->pos() + _posOffset, _coupledComponent->pos(), _coupledComponent->getRotationAngle());
+	_pos = Math::rotatePoint(_coupledComponent->pos() + _posOffset, _coupledComponent->pos(), _coupledComponent->getRotationAngle());
 }
 
 void Node::setOffset(const QPoint& offset){
@@ -72,8 +71,8 @@ void Node::draw(QPainter& painter){
 
 	painter.fillRect(_pos.x() - size, _pos.y() - size, 2 * size, 2 * size, painter.pen().color());
 
-	if (DEBUG)
-		painter.drawText(QPoint(_pos.x() + 6, _pos.y() + 6), QString::number(voltageIndex));
+	//if (DEBUG)
+	//	painter.drawText(QPoint(_pos.x() + 6, _pos.y() + 6), QString::number(voltageIndex));
 }
 
 void Node::removeInboundLinks(){

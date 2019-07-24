@@ -51,9 +51,6 @@
     <ClCompile Include="src\ComponentPropertiesWindow.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="src\LogWindow.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="src\CircuitEditor.cpp">
       <Filter>Circuit\Editor</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
     <ClCompile Include="src\Circuit.cpp">
       <Filter>Core %28circuit%29</Filter>
     </ClCompile>
-    <ClCompile Include="src\Simulation.cpp">
-      <Filter>Core %28circuit%29</Filter>
-    </ClCompile>
     <ClCompile Include="src\FileIO.cpp">
       <Filter>Core %28circuit%29</Filter>
     </ClCompile>
@@ -99,11 +93,11 @@
     <ClCompile Include="src\util\SimpleDarkFusion.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="src\Simulation.cpp">
+      <Filter>Simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Property.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -140,9 +134,6 @@
     <ClInclude Include="src\components\Ground.h">
       <Filter>Components\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\IdealOpAmp.h">
-      <Filter>Components\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\Resistor.h">
       <Filter>Components\Components</Filter>
     </ClInclude>
@@ -161,9 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ComponentPropertiesWindow.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
-    <QtMoc Include="src\LogWindow.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
     <QtMoc Include="src\SimulationResultsWindow.h">

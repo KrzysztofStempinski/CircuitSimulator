@@ -30,7 +30,6 @@
 #include "SimulableObject.h"
 #include "EditorObject.h"
 #include "Property.h"
-#include "LogWindow.h"
 
 class Component;
 
@@ -53,8 +52,6 @@ public:
 
 	Component() : _rotationAngle(0), ID(-1){
 	}
-
-	LogWindow* logWindow; // TODO temp
 
 	int ID;
 	int serialNumber;

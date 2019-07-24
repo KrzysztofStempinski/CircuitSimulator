@@ -21,7 +21,7 @@
 
 void CircuitEditor::slot_componentRotate(int angle) {
 	switch (_mode) {
-	case EditorMode::_default: {
+	case EditorMode::idle: {
 		if (mouseOverComponent != nullptr)
 			mouseOverComponent->setRotationAngle(mouseOverComponent->getRotationAngle() + angle);
 	}
@@ -45,7 +45,7 @@ void CircuitEditor::slot_componentRotate(int angle) {
 
 void CircuitEditor::slot_delete() {
 	switch (_mode) {
-	case EditorMode::_default: {
+	case EditorMode::idle: {
 		if (mouseOverNode != nullptr) {
 			if (!mouseOverNode->isCoupled()) {
 				circuit.deleteNode(mouseOverNode);
@@ -87,7 +87,7 @@ void CircuitEditor::slot_delete() {
 		for (const auto& it : _selectedNodes)
 			circuit.deleteNode(it);
 
-		_mode = EditorMode::_default;
+		_mode = EditorMode::idle;
 	}
 								   break;
 	}
@@ -118,7 +118,7 @@ void CircuitEditor::slot_createMidpointNode() {
 		QPoint p1 = mouseOverLink.first->pos();
 		QPoint p2 = mouseOverLink.second->pos();
 
-		circuit.createNode(snapPointToGrid((p1 + p2) / 2, GRID_SIZE));
+		circuit.createNode(Math::snapPointToGrid((p1 + p2) / 2, GRID_SIZE));
 		mouseOverLink.first->disconnectFrom(mouseOverLink.second);
 
 		mouseOverLink.first->connectTo(circuit.nodes.back());

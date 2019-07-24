@@ -26,7 +26,7 @@
 constexpr int GRID_SIZE = 8;
 
 enum class EditorMode {
-	_default,
+	idle,
 	canvasDragging,
 	linkDrawing,
 	rectSelect,
@@ -104,8 +104,6 @@ public:
 	void displayContextMenu(const QPoint& mousePos);
 
 public:
-
-	LogWindow* logWindow;
 
 signals:
 

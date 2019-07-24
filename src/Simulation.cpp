@@ -18,7 +18,8 @@ void Circuit::prepareDCOP() {
 	bool foundGround = false;
 	for (const auto& it : nodes) {
 		if (it->voltageIndex == -1) {
-			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
+			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {
+				// TODO actually implement checking whether this is ground from config file
 				it->markAdjacentNodes(0);
 
 				foundGround = true;
@@ -106,12 +107,12 @@ void Circuit::simulate() {
 				it->currentValue = solutions((voltageCount - 1) + it->currentIndex);
 	}
 
-	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
+/*	logWindow->log("Final solutions = " + vectorToString(solutions), LogEntryType::Debug);
 
-	if (converged) {
+	if (converged)
 		logWindow->log("Newton's method converged in " + QString::number(iteration) + " iterations.");
-	}
-	else {
+	else
 		throw SimulationException("Newton's method failed to converge");
+		*/
+	
 	}
-}

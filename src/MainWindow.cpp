@@ -10,7 +10,6 @@
 #include "ComponentPropertiesWindow.h"
 #include "SimulationResultsWindow.h"
 #include "dialogSimulationParameters.h"
-#include "LogWindow.h"
 #include "SimulationErrors.h"
 
 #include "Circuit.h"
@@ -212,15 +211,10 @@ void MainWindow::slot_fileOpen(){
 MainWindow::MainWindow(){
 	editor = new CircuitEditor();
 	setCentralWidget(editor);
-	editor->logWindow = logWindow;
+
 	editor->show();
 
 	createInterface();
-
-	logWindow->log("CircuitSimulator\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
-	logWindow->log("This is free software, but comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it, subject to certain conditions. See license.md for more details.");
-
-	editor->circuit.logWindow = logWindow;
 }
 
 void MainWindow::slot_schematicPlaceComponent(QAction* action){

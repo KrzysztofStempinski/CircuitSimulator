@@ -29,8 +29,6 @@
 #include "../Property.h"
 #include "../MatrixHelper.h"
 
-#include "../LogWindow.h"
-
 #include <qpainter.h>
 #include <qstring.h>
 
@@ -53,15 +51,15 @@ public:
 		std::vector<QPoint> path = { { -24, 0 }, {-6, 0 }, {-6, 12}, {-6, -12}, {-6, 0}, {6, 12}, {-6, 0}, {6, -12}, {6, 12}, {6, -12}, {6, 0}, {24, 0} };
 
 		for (auto& it : path)
-			it = rotatePoint(it + _pos, _pos, _rotationAngle);
+			it = Math::rotatePoint(it + _pos, _pos, _rotationAngle);
 
-		for (int i = 0; i < path.size(); i += 2)
+		for (size_t i = 0; i < path.size(); i += 2)
 			painter.drawLine(path[i], path[i + 1]);
 
-		//TODO this is remporary
+		//TODO this is temporary
 		if (serialNumber > 0) {
 			QPoint pos(0, -12);
-			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
+			painter.drawText(Math::rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		}
 	}
 

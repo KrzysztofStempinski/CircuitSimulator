@@ -15,8 +15,6 @@
 
 #include "Config.h"
 
-#include "Log.h"
-
 #include "CircuitEditor.h"
 
 #include <qwidget.h>
@@ -80,7 +78,7 @@ CircuitEditor::CircuitEditor(){
 	mouseOverNode = nullptr;
 	mouseOverComponent = nullptr;
 
-	_mode = EditorMode::_default;
+	_mode = EditorMode::idle;
 
 	createActions();
 
@@ -152,7 +150,7 @@ void CircuitEditor::drawEverything(QPainter& painter){
 
 	// paint the currently drawn link
 	if (_mode == EditorMode::linkDrawing){
-		QPoint snappedCursor = snapPointToGrid(mapFromGlobal(QCursor::pos()), GRID_SIZE);
+		QPoint snappedCursor = Math::snapPointToGrid(mapFromGlobal(QCursor::pos()), GRID_SIZE);
 		QPoint adjustedPosition = snappedCursor;
 
 		painter.setPen(Config::Pens::normal);
@@ -196,7 +194,7 @@ void CircuitEditor::drawEverything(QPainter& painter){
 std::pair<Node*, Node*> CircuitEditor::isMouseOverLink(const QPoint& mousePos){
 	for (const auto& it : circuit.nodes)
 		for (const auto it2 : it->connectedNodes)
-			if (isPointOnLine(it->pos(), it2->pos(), mousePos))
+			if (Math::isPointOnLine(it->pos(), it2->pos(), mousePos))
 				return std::make_pair(it, it2);
 
 	return std::make_pair(nullptr, nullptr);
@@ -235,7 +233,7 @@ void CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos){
 		// between which the link is conducted
 		if (mouseOverLink.first != nullptr){
 			mouseOverLink.first->disconnectFrom(mouseOverLink.second);
-			circuit.createNode(snapPointToGrid(mousePos, GRID_SIZE));
+			circuit.createNode(Math::snapPointToGrid(mousePos, GRID_SIZE));
 
 			circuit.nodes.back()->connectTo(mouseOverLink.first);
 			circuit.nodes.back()->connectTo(mouseOverLink.second);
@@ -249,7 +247,7 @@ void CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos){
 		// if we click ona free space, create node there
 		// taking into account that we can create straight lines
 
-		QPoint adjustedPosition = snapPointToGrid(mousePos, GRID_SIZE);
+		QPoint adjustedPosition = Math::snapPointToGrid(mousePos, GRID_SIZE);
 
 		const int distX = std::abs(nodeLinkStart->pos().x() - adjustedPosition.x());
 		const int distY = std::abs(nodeLinkStart->pos().y() - adjustedPosition.y());
@@ -286,7 +284,7 @@ void CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos){
 		}
 		else{
 			clearSelection();
-			_mode = EditorMode::_default;
+			_mode = EditorMode::idle;
 
 			mouseButtonLeftDown(mousePos); // TODO temporary very ugly no good awful hack
 		}
@@ -294,14 +292,14 @@ void CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos){
 	break;
 
 	case EditorMode::componentCreation: {
-		circuit.createComponent(_currentComponent->getName(), snapPointToGrid(mousePos, GRID_SIZE));
+		circuit.createComponent(_currentComponent->getName(), Math::snapPointToGrid(mousePos, GRID_SIZE));
 		circuit.components.back()->setRotationAngle(_currentComponent->getRotationAngle());
 
 		update();
 	}
 	break;
 
-	case EditorMode::_default: {
+	case EditorMode::idle: {
 		if (mouseOverNode != nullptr /* TODO */ && !mouseOverNode->isCoupled()){
 			clearSelection();
 
@@ -388,15 +386,15 @@ void CircuitEditor::mouseMove(const QPoint& mousePos){
 
 	switch (_mode){
 	case EditorMode::componentCreation: {
-		_currentComponent->setPos(snapPointToGrid(mousePos, GRID_SIZE));
+		_currentComponent->setPos(Math::snapPointToGrid(mousePos, GRID_SIZE));
 		update();
 	}
 	break;
 
 	case EditorMode::linkMoving: {
 		if (!linkToMove.first->isCoupled() && !linkToMove.second->isCoupled()){
-			linkToMove.first->setPos(snapPointToGrid(linkToMove.first->prevPos + mousePos - _origin, GRID_SIZE));
-			linkToMove.second->setPos(snapPointToGrid(linkToMove.second->prevPos + mousePos - _origin, GRID_SIZE));
+			linkToMove.first->setPos(Math::snapPointToGrid(linkToMove.first->prevPos + mousePos - _origin, GRID_SIZE));
+			linkToMove.second->setPos(Math::snapPointToGrid(linkToMove.second->prevPos + mousePos - _origin, GRID_SIZE));
 
 			update();
 		}
@@ -407,11 +405,11 @@ void CircuitEditor::mouseMove(const QPoint& mousePos){
 		const QPoint dif = mousePos - _origin;
 
 		for (const auto& it : _selectedComponents)
-			it->setPos(snapPointToGrid(it->prevPos + dif, GRID_SIZE));
+			it->setPos(Math::snapPointToGrid(it->prevPos + dif, GRID_SIZE));
 
 		for (const auto& it : _selectedNodes)
 			if (!it->isCoupled())
-				it->setPos(snapPointToGrid(it->prevPos + dif, GRID_SIZE));
+				it->setPos(Math::snapPointToGrid(it->prevPos + dif, GRID_SIZE));
 
 		update();
 	}
@@ -458,7 +456,7 @@ void CircuitEditor::mouseMove(const QPoint& mousePos){
 void CircuitEditor::mouseButtonLeftUp(const QPoint& mousePos){
 	switch (_mode){
 	case EditorMode::linkMoving: {
-		_mode = EditorMode::_default;
+		_mode = EditorMode::idle;
 	}
 	break;
 
@@ -468,7 +466,7 @@ void CircuitEditor::mouseButtonLeftUp(const QPoint& mousePos){
 		if (!(_selectedNodes.empty() && _selectedComponents.empty()))
 			_mode = EditorMode::rectSelected;
 		else
-			_mode = EditorMode::_default;
+			_mode = EditorMode::idle;
 	}
 	break;
 
@@ -479,7 +477,7 @@ void CircuitEditor::mouseButtonLeftUp(const QPoint& mousePos){
 			_mode = EditorMode::rectSelected;
 		else{
 			clearSelection();
-			_mode = EditorMode::_default;
+			_mode = EditorMode::idle;
 		}
 	}
 	break;
@@ -500,7 +498,7 @@ void CircuitEditor::mouseButtonLeftDblClick(const QPoint& mousePos){
 	}
 
 	if (mouseOverLink.first != nullptr){
-		circuit.createNode(snapPointToGrid(mousePos, GRID_SIZE));
+		circuit.createNode(Math::snapPointToGrid(mousePos, GRID_SIZE));
 
 		mouseOverLink.first->connectTo(circuit.nodes.back());
 		mouseOverLink.second->connectTo(circuit.nodes.back());
@@ -531,12 +529,12 @@ void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos){
 		// if drawing a link, switch back to idle WITHOUT displaying context menu
 	case EditorMode::linkDrawing: {
 		nodeLinkStart = nullptr;
-		_mode = EditorMode::_default;
+		_mode = EditorMode::idle;
 		break;
 	}
 		// if creating a component, do as above
 	case EditorMode::componentCreation: {
-		_mode = EditorMode::_default;
+		_mode = EditorMode::idle;
 
 		// cleanup
 		delete _currentComponent;
@@ -545,7 +543,7 @@ void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos){
 
 		// if drawing selection rect, abort
 	case EditorMode::rectSelect: {
-		_mode = EditorMode::_default;
+		_mode = EditorMode::idle;
 		clearSelection();
 	}
 	break;

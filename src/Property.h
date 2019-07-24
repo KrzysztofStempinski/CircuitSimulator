@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <map>
+
 #include <qstring.h>
 
 template <typename T>

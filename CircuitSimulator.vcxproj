@@ -20,7 +20,6 @@
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentPropertiesWindow.cpp" />
     <ClCompile Include="src\Math.cpp" />
-    <ClCompile Include="src\LogWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainWindow.cpp" />
     <ClCompile Include="src\MainWindow_interface.cpp" />
@@ -38,7 +37,6 @@
     <ClInclude Include="src\ComponentList.h" />
     <ClInclude Include="src\components\Diode.h" />
     <ClInclude Include="src\components\Ground.h" />
-    <ClInclude Include="src\components\IdealOpAmp.h" />
     <ClInclude Include="src\components\Resistor.h" />
     <ClInclude Include="src\components\VoltageSource.h" />
     <QtMoc Include="src\DialogSimulationParameters.h">
@@ -49,7 +47,6 @@
     </QtMoc>
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Math.h" />
-    <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MatrixHelper.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Property.h" />
@@ -58,7 +55,6 @@
     <ClInclude Include="src\util\SimpleDarkFusion.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />
     <QtMoc Include="src\MainWindow.h" />
-    <QtMoc Include="src\LogWindow.h" />
     <QtMoc Include="src\ComponentPropertiesWindow.h" />
     <QtMoc Include="src\CircuitEditor.h" />
   </ItemGroup>

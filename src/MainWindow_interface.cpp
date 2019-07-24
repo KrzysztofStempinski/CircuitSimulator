@@ -37,13 +37,6 @@ void MainWindow::createInterface() {
 }
 
 void MainWindow::createDockWidgets() {
-	// log dock
-	logWindow = new LogWindow();
-
-	dockLog = new QDockWidget("Log", this);
-	dockLog->setWidget(logWindow);
-	dockLog->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
-	addDockWidget(Qt::BottomDockWidgetArea, dockLog);
 
 	// component properties dock
 	dockComponentProperties = new QDockWidget("Component properties", this);

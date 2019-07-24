@@ -18,5 +18,6 @@ public:
 	}
 
 	SimulationException(const QString message)
-		: message(message) {}
+		: message(message) {
+	}
 };
