@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	LogWindow.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include "Log.h"
@@ -22,7 +22,6 @@
 #include "Version.h"
 
 void LogWindow::log(QString entry, LogEntryType type) {
-
 	// discard debug messages
 	if (type == LogEntryType::Debug && !checkboxDebug->isChecked())
 		return;
@@ -31,41 +30,37 @@ void LogWindow::log(QString entry, LogEntryType type) {
 	QIcon icon;
 
 	switch (type) {
-
-		case LogEntryType::Error:
-			icon = QIcon("data\\icons\\error.ico");
-			text = entry; 
+	case LogEntryType::Error:
+		icon = QIcon("data\\icons\\error.ico");
+		text = entry;
 		break;
 
-		case LogEntryType::Info:
-			icon = QIcon("data\\icons\\info.ico");			
-			text = entry; // or Info, log or sth ???
+	case LogEntryType::Info:
+		icon = QIcon("data\\icons\\info.ico");
+		text = entry; // or Info, log or sth ???
 		break;
 
-		case LogEntryType::Warning:
-			icon = QIcon("data\\icons\\warning.ico");
-			text = entry; // or Warning...?
+	case LogEntryType::Warning:
+		icon = QIcon("data\\icons\\warning.ico");
+		text = entry; // or Warning...?
 		break;
 
-		case LogEntryType::Debug:
-			icon = QIcon("data\\icons\\debug.ico");
-			text = entry; // as above?
+	case LogEntryType::Debug:
+		icon = QIcon("data\\icons\\debug.ico");
+		text = entry; // as above?
 		break;
-
 	}
 
-	QListWidgetItem *newItem = new QListWidgetItem;
+	QListWidgetItem* newItem = new QListWidgetItem;
 	newItem->setText(text);
 	newItem->setIcon(icon);
 
 	list->addItem(newItem);
-	
-	list->scrollToBottom();
 
+	list->scrollToBottom();
 }
 
-LogWindow::LogWindow(QWidget* parent){
-
+LogWindow::LogWindow(QWidget* parent) {
 	setParent(parent);
 	setWindowTitle("Debug | Circuit Simulator");
 
@@ -97,15 +92,11 @@ LogWindow::LogWindow(QWidget* parent){
 	mainLayout->addLayout(layoutBottom);
 
 	setLayout(mainLayout);
-
 }
 
 void LogWindow::slot_clearLog() {
-
 	list->clear();
 
 	log("CircuitSimulator v." + VersionInfo::getVersionString() + "\ncopyright (C) 2018-2019 by Krzysztof Stempinski", LogEntryType::Info);
 	log("This is free software, but comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it, subject to certain conditions. See license.md for more details.");
-
 }
-

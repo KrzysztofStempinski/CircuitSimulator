@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Circuit.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include "Circuit.h"
@@ -18,23 +18,18 @@
 #include "ComponentList.h"
 
 void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
-
 	nodes.push_back(new Node(pos, _coupledComponent));
-
 }
 
 void Circuit::deleteNode(Node* node) {
-
 	node->removeInboundLinks();
 
 	delete node;
 
 	nodes.erase(std::find(std::begin(nodes), std::end(nodes), node));
-
 }
 
 void Circuit::createComponent(const QString componentName, const QPoint& pos, const bool createNodes) {
-
 	Component* newComponent = getComponentFromName(componentName);
 
 	newComponent->serialNumber = 1 + std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
@@ -42,26 +37,20 @@ void Circuit::createComponent(const QString componentName, const QPoint& pos, co
 	newComponent->setPos(pos);
 
 	if (createNodes) {
-
 		for (int i = 0; i < newComponent->nodeCount(); ++i) {
 			createNode(QPoint(0, 0), newComponent);
 			newComponent->coupledNodes.push_back(nodes.back());
 		}
 
 		newComponent->updateNodeOffsets();
-
 	}
 
-
 	components.push_back(newComponent);
-
 }
 
 void Circuit::deleteComponent(Component* component) {
-
 	for (int i = 0; i < std::size(component->coupledNodes); ++i) {
 		for (int j = 0; j < std::size(nodes); /**/) {
-
 			if (nodes[j] == component->coupledNodes[i]) {
 				deleteNode(nodes[j]);
 				break;
@@ -69,13 +58,10 @@ void Circuit::deleteComponent(Component* component) {
 			else {
 				++j;
 			}
-
 		}
 	}
 
 	delete component;
 
 	components.erase(std::find(std::begin(components), std::end(components), component));
-
 }
-	

@@ -5,7 +5,6 @@
 #include <qpalette.h>
 
 void applySimpleDarkFusion(QApplication& app) {
-
 	qApp->setStyle(QStyleFactory::create("Fusion"));
 
 	QPalette darkPalette;
@@ -24,5 +23,4 @@ void applySimpleDarkFusion(QApplication& app) {
 	darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
 	qApp->setPalette(darkPalette);
-
 }

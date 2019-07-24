@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	ComponentPropertiesWindow.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include "ComponentPropertiesWindow.h"
@@ -19,21 +19,17 @@
 #include <qpushbutton.h>
 
 void ComponentPropertiesWindow::buttonAccept() {
-
 	// save component properties
-	for (int i = 0; i < _formLayout->count(); i++){
-
-		QWidget *widget = _formLayout->itemAt(i)->widget();
-		if (widget != NULL){
-			if (QLineEdit* lineEdit = qobject_cast<QLineEdit*>(widget)) {
-
+	for (int i = 0; i < _formLayout->count(); i++) {
+		QWidget* widget = _formLayout->itemAt(i)->widget();
+		if (widget != NULL) {
+			if (QLineEdit * lineEdit = qobject_cast<QLineEdit*>(widget)) {
 				// TODO optimize, refactor etc.
 
 				auto it = _component.properties.find(widget->property("key").toString());
 
 				it->second.value = lineEdit->text().toDouble();// TODO this is an awful hack again
 			//	_component->properties[it, lineEdit->text().toDouble());
-				
 			}
 		}
 	}
@@ -41,24 +37,18 @@ void ComponentPropertiesWindow::buttonAccept() {
 	this->parentWidget()->hide();	// TODO ugly hack
 
 	close();
-
 }
 
-void ComponentPropertiesWindow::buttonReject(){
-
+void ComponentPropertiesWindow::buttonReject() {
 	this->parentWidget()->hide();	// TODO ugly hack
 
 	close();
-
 }
 
-
-
 ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _component(component) {
-
 	setWindowTitle("Component properties");
 
-	QVBoxLayout *mainLayout = new QVBoxLayout;
+	QVBoxLayout* mainLayout = new QVBoxLayout;
 
 	// buttons - OK and cancel
 	buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
@@ -74,8 +64,7 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 	// TODO dedicated routines in a component for getting various forms of its name
 	QGroupBox* formGroupBox = new QGroupBox(component.letterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.displayNameBase() + ")");
 
-	for (auto &it : component.properties){
-
+	for (auto& it : component.properties) {
 		QString label = it.second.displayName + " [" + it.second.unit + "]";
 
 		QLineEdit* lineEdit = new QLineEdit(QString::number(it.second.value, 'g', 10)); // TODO precision, notation settings itd.
@@ -85,12 +74,10 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 		lineEdit->setValidator(dv);
 
 		_formLayout->addRow(new QLabel(label), lineEdit);
-
 	}
 
-	if (component.properties.size() == 0) 
+	if (component.properties.size() == 0)
 		_formLayout->addRow(new QLabel("No properties available."));
-	
 
 	formGroupBox->setLayout(_formLayout);
 
@@ -100,5 +87,4 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 	setLayout(mainLayout);
 
 	formGroupBox->show();
-
 }

@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Resistor.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -36,90 +36,78 @@
 #include <qstring.h>
 
 class Resistor : public Component {
+public:
 
-	public:
+	Resistor() {
+		_name = "resistor";
 
-		Resistor(){
+		properties["resistance"] = { "Resistance", QString::fromWCharArray(L"\u03A9"), 1000 };
 
-			_name = "resistor";
+		_boundingRect.setCoords(-24, 12, 24, -12);
 
-			properties["resistance"] = { "Resistance", QString::fromWCharArray(L"\u03A9"), 1000 };
+		_boundingRect = _boundingRect.normalized();
+	}
 
-			_boundingRect.setCoords(-24, 12, 24, -12);
+	void draw(QPainter& painter) {
+		std::vector<QPoint> path = { { -24, 0 }, {-11, 0 }, {-7, -7}, {-2, 7}, {3, -7}, {8, 7}, {12, 0}, {24, 0} };
 
-			_boundingRect = _boundingRect.normalized();
-			
+		for (auto& it : path)
+			it = rotatePoint(it + _pos, _pos, _rotationAngle);
+
+		for (int i = 1; i < path.size(); ++i)
+			painter.drawLine(path[i - 1], path[i]);
+
+		//TODO this is remporary
+		if (serialNumber > 0) {
+			QPoint pos(-4, -16);
+			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		}
+	}
 
-		void draw(QPainter& painter) {
+	int nodeCount() {
+		return 2;
+	}
 
-			std::vector<QPoint> path = { { -24, 0 }, {-11, 0 }, {-7, -7}, {-2, 7}, {3, -7}, {8, 7}, {12, 0}, {24, 0} };
+	// DCOP STUFF
+	bool requiresCurrentEntry() {
+		return false;
+	}
 
-			for (auto& it : path)
-				it = rotatePoint(it + _pos, _pos, _rotationAngle);
+	void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
+		// TODO  division by zero etc
+		double val = 1 / properties["resistance"].value;
 
-			for (int i = 1; i < path.size(); ++i)
-				painter.drawLine(path[i - 1], path[i]);
+		addStampEntry(matrixA, val, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+		addStampEntry(matrixA, -val, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+		addStampEntry(matrixA, -val, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
+		addStampEntry(matrixA, val, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+	}
 
-			//TODO this is remporary
-			if (serialNumber > 0) {
-				QPoint pos(-4, -16);
-				painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
-			}
-		}
+	QString displayNameBase() {
+		return "Resistor";
+	}
 
-		int nodeCount() {
-			return 2;
-		}
+	QString letterIdentifierBase() {
+		return "R";
+	}
 
-		// DCOP STUFF
-		bool requiresCurrentEntry() {
-			return false;
-		}
+	SimulationResult getSimulationResult() {
+		double current = (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value;
 
-		void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
+		return { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current };
+	}
 
-			// TODO  division by zero etc
-			double val = 1 / properties["resistance"].value;
+	// TODO this is temporary
+	bool hasSimulationResult() {
+		return true;
+	}
 
-			addStampEntry(matrixA, val, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
-			addStampEntry(matrixA, -val, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
-			addStampEntry(matrixA, -val, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
-			addStampEntry(matrixA, val, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+	void updateNodeOffsets() {
+		coupledNodes[0]->setOffset(QPoint(-24, 0));
+		coupledNodes[1]->setOffset(QPoint(24, 0));
+	}
 
-		}
-
-		QString displayNameBase() {
-			return "Resistor";
-		} 
-
-		QString letterIdentifierBase() {
-			return "R";
-		}
-
-		SimulationResult getSimulationResult() {
-		
-			double current = (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value;
-
-			return { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current };
-
-		}
-
-		// TODO this is temporary
-		bool hasSimulationResult() {
-			return true;
-		}
-
-		void updateNodeOffsets() {
-
-			coupledNodes[0]->setOffset(QPoint(-24, 0));
-			coupledNodes[1]->setOffset(QPoint(24, 0));
-
-		}
-
-
-		bool linear() {
-			return true;
-		}
-
+	bool linear() {
+		return true;
+	}
 };

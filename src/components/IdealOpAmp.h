@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	IdealOpAmp.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -35,34 +35,30 @@
 #include <qstring.h>
 
 class IdealOpAmp : public Component {
-
 public:
 
 	IdealOpAmp() {
-
 		_name = "ideal_op_amp";
 
 		_boundingRect.setCoords(-38, 44, 82, -44);
 
 		_boundingRect = _boundingRect.normalized();
-
 	}
 
 	void draw(QPainter& painter) {
+		std::vector<QPoint> path = { { -40, 16 }, { -12, 16 },
+										{ -40, -16 }, { -12, -16 },
+										{ -12, 44 }, { -12, -44 },
+										{ -12, 44 }, { 62, 0 },
+										{ -12, -44 }, { 62, 0},
+										{ 62, 0 }, { 80, 0 },
+			// plus sign
+			{ -6, 18 }, { 6, 18 },
+			{ 0, -24 }, { 0, -12 },
+			// minus sign
+			{ -6, -18 }, { 6, -18 },
+		};
 
-		std::vector<QPoint> path = {	{ -40, 16 }, { -12, 16 }, 
-										{ -40, -16 }, { -12, -16 }, 
-										{ -12, 44 }, { -12, -44 }, 
-										{ -12, 44 }, { 62, 0 }, 
-										{ -12, -44 }, { 62, 0}, 
-										{ 62, 0 }, { 80, 0 }, 
-										// plus sign
-										{ -6, 18 }, { 6, 18 },
-										{ 0, -24 }, { 0, -12 },
-										// minus sign
-										{ -6, -18 }, { 6, -18 },
-									}; 
-		
 		for (auto& it : path)
 			it = rotatePoint(it + _pos, _pos, _rotationAngle);
 
@@ -74,7 +70,6 @@ public:
 			QPoint pos(30, -30);
 			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		}
-
 	}
 
 	int nodeCount() {
@@ -87,9 +82,6 @@ public:
 	}
 
 	void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
-
-
-
 	}
 
 	QString displayNameBase() {
@@ -101,10 +93,8 @@ public:
 	}
 
 	SimulationResult getSimulationResult() {
-
 		throw "DUPA!";
 		return { };
-
 	}
 
 	// TODO this is temporary
@@ -113,15 +103,12 @@ public:
 	}
 
 	void updateNodeOffsets() {
-
 		coupledNodes[0]->setOffset(QPoint(-40, 16));	// V-
 		coupledNodes[1]->setOffset(QPoint(-40, -16));	// V+
 		coupledNodes[2]->setOffset(QPoint(80, 0));		// Vout
-
 	}
 
 	bool linear() {
 		return false;
 	}
-
 };

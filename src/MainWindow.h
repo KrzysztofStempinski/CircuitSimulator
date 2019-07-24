@@ -13,72 +13,70 @@ constexpr int MAINWINDOW_DEF_WIDTH = 1440;
 constexpr int MAINWINDOW_DEF_HEIGHT = 900;
 
 class MainWindow : public QMainWindow {
+private:
 
-	private:
+	LogWindow* logWindow;
 
-		LogWindow* logWindow;
+	QAction* action_componentProperties;
 
-		QAction* action_componentProperties;
-				 
-		QAction* action_fileNew;
-		QAction* action_fileOpen;
-		QAction* action_fileSave;
-		QAction* action_fileSaveAs;
-		QAction* action_fileExit;
-				 
-		QAction* action_schematicPlaceComponent;
-				 
-		QAction* action_editUndo;
-		QAction* action_editRedo;
-		QAction* action_editCopy;
-		QAction* action_editPaste;
-				 
-		QAction* action_editSelectAll;
-				 
-		QAction* action_simulationRun;
+	QAction* action_fileNew;
+	QAction* action_fileOpen;
+	QAction* action_fileSave;
+	QAction* action_fileSaveAs;
+	QAction* action_fileExit;
 
-		QDockWidget* dockComponentProperties;
-		QDockWidget* dockSimulationResults;
-		QDockWidget* dockLog;
+	QAction* action_schematicPlaceComponent;
 
-		QAction* action_aboutQt;
+	QAction* action_editUndo;
+	QAction* action_editRedo;
+	QAction* action_editCopy;
+	QAction* action_editPaste;
 
-		QMenu* menuComponents;
-		QToolBar* toolbarComponents;
+	QAction* action_editSelectAll;
 
-		void populateComponents();
-		void createInterface();
-		void createDockWidgets();
-		void createMenu();
-		void createToolBar();
-		void createStatusBar();
+	QAction* action_simulationRun;
 
-    Q_OBJECT
-	public:
-		
-		explicit MainWindow();
+	QDockWidget* dockComponentProperties;
+	QDockWidget* dockSimulationResults;
+	QDockWidget* dockLog;
 
-		CircuitEditor* editor;
+	QAction* action_aboutQt;
 
-		rapidjson::Document file;
+	QMenu* menuComponents;
+	QToolBar* toolbarComponents;
 
-	signals:
-		
-	public slots:
+	void populateComponents();
+	void createInterface();
+	void createDockWidgets();
+	void createMenu();
+	void createToolBar();
+	void createStatusBar();
 
-		void slot_fileOpen();
-		void slot_fileSaveAs();
-		void slot_fileExit();
+	Q_OBJECT
+public:
 
-		void slot_editCopy();
-		void slot_editPaste();
+	explicit MainWindow();
 
-		void slot_schematicPlaceComponent(QAction *action);
+	CircuitEditor* editor;
 
-		void slot_simulationRun();
+	rapidjson::Document file;
 
-		void slot_componentProperties();
+signals:
 
-		void slot_aboutQt();
+public slots:
 
+	void slot_fileOpen();
+	void slot_fileSaveAs();
+	void slot_fileExit();
+
+	void slot_editCopy();
+	void slot_editPaste();
+
+	void slot_schematicPlaceComponent(QAction* action);
+
+	void slot_simulationRun();
+
+	void slot_componentProperties();
+
+	void slot_aboutQt();
 };

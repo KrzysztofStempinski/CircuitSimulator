@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	CircuitEditor_actions.h
-// 
+//
 //  ---------------------------------------------
 
 #include "CircuitEditor.h"
@@ -18,13 +18,12 @@
 #include <qaction.h>
 
 void CircuitEditor::createActions() {
-
 	// rotateRight
 	action_componentRotateRight = new QAction("Rotate right\t E", this);
 	action_componentRotateRight->setIcon(QIcon("data\\icons\\editRotateRight.ico"));
-	action_componentRotateRight->setShortcut(QKeySequence("E"));	
+	action_componentRotateRight->setShortcut(QKeySequence("E"));
 	action_componentRotateRight->setData("right");
-	connect(action_componentRotateRight, &QAction::triggered, this, [this] { slot_componentRotate(+90); }); 
+	connect(action_componentRotateRight, &QAction::triggered, this, [this] { slot_componentRotate(+90); });
 
 	addAction(action_componentRotateRight);
 
@@ -57,5 +56,4 @@ void CircuitEditor::createActions() {
 	connect(action_createMidpointNode, SIGNAL(triggered()), this, SLOT(slot_createMidpointNode()));
 
 	addAction(action_createMidpointNode);
-
 }

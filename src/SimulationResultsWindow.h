@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	SimulationResultsWindow.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -24,22 +24,20 @@
 #include "..//eigen//Dense"
 
 class SimulationResultsWindow : public QDialog {
-
 	Q_OBJECT
 
-	private:
+private:
 
-		QTableWidget* table;
-		QCheckBox* checkboxNodeVoltages;
+	QTableWidget* table;
+	QCheckBox* checkboxNodeVoltages;
 
-		const Circuit& _circuit;
+	const Circuit& _circuit;
 
-	public:
+public:
 
-		SimulationResultsWindow(Circuit& circuit);
+	SimulationResultsWindow(Circuit& circuit);
 
-	public slots:
+public slots:
 
-		void displayResults(bool displayNodeVoltages = false);
-
+	void displayResults(bool displayNodeVoltages = false);
 };

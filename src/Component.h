@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Component.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -37,57 +37,53 @@ class Component;
 #include "Node.h"
 
 struct SimulationResult {
-
 	QString name = QString::null;
 	QString unit = QString::null;
 	double value = double(0);
-
 };
 
 class Component : public SimulableObject, public EditorObject {
+protected:
 
-	protected:
+	QString _name;
 
-		QString _name;
+	int _rotationAngle;
 
-		int _rotationAngle;
+public:
 
-	public:
+	Component() : _rotationAngle(0), ID(-1) {}
+	LogWindow* logWindow; // TODO temp
 
-		Component() : _rotationAngle(0), ID(-1) {}
-		LogWindow* logWindow; // TODO temp
-		
-		int ID;
-		int serialNumber;
-		QString getName();
+	int ID;
+	int serialNumber;
+	QString getName();
 
-		virtual QString displayNameBase() = 0;
-		virtual QString letterIdentifierBase() = 0;
+	virtual QString displayNameBase() = 0;
+	virtual QString letterIdentifierBase() = 0;
 
-		void setPos(const QPoint& newPos);
+	void setPos(const QPoint& newPos);
 
-		virtual void draw(QPainter& painter) = 0;
-		
-		int getRotationAngle() const;
-		void setRotationAngle(const int angle);
+	virtual void draw(QPainter& painter) = 0;
 
-		virtual int nodeCount() = 0;
-		virtual bool requiresCurrentEntry() = 0;
-		virtual bool linear() = 0;
-			
-		PropertyMap properties;
-		
-		std::vector<Node*> coupledNodes;
+	int getRotationAngle() const;
+	void setRotationAngle(const int angle);
 
-		virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
+	virtual int nodeCount() = 0;
+	virtual bool requiresCurrentEntry() = 0;
+	virtual bool linear() = 0;
 
-		virtual SimulationResult getSimulationResult() = 0;
+	PropertyMap properties;
 
-		// TODO this is temporary
-        virtual bool hasSimulationResult() = 0;
+	std::vector<Node*> coupledNodes;
 
-		virtual void updateNodeOffsets() = 0;
+	virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 
-		void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
+	virtual SimulationResult getSimulationResult() = 0;
 
+	// TODO this is temporary
+	virtual bool hasSimulationResult() = 0;
+
+	virtual void updateNodeOffsets() = 0;
+
+	void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
 };

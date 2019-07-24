@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Node.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -31,40 +31,36 @@ class Node;
 constexpr int NODE_SIZE = 3;
 
 class Node : public SimulableObject, public EditorObject {
+private:
 
-	private:
+	QPoint _posOffset;
+	Component* _coupledComponent;
 
-		QPoint _posOffset;
-		Component* _coupledComponent;
+public:
 
-	public:
+	int ID;
 
-		int ID;
+	Node(const QPoint& newPos, Component* coupledComponent = nullptr);
 
-		Node(const QPoint& newPos, Component* coupledComponent = nullptr);
+	std::vector<Node*> connectedNodes;
 
-		std::vector<Node*> connectedNodes;
+	void setPos(const QPoint& newPos);
+	void updatePos();
+	void setOffset(const QPoint& offset);
 
-		void setPos(const QPoint& newPos);
-		void updatePos();
-		void setOffset(const QPoint& offset);
+	void connectTo(Node* node);
+	void disconnectFrom(Node* node);
+	bool isConnectedTo(Node* node);
 
-		void connectTo(Node* node);
-		void disconnectFrom(Node* node);
-		bool isConnectedTo(Node* node);
+	void removeInboundLinks();
 
-		void removeInboundLinks();
+	bool isCoupled();
+	Component* getCoupledComponent();
 
-		bool isCoupled();
-		Component* getCoupledComponent();
-		
-		void draw(QPainter* painter);
+	void draw(QPainter& painter);
 
-		void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);
+	void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);
 
-		// TODO decent argument names?
-		void markAdjacentNodes(const int _voltageIndex);
-
+	// TODO decent argument names?
+	void markAdjacentNodes(const int _voltageIndex);
 };
-
-

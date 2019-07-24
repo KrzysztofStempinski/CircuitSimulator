@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Component.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include <string>
@@ -22,27 +22,22 @@ QString Component::getName() {
 	return _name;
 }
 
-void Component::setPos(const QPoint& newPos){
-
+void Component::setPos(const QPoint& newPos) {
 	_pos = newPos;
 
 	for (const auto& it : coupledNodes)
 		it->updatePos();
-
 };
 
 int Component::getRotationAngle() const {
-
 	return this->_rotationAngle;
-
 }
 
 void Component::setRotationAngle(const int angle) {
-
 	// division by zero is apparently bad
 	if (angle == 0)
 		_rotationAngle = 0;
-	else 
+	else
 		_rotationAngle = angle % (sign(angle) * 360);
 
 	// NOTE we assume that the only rotation angles will be 0, +-90, +=180, +-270, +-360
@@ -51,17 +46,15 @@ void Component::setRotationAngle(const int angle) {
 
 	//  update node positions
 	setPos(_pos);
-
 }
 
 void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator) {
-	
 	rapidjson::Value valueComponent;
 	valueComponent.SetObject();
 
 	valueComponent.AddMember("ID", ID, allocator);
 
-	rapidjson::Value name(_name.toUtf8(), _name.size(), allocator); 
+	rapidjson::Value name(_name.toUtf8(), _name.size(), allocator);
 	valueComponent.AddMember("name", name, allocator);
 
 	rapidjson::Value position(rapidjson::kArrayType);
@@ -73,18 +66,14 @@ void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Documen
 
 	// TODO save properties to file
 	/*if (!properties.empty()) {
-
 		rapidjson::Value propertiesVal;
 		for (auto& it : properties) {
 			rapidjson::Value valueProperty(it.first.toUtf8(), it.second.value, allocator);
 			propertiesVal.AddMember(, valueProperty);
 		}
-	
 
 		valueComponent.AddMember("properties", valueComponent, allocator);
-
 	}*/
 
 	arrayComponents.PushBack(valueComponent, allocator);
-	
 }

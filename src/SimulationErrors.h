@@ -7,20 +7,16 @@
 #include <qstring.h>
 
 class SimulationException : public std::exception {
+private:
 
-	private:
+	const QString message;
 
-		const QString message;
+public:
 
-	public:
+	QString what() {
+		return message;
+	}
 
-		QString what() {
-			return message;
-		}
-
-		SimulationException(const QString message)
-			: message(message) {}
-
-
-
+	SimulationException(const QString message)
+		: message(message) {}
 };

@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	LogWindow.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -23,25 +23,23 @@
 #include <qcheckbox.h>
 
 class LogWindow : public QDialog {
-
 	Q_OBJECT
 
-	private:
+private:
 
-		QListWidget* list;
-		QCheckBox* checkboxDebug;
+	QListWidget* list;
+	QCheckBox* checkboxDebug;
 
-	public:
+public:
 
-		LogWindow(QWidget* parent = nullptr);
+	LogWindow(QWidget* parent = nullptr);
 
-		void log(QString entry, LogEntryType type = LogEntryType::Info);
+	void log(QString entry, LogEntryType type = LogEntryType::Info);
 
-		//template<typename T>
-		//void exprTkError(exprtk::parser<T>& parser);
+	//template<typename T>
+	//void exprTkError(exprtk::parser<T>& parser);
 
-	public slots:
+public slots:
 
-		void slot_clearLog();
-
+	void slot_clearLog();
 };

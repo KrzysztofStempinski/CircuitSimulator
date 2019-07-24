@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	ComponentPropertiesWindow.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -26,25 +26,22 @@
 #include <qdialogbuttonbox.h>
 
 class ComponentPropertiesWindow : public QDialog {
-
 	Q_OBJECT
 
-	private:
+private:
 
-		QDialogButtonBox* buttonBox;
-		QFormLayout* _formLayout;
+	QDialogButtonBox* buttonBox;
+	QFormLayout* _formLayout;
 
-		Component& _component;
+	Component& _component;
 
-	public:
+public:
 
-		ComponentPropertiesWindow(Component& component);
+	ComponentPropertiesWindow(Component& component);
 
-	public slots:
+public slots:
 
-
-		// TODO rename to slotButtonAccept, or something like that?
-		void buttonAccept();
-		void buttonReject();
-
+	// TODO rename to slotButtonAccept, or something like that?
+	void buttonAccept();
+	void buttonReject();
 };

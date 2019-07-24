@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Node.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include "Node.h"
@@ -23,19 +23,17 @@ Node::Node(const QPoint& newPos, Component* coupledComponent)
 	_pos = newPos;
 	int size = NODE_SIZE + isCoupled();
 	_boundingRect.setCoords(-size, size, size, -size);
-
 }
 
 bool Node::isCoupled() {
 	return _coupledComponent != nullptr;
 }
 
-
 Component* Node::getCoupledComponent() {
 	return _coupledComponent;
 }
 
-void Node::setPos(const QPoint &newPos) {
+void Node::setPos(const QPoint& newPos) {
 	_pos = newPos;
 }
 
@@ -44,20 +42,15 @@ void Node::updatePos() {
 }
 
 void Node::setOffset(const QPoint& offset) {
-	
 	_posOffset = offset;
-		
 }
 
 void Node::connectTo(Node* node) {
-
 	connectedNodes.push_back(node);
 	node->connectedNodes.push_back(this);
-
 }
 
 void Node::disconnectFrom(Node* node) {
-
 	auto it = std::find(std::begin(connectedNodes), std::end(connectedNodes), node);
 
 	if (it != std::end(connectedNodes))
@@ -67,45 +60,35 @@ void Node::disconnectFrom(Node* node) {
 
 	if (it != std::end(node->connectedNodes))
 		node->connectedNodes.erase(it);
-
 }
 
 bool Node::isConnectedTo(Node* node) {
-	
 	auto it = find(std::begin(connectedNodes), std::end(connectedNodes), node);
 
 	return (it != std::end(connectedNodes));
-
 }
 
-void Node::draw(QPainter *painter){
-
+void Node::draw(QPainter& painter) {
 	int size = NODE_SIZE + isCoupled();
 
-	painter->fillRect(_pos.x() - size, _pos.y() - size, 2 * size, 2 * size, painter->pen().color());
+	painter.fillRect(_pos.x() - size, _pos.y() - size, 2 * size, 2 * size, painter.pen().color());
 
 	if (DEBUG)
-		painter->drawText(QPoint(_pos.x() + 6, _pos.y() + 6), QString::number(voltageIndex));
-	
+		painter.drawText(QPoint(_pos.x() + 6, _pos.y() + 6), QString::number(voltageIndex));
 }
 
-void Node::removeInboundLinks(){
-
+void Node::removeInboundLinks() {
 	for (const auto& it : connectedNodes) {
-
 		auto jt = std::find(std::begin(it->connectedNodes), std::end(it->connectedNodes), this);
 
 		if (jt != std::end(it->connectedNodes)) {
 			it->connectedNodes.erase(jt);
-			// break; 
+			// break;
 		}
-
 	}
-
 }
 
 void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator) {
-
 	rapidjson::Value valueNode;
 	valueNode.SetObject();
 
@@ -118,14 +101,12 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 	valueNode.AddMember("position", position, allocator);
 
 	if (!std::empty(connectedNodes)) {
-
 		rapidjson::Value connectedNodesArray(rapidjson::kArrayType);
 
 		for (const auto& it : connectedNodes)
 			connectedNodesArray.PushBack(it->ID, allocator);
 
 		valueNode.AddMember("connectedNodes", connectedNodesArray, allocator);
-
 	}
 
 	if (isCoupled()) {
@@ -134,15 +115,12 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 	}
 
 	nodeArray.PushBack(valueNode, allocator);
-
 }
 
 void Node::markAdjacentNodes(const int _voltageIndex) {
-
 	voltageIndex = _voltageIndex;
 
-	for (const auto &it : connectedNodes)
+	for (const auto& it : connectedNodes)
 		if (it->voltageIndex == -1) // if a node wasn't visited yet
 			it->markAdjacentNodes(voltageIndex);
-
 }

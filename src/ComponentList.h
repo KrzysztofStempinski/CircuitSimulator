@@ -9,7 +9,6 @@
 const QString COMPONENT_LIST[] = { "resistor", "voltage_source", "ground", "diode", "ideal_op_amp" };
 
 inline Component* getComponentFromName(const QString componentName) {
-
 	if (componentName == "resistor")
 		return new Resistor();
 	else if (componentName == "voltage_source")
@@ -22,5 +21,4 @@ inline Component* getComponentFromName(const QString componentName) {
 		return new IdealOpAmp();
 	else
 		throw "TODO error messages!";
-
 }

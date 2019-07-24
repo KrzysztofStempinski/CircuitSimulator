@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Property.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -19,11 +19,9 @@
 
 template <typename T>
 struct PropertyGeneric {
-
 	QString displayName;
 	QString unit;
 	T value;
-
 };
 
 using Property = PropertyGeneric<double>;

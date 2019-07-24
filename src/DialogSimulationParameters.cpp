@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	DialogSimulationParameters.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include "dialogSimulationParameters.h"
@@ -24,7 +24,6 @@
 
 DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 	: _circuit(circuit) {
-
 	setWindowFlags(Qt::Dialog);
 	setWindowTitle("Simulation parameters");
 
@@ -56,7 +55,7 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 
 	QObject::connect(comboComponent, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(componentComboChanged()));
 
-	labelParameter = new QLabel("Parameter"); 
+	labelParameter = new QLabel("Parameter");
 	labelParameter->hide();
 
 	comboParameter = new QComboBox();
@@ -102,53 +101,46 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 	mainLayout->addLayout(layoutBottom);
 
 	setLayout(mainLayout);
-
 }
 
 void DialogSimulationParameters::buttonRunClick() {
-
 	switch (tabs->currentIndex()) {
-
 		// standard DCOP
-		case 0:
+	case 0:
 
-			parameters.mode = SimulationMode::DCOP;
+		parameters.mode = SimulationMode::DCOP;
 
-			QDialog::accept();
-			//return;
+		QDialog::accept();
+		//return;
 
 		break;
 
 		// DC sweep
-		case 1: 
+	case 1:
 
-			parameters.mode = SimulationMode::DCSweep;
-			// TODO consistent variable naming
-			// TODO error handling
-			parameters.start = editInitialValue->text().toDouble();
-			parameters.end = editFinalValue->text().toDouble();
-			parameters.delta = editDelta->text().toDouble();
+		parameters.mode = SimulationMode::DCSweep;
+		// TODO consistent variable naming
+		// TODO error handling
+		parameters.start = editInitialValue->text().toDouble();
+		parameters.end = editFinalValue->text().toDouble();
+		parameters.delta = editDelta->text().toDouble();
 
-
-			parameters.componentToSweep = _circuit.components[comboComponent->currentData().toInt()];
-			parameters.propertyToSweep = comboParameter->currentData().toString();
-			QDialog::accept();
+		parameters.componentToSweep = _circuit.components[comboComponent->currentData().toInt()];
+		parameters.propertyToSweep = comboParameter->currentData().toString();
+		QDialog::accept();
 
 		break;
-
 	}
 }
 
 void DialogSimulationParameters::componentComboChanged() {
-	
 	if (comboParameter->isHidden()) {
 		labelParameter->show();
 		comboParameter->show();
 	}
 
 	comboParameter->clear();
-	
+
 	for (auto& it : _circuit.components[comboComponent->currentData().toInt()]->properties)
 		comboParameter->addItem(it.second.displayName, it.first);
-
 }

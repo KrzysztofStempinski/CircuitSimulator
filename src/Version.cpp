@@ -10,19 +10,15 @@
 //  ---------------------------------------------
 //
 //	Version.cpp
-// 
+//
 //  ---------------------------------------------
 
 #include "Version.h"
 
 namespace VersionInfo {
-
 	QString getVersionString() {
-
 		return	QString::number(Version.Major)
 			+ "." + QString::number(Version.Minor)
 			+ "." + QString::number(Version.Revision);
-
 	}
-
 }

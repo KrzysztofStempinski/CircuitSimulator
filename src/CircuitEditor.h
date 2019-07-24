@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	CircuitEditor.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -19,13 +19,12 @@
 
 #include <qwidget.h>
 #include <qevent.h>
-#include <qpoint.h>		
+#include <qpoint.h>
 
 constexpr int GRID_SIZE = 8;
 
 enum class EditorMode {
-
-    _default,
+	_default,
 	canvasDragging,
 	linkDrawing,
 	rectSelect,
@@ -34,93 +33,89 @@ enum class EditorMode {
 	nodeCreation,
 	componentCreation,
 	linkMoving
-
 };
 
 class CircuitEditor : public QWidget {
-
 	// TODO refactor, private/public etc.
 
 	Q_OBJECT
 
-	private:
+private:
 
-		Component* _currentComponent;
-		QPoint _rectStartPoint;
+	Component* _currentComponent;
+	QPoint _rectStartPoint;
 
-		QRect _selectionRect;
+	QRect _selectionRect;
 
-		QPoint _origin;
+	QPoint _origin;
 
-		std::list<Node*> _selectedNodes;
-		std::list<Component*> _selectedComponents;
+	std::list<Node*> _selectedNodes;
+	std::list<Component*> _selectedComponents;
 
-		EditorMode _mode;
+	EditorMode _mode;
 
-	public:
+public:
 
-		CircuitEditor();
+	CircuitEditor();
 
-		Circuit circuit;
+	Circuit circuit;
 
-		void createActions();
+	void createActions();
 
-		// public Qt actions to use by anyone
-		QAction* action_componentRotateRight;
-		QAction* action_componentRotateLeft;
-		QAction* action_delete;
-		QAction* action_nextNode;
-		QAction* action_createMidpointNode;
+	// public Qt actions to use by anyone
+	QAction* action_componentRotateRight;
+	QAction* action_componentRotateLeft;
+	QAction* action_delete;
+	QAction* action_nextNode;
+	QAction* action_createMidpointNode;
 
-		Node* nodeLinkStart;
-		Node* mouseOverNode;
-		Component* mouseOverComponent;
+	Node* nodeLinkStart;
+	Node* mouseOverNode;
+	Component* mouseOverComponent;
 
-		std::pair<Node*, Node*> linkToMove;
-		std::pair<Node*, Node*> mouseOverLink;
+	std::pair<Node*, Node*> linkToMove;
+	std::pair<Node*, Node*> mouseOverLink;
 
-		void selectComponent(Component* component);
-		void selectNode(Node* node);
+	void selectComponent(Component* component);
+	void selectNode(Node* node);
 
-		void mouseButtonLeftDown(const QPoint& mousePos);
-		void mouseButtonLeftUp(const QPoint& mousePos);
-		void mouseButtonLeftDblClick(const QPoint& mousePos);
-		void mouseButtonRightUp(const QPoint& mousePos);
-		
-		void mouseMove(const QPoint& mousePos);
+	void mouseButtonLeftDown(const QPoint& mousePos);
+	void mouseButtonLeftUp(const QPoint& mousePos);
+	void mouseButtonLeftDblClick(const QPoint& mousePos);
+	void mouseButtonRightUp(const QPoint& mousePos);
 
-		void clearSelection();
+	void mouseMove(const QPoint& mousePos);
 
-		// TODO refactor
-		std::pair<Node*, Node*> isMouseOverLink(const QPoint& mousePos);
+	void clearSelection();
 
-		EditorMode mode() const;
-		void setMode(const EditorMode newMode);
+	// TODO refactor
+	std::pair<Node*, Node*> isMouseOverLink(const QPoint& mousePos);
 
-		void setCurrentComponent(const QString component);
+	EditorMode mode() const;
+	void setMode(const EditorMode newMode);
 
-		void drawEverything(QPainter& painter);
-		void paintEvent(QPaintEvent *) override;
+	void setCurrentComponent(const QString component);
 
-		void displayContextMenu(const QPoint& mousePos);
+	void drawEverything(QPainter& painter);
+	void paintEvent(QPaintEvent*) override;
 
-	public:
+	void displayContextMenu(const QPoint& mousePos);
 
-		LogWindow* logWindow;
+public:
 
+	LogWindow* logWindow;
 
-	signals:
+signals:
 
-		public slots:
+public slots:
 
-			void slot_createMidpointNode();
-			void slot_componentRotate(int angle);
-			void slot_delete();
-			void slot_nextNode();
+	void slot_createMidpointNode();
+	void slot_componentRotate(int angle);
+	void slot_delete();
+	void slot_nextNode();
 
-			void mousePressEvent(QMouseEvent* event);
-			void mouseReleaseEvent(QMouseEvent* event);
-			void mouseMoveEvent(QMouseEvent* event);
-			void mouseDoubleClickEvent(QMouseEvent* event);
-
+	void mousePressEvent(QMouseEvent* event);
+	void mouseReleaseEvent(QMouseEvent* event);
+	void mouseMoveEvent(QMouseEvent* event);
+	void mouseDoubleClickEvent(QMouseEvent* event);
 };

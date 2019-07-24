@@ -19,9 +19,9 @@
 /*
 
 	main.cpp - application entry point.
- 
+
 */
- 
+
 #include <QApplication>
 
 #include "util/SimpleDarkFusion.h"
@@ -29,7 +29,6 @@
 #include "MainWindow.h"
 
 int main(int argc, char** argv) {
-
 	QApplication app(argc, argv);
 	applySimpleDarkFusion(app);
 
@@ -37,5 +36,4 @@ int main(int argc, char** argv) {
 	mainWindow.show();
 
 	return app.exec();
-
 }

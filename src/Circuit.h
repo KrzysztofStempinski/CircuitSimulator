@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	Circuit.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -21,34 +21,30 @@ class Circuit;
 #include "SimulationErrors.h"
 
 class Circuit {
+private:
 
-	private:
+	void prepareDCOP();
 
-		void prepareDCOP();
+public:
 
-	public:
+	LogWindow* logWindow;
 
+	std::vector<Node*> nodes;
+	std::vector<Component*> components;
 
-		LogWindow* logWindow;
+	void createNode(const QPoint& pos, Component* _coupledComponent = nullptr);
 
-		std::vector<Node*> nodes;
-		std::vector<Component*> components;
+	void deleteNode(Node* node);
 
-		void createNode(const QPoint& pos, Component* _coupledComponent = nullptr);
-	
-		void deleteNode(Node* node);
+	void createComponent(const QString componentName, const QPoint& pos, const bool createNodes = true);
 
-		void createComponent(const QString componentName, const QPoint& pos, const bool createNodes = true);
+	void deleteComponent(Component* component);
 
-		void deleteComponent(Component* component);
+	bool loadFromFile(const QString fileName);
+	bool saveToFile(const QString fileName);
 
-		bool loadFromFile(const QString fileName);
-		bool saveToFile(const QString fileName);
+	int voltageCount;
+	int currentCount;
 
-		int voltageCount;
-		int currentCount;
-
-		void simulate();
-
+	void simulate();
 };
-

@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	MainWindow_interface.h
-// 
+//
 //  ---------------------------------------------
 
 #include "MainWindow.h"
@@ -27,7 +27,6 @@ const QString ICON_PATH = "data\\icons\\";
 const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or something like that
 
 void MainWindow::createInterface() {
-
 	setWindowIcon(QIcon(ICON_PATH + "appicon.ico"));
 	setWindowTitle("untitled.esf - CircuitSimulator v." + VersionInfo::getVersionString());
 	resize(QSize(MAINWINDOW_DEF_WIDTH, MAINWINDOW_DEF_HEIGHT));
@@ -36,11 +35,9 @@ void MainWindow::createInterface() {
 	createMenu();
 	createToolBar();
 	populateComponents();
-
 }
 
 void MainWindow::createDockWidgets() {
-
 	// log dock
 	logWindow = new LogWindow();
 
@@ -60,16 +57,13 @@ void MainWindow::createDockWidgets() {
 	dockSimulationResults->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
 	addDockWidget(Qt::LeftDockWidgetArea, dockSimulationResults);
 	dockSimulationResults->hide();
-
 }
 
-// 
+//
 // MainWindow::createMenus()
 //
 void MainWindow::createMenu() {
-
-	auto createAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction* {
-		
+	auto createAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction * {
 		QAction* action = new QAction(title);
 
 		if (!iconName.isEmpty())
@@ -81,7 +75,6 @@ void MainWindow::createMenu() {
 		QObject::connect(action, SIGNAL(triggered()), this, slot);
 
 		return action;
-	
 	};
 
 	action_componentProperties = createAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
@@ -145,7 +138,7 @@ void MainWindow::createMenu() {
 	menuEdit->addAction(action_editSelectAll);
 
 	QMenu* menuSchematic = menuBar()->addMenu("Schematic");
-	menuComponents = menuSchematic->addMenu("Place component"); 
+	menuComponents = menuSchematic->addMenu("Place component");
 
 	QMenu* menuSimulation = menuBar()->addMenu("Simulation");
 	menuSimulation->addAction(action_simulationRun);
@@ -167,11 +160,9 @@ void MainWindow::createMenu() {
 	QMenu* menuHelp = menuBar()->addMenu("Help");
 	menuHelp->addAction(action_aboutQt);
 	menuHelp->addAction("About Circuit Simulator");
-
 }
 
 void MainWindow::populateComponents() {
-
 	toolbarComponents = new QToolBar();
 	toolbarComponents->setIconSize(QSize(40, 40));
 	toolbarComponents->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -185,8 +176,7 @@ void MainWindow::populateComponents() {
 	painter->setPen(Qt::cyan);
 
 	// lambda magic
-	auto createComponentAction = [pixmap, painter](QString const& name) -> QAction* {
-	
+	auto createComponentAction = [pixmap, painter](QString const& name) -> QAction * {
 		Component* tempComponent = getComponentFromName(name);
 		tempComponent->setPos(QPoint(18, 18));
 
@@ -200,24 +190,18 @@ void MainWindow::populateComponents() {
 		delete tempComponent;
 
 		return action;
-
 	};
 
-
 	for (const auto& it : COMPONENT_LIST) {
-
 		QAction* act = createComponentAction(it);
 		menuComponents->addAction(act);
 		toolbarComponents->addAction(act);
-
 	}
 
 	connect(menuComponents, SIGNAL(triggered(QAction*)), this, SLOT(slot_schematicPlaceComponent(QAction*)));
-
 }
 
 void MainWindow::createToolBar() {
-
 	QToolBar* toolbar = new QToolBar();
 
 	toolbar->setWindowTitle("Toolbar");
@@ -242,13 +226,10 @@ void MainWindow::createToolBar() {
 	toolbar->addAction(action_simulationRun);
 
 	toolbar->addSeparator();
-
 }
 
 void MainWindow::createStatusBar() {
-	
 	QStatusBar* statusbar = new QStatusBar(this);
-	setStatusBar(statusbar);	
+	setStatusBar(statusbar);
 	statusbar->show();
-
 }

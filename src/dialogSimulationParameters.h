@@ -10,7 +10,7 @@
 //  ---------------------------------------------
 //
 //	DialogSimulationPamaters.h
-// 
+//
 //  ---------------------------------------------
 
 #pragma once
@@ -26,35 +26,32 @@
 #include "SimulationParameters.h"
 
 class DialogSimulationParameters : public QDialog {
+	Q_OBJECT
+private:
 
-		Q_OBJECT
-		private:
+	const Circuit& _circuit;
 
-			const Circuit& _circuit;
+	QComboBox* comboComponent;
+	QComboBox* comboParameter;
 
-			QComboBox* comboComponent;
-			QComboBox* comboParameter;
+	QLabel* labelComponent;
+	QLabel* labelParameter;
 
-			QLabel* labelComponent;
-			QLabel* labelParameter;
+	QTabWidget* tabs;
 
-			QTabWidget* tabs;
+	QLineEdit* editInitialValue;
+	QLineEdit* editFinalValue;
+	QLineEdit* editDelta;
 
-			QLineEdit* editInitialValue;
-			QLineEdit* editFinalValue;
-			QLineEdit* editDelta;
+public:
 
-	public:
+	DialogSimulationParameters(Circuit& circuit);
 
-		DialogSimulationParameters(Circuit& circuit);
+	SimulationParameters parameters;
 
-		SimulationParameters parameters;
+public slots:
 
-	public slots:
+	void buttonRunClick();
 
-		void buttonRunClick();
-
-		void componentComboChanged();
-
-
+	void componentComboChanged();
 };
