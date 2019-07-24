@@ -18,7 +18,7 @@
 #include <qstring.h>
 
 template <typename T>
-struct PropertyGeneric {
+struct PropertyGeneric{
 	QString displayName;
 	QString unit;
 	T value;

@@ -15,15 +15,14 @@
 
 #include "Circuit.h"
 #include "CircuitEditor.h"
-#include "Version.h"
 
 #include <windows.h>
 
 #include "../eigen//Dense"
 
-void MainWindow::slot_componentProperties() {
+void MainWindow::slot_componentProperties(){
 	// TODO you know what
-	if (editor->mouseOverComponent != nullptr) {
+	if (editor->mouseOverComponent != nullptr){
 		qDeleteAll(dockComponentProperties->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
 
 		ComponentPropertiesWindow* d = new ComponentPropertiesWindow(*editor->mouseOverComponent);
@@ -33,19 +32,19 @@ void MainWindow::slot_componentProperties() {
 	}
 }
 
-void MainWindow::slot_fileExit() {
+void MainWindow::slot_fileExit(){
 	QApplication::exit();
 }
 
-void MainWindow::slot_simulationRun() {
+void MainWindow::slot_simulationRun(){
 	DialogSimulationParameters* d = new DialogSimulationParameters(editor->circuit);
 
 	if (d->exec() != QDialog::Accepted)
 		return;
 
-	switch (d->parameters.mode) {
+	switch (d->parameters.mode){
 	case SimulationMode::DCOP: {
-		try {
+		try{
 			editor->circuit.simulate();
 
 			// display dock with simulation results
@@ -58,7 +57,7 @@ void MainWindow::slot_simulationRun() {
 
 			update();
 		}
-		catch (SimulationException& e) {
+		catch (SimulationException& e){
 			QMessageBox msgBox(this);
 
 			msgBox.setText("Simulation failed: " + e.what());
@@ -70,23 +69,23 @@ void MainWindow::slot_simulationRun() {
 		}
 	}
 
-							   break;
+	break;
 	}
 }
 
-void MainWindow::slot_fileSaveAs() {
+void MainWindow::slot_fileSaveAs(){
 	QString fileName(QFileDialog::getSaveFileName(this, "Save circuit to file", "", "Circuit Schematic Files (*.csf);;All Files (*)"));
 
-	if (!fileName.isEmpty() && !fileName.isNull()) {
+	if (!fileName.isEmpty() && !fileName.isNull()){
 		editor->circuit.saveToFile(fileName);
-		setWindowTitle(fileName.section("/", -1, -1) + " - CircuitSimulator v." + VersionInfo::getVersionString());
+		setWindowTitle(fileName.section("/", -1, -1) + " - CircuitSimulator");
 	}
 }
 
-void MainWindow::slot_editPaste() {
+void MainWindow::slot_editPaste(){
 	// read component data and create all components
 	const rapidjson::Value& componentsVal = file["components"];
-	for (rapidjson::Value::ConstValueIterator it = componentsVal.Begin(); it != componentsVal.End(); ++it) {
+	for (rapidjson::Value::ConstValueIterator it = componentsVal.Begin(); it != componentsVal.End(); ++it){
 		editor->circuit.createComponent((*it)["name"].GetString(), QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), false); // disable automatic node creation
 
 		editor->circuit.components.back()->setRotationAngle((*it)["rotationAngle"].GetInt());
@@ -95,12 +94,12 @@ void MainWindow::slot_editPaste() {
 	const rapidjson::Value& nodesVal = file["nodes"];
 
 	// first, we need to create all the nodes - only then can we start connecting them together
-	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it) {
-		if ((*it).HasMember("coupled")) {
+	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it){
+		if ((*it).HasMember("coupled")){
 			editor->circuit.createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), editor->circuit.components[(*it)["coupledComponent"].GetInt()]);
 			editor->circuit.components[(*it)["coupledComponent"].GetInt()]->coupledNodes.push_back(editor->circuit.nodes.back());
 		}
-		else {
+		else{
 			editor->circuit.createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()));
 		}
 
@@ -113,21 +112,21 @@ void MainWindow::slot_editPaste() {
 
 	// connect nodes together
 	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it)
-		if ((*it).HasMember("connectedNodes"))  // TODO it should always have one
+		if ((*it).HasMember("connectedNodes")) // TODO it should always have one
 			for (rapidjson::Value::ConstValueIterator jt = (*it)["connectedNodes"].Begin(); jt != (*it)["connectedNodes"].End(); ++jt)
 				editor->circuit.nodes[(*it)["ID"].GetInt()]->connectTo(editor->circuit.nodes[(*jt).GetInt()]);
 }
 
-void MainWindow::slot_editCopy() {
+void MainWindow::slot_editCopy(){
 	// assign each node and component a unique ID, which is essentially its index
 	int ID = 0;
-	for (auto& it : editor->circuit.nodes) {
+	for (auto& it : editor->circuit.nodes){
 		it->ID = ID;
 		ID++;
 	}
 
 	ID = 0;
-	for (auto& it : editor->circuit.components) {
+	for (auto& it : editor->circuit.components){
 		it->ID = ID;
 		ID++;
 	}
@@ -141,7 +140,7 @@ void MainWindow::slot_editCopy() {
 	// start by saving all nodes to file
 	rapidjson::Value arrayNodes(rapidjson::kArrayType);
 	for (auto& it : editor->circuit.nodes)
-		if (it->selected) {
+		if (it->selected){
 			rapidjson::Value valueNode;
 			valueNode.SetObject();
 
@@ -153,7 +152,7 @@ void MainWindow::slot_editCopy() {
 
 			valueNode.AddMember("position", position, allocator);
 
-			if (!std::empty(it->connectedNodes)) {
+			if (!std::empty(it->connectedNodes)){
 				rapidjson::Value connectedNodesArray(rapidjson::kArrayType);
 
 				for (const auto& jt : it->connectedNodes)
@@ -163,7 +162,7 @@ void MainWindow::slot_editCopy() {
 				valueNode.AddMember("connectedNodes", connectedNodesArray, allocator);
 			}
 
-			if (it->isCoupled()) {
+			if (it->isCoupled()){
 				valueNode.AddMember("coupled", true, allocator);
 				valueNode.AddMember("coupledComponent", it->getCoupledComponent()->ID, allocator);
 			}
@@ -176,7 +175,7 @@ void MainWindow::slot_editCopy() {
 	// save all components to file
 	rapidjson::Value arrayComponents(rapidjson::kArrayType);
 	for (auto& it : editor->circuit.components)
-		if (it->selected) {
+		if (it->selected){
 			rapidjson::Value valueComponent;
 			valueComponent.SetObject();
 
@@ -196,12 +195,12 @@ void MainWindow::slot_editCopy() {
 	file.AddMember("components", arrayComponents, allocator);
 }
 
-void MainWindow::slot_fileOpen() {
+void MainWindow::slot_fileOpen(){
 	QString fileName(QFileDialog::getOpenFileName(this, "Load circuit from file", "", "Circuit Schematic Files (*.csf);;All Files (*)"));
 
-	if (!fileName.isEmpty() && !fileName.isNull()) {
+	if (!fileName.isEmpty() && !fileName.isNull()){
 		editor->circuit.loadFromFile(fileName);
-		setWindowTitle(fileName.section("/", -1, -1) + " - CircuitSimulator v." + VersionInfo::getVersionString());
+		setWindowTitle(fileName.section("/", -1, -1) + " - CircuitSimulator");
 	}
 
 	editor->update();
@@ -210,7 +209,7 @@ void MainWindow::slot_fileOpen() {
 //
 //	constructor for MainWindow
 //
-MainWindow::MainWindow() {
+MainWindow::MainWindow(){
 	editor = new CircuitEditor();
 	setCentralWidget(editor);
 	editor->logWindow = logWindow;
@@ -218,17 +217,17 @@ MainWindow::MainWindow() {
 
 	createInterface();
 
-	logWindow->log("CircuitSimulator v." + VersionInfo::getVersionString() + "\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
+	logWindow->log("CircuitSimulator\ncopyright (C) 2018 by Krzysztof Stempinski", LogEntryType::Info);
 	logWindow->log("This is free software, but comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it, subject to certain conditions. See license.md for more details.");
 
 	editor->circuit.logWindow = logWindow;
 }
 
-void MainWindow::slot_schematicPlaceComponent(QAction* action) {
+void MainWindow::slot_schematicPlaceComponent(QAction* action){
 	editor->setCurrentComponent(action->data().toString());
 	editor->setMode(EditorMode::componentCreation);
 }
 
-void MainWindow::slot_aboutQt() {
+void MainWindow::slot_aboutQt(){
 	QApplication::aboutQt();
 }

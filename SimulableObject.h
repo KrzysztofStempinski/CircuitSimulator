@@ -1,6 +1,7 @@
 #pragma once
 
-class SimulableObject {
+class SimulableObject
+{
 public:
 
 	int currentIndex;
@@ -11,11 +12,11 @@ public:
 
 	double prevVoltageValue;
 
-	SimulableObject() {
+	SimulableObject(){
 		reset();
 	}
 
-	void reset() {
+	void reset(){
 		currentIndex = -1;
 		voltageIndex = -1;
 

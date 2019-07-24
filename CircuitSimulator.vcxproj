@@ -28,7 +28,7 @@
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\SimulationResultsWindow.cpp" />
-    <ClCompile Include="src\Version.cpp" />
+    <ClCompile Include="src\util\SimpleDarkFusion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorObject.h" />
@@ -56,7 +56,6 @@
     <ClInclude Include="src\SimulationErrors.h" />
     <ClInclude Include="src\SimulationParameters.h" />
     <ClInclude Include="src\util\SimpleDarkFusion.h" />
-    <ClInclude Include="src\Version.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />
     <QtMoc Include="src\MainWindow.h" />
     <QtMoc Include="src\LogWindow.h" />

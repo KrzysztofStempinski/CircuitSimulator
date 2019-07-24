@@ -21,6 +21,8 @@
 #include <qevent.h>
 #include <qpoint.h>
 
+#include <optional>
+
 constexpr int GRID_SIZE = 8;
 
 enum class EditorMode {

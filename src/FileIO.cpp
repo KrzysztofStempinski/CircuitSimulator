@@ -18,7 +18,6 @@
 // TODO(?): check for version compatibility in loadFromFile(...)
 
 #include "Circuit.h"
-#include "Version.h"
 
 #include <iostream>
 #include <fstream>
@@ -46,12 +45,6 @@ bool Circuit::saveToFile(const QString fileName) {
 	rapidjson::Document file;
 	file.SetObject();
 	rapidjson::Document::AllocatorType& allocator = file.GetAllocator();
-
-	// save version info for comparision between releases
-	rapidjson::Value version(VersionInfo::getVersionString().toUtf8(),
-		VersionInfo::getVersionString().size(),
-		allocator);
-	file.AddMember("version", version, allocator);
 
 	// start by saving all nodes to file
 	rapidjson::Value arrayNodes(rapidjson::kArrayType);

@@ -21,14 +21,13 @@
 
 #include "ComponentList.h"
 #include "SimulationResultsWindow.h"
-#include "Version.h"
 
 const QString ICON_PATH = "data\\icons\\";
 const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or something like that
 
 void MainWindow::createInterface() {
 	setWindowIcon(QIcon(ICON_PATH + "appicon.ico"));
-	setWindowTitle("untitled.esf - CircuitSimulator v." + VersionInfo::getVersionString());
+	setWindowTitle("untitled.esf - CircuitSimulator");
 	resize(QSize(MAINWINDOW_DEF_WIDTH, MAINWINDOW_DEF_HEIGHT));
 
 	createDockWidgets();

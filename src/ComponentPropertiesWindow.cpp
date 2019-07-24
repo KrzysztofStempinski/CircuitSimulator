@@ -20,27 +20,27 @@
 
 void ComponentPropertiesWindow::buttonAccept() {
 	// save component properties
-	for (int i = 0; i < _formLayout->count(); i++) {
+	for (int i = 0; i < _formLayout->count(); i++){
 		QWidget* widget = _formLayout->itemAt(i)->widget();
-		if (widget != NULL) {
-			if (QLineEdit * lineEdit = qobject_cast<QLineEdit*>(widget)) {
+		if (widget != nullptr){
+			if (QLineEdit* lineEdit = qobject_cast<QLineEdit*>(widget)){
 				// TODO optimize, refactor etc.
 
-				auto it = _component.properties.find(widget->property("key").toString());
+				const auto it = _component.properties.find(widget->property("key").toString());
 
-				it->second.value = lineEdit->text().toDouble();// TODO this is an awful hack again
-			//	_component->properties[it, lineEdit->text().toDouble());
+				it->second.value = lineEdit->text().toDouble(); // TODO this is an awful hack again
+				//	_component->properties[it, lineEdit->text().toDouble());
 			}
 		}
 	}
 
-	this->parentWidget()->hide();	// TODO ugly hack
+	this->parentWidget()->hide(); // TODO ugly hack
 
 	close();
 }
 
 void ComponentPropertiesWindow::buttonReject() {
-	this->parentWidget()->hide();	// TODO ugly hack
+	this->parentWidget()->hide(); // TODO ugly hack
 
 	close();
 }
@@ -56,15 +56,15 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 	buttonBox->button(QDialogButtonBox::Ok)->setIcon(QIcon("data/icons/ok.ico"));
 	buttonBox->button(QDialogButtonBox::Cancel)->setIcon(QIcon("data/icons/cancel.ico"));
 
-	connect(buttonBox, SIGNAL(accepted()), this, SLOT(buttonAccept()));
-	connect(buttonBox, SIGNAL(rejected()), this, SLOT(buttonReject()));
+	connect(buttonBox, &QDialogButtonBox::accepted, this, &ComponentPropertiesWindow::buttonAccept);
+	connect(buttonBox, &QDialogButtonBox::rejected, this, &ComponentPropertiesWindow::buttonReject);
 
 	_formLayout = new QFormLayout;
 
 	// TODO dedicated routines in a component for getting various forms of its name
 	QGroupBox* formGroupBox = new QGroupBox(component.letterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.displayNameBase() + ")");
 
-	for (auto& it : component.properties) {
+	for (auto& it : component.properties){
 		QString label = it.second.displayName + " [" + it.second.unit + "]";
 
 		QLineEdit* lineEdit = new QLineEdit(QString::number(it.second.value, 'g', 10)); // TODO precision, notation settings itd.
@@ -76,7 +76,7 @@ ComponentPropertiesWindow::ComponentPropertiesWindow(Component& component) : _co
 		_formLayout->addRow(new QLabel(label), lineEdit);
 	}
 
-	if (component.properties.size() == 0)
+	if (component.properties.empty())
 		_formLayout->addRow(new QLabel("No properties available."));
 
 	formGroupBox->setLayout(_formLayout);

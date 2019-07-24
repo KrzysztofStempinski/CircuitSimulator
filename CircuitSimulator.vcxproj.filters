@@ -8,9 +8,6 @@
     <Filter Include="Simulation">
       <UniqueIdentifier>{6f77f049-e242-4984-a67c-afcfc28cf764}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Version Info">
-      <UniqueIdentifier>{273648c1-7cb3-4704-8487-364698f368e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Circuit">
       <UniqueIdentifier>{a88b9c5a-3ebd-49d8-a590-05677c68c531}</UniqueIdentifier>
     </Filter>
@@ -48,9 +45,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Version.cpp">
-      <Filter>Version Info</Filter>
-    </ClCompile>
     <ClCompile Include="src\SimulationResultsWindow.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -102,6 +96,9 @@
     <ClCompile Include="src\Component.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\SimpleDarkFusion.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Log.h">
@@ -112,9 +109,6 @@
     </ClInclude>
     <ClInclude Include="src\SimulationErrors.h">
       <Filter>Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Version.h">
-      <Filter>Version Info</Filter>
     </ClInclude>
     <ClInclude Include="src\Node.h">
       <Filter>Objects</Filter>
@@ -162,7 +156,7 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h">
-      <Filter>Header Files</Filter>
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

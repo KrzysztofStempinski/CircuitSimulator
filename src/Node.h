@@ -31,7 +31,6 @@ class Node;
 constexpr int NODE_SIZE = 3;
 
 class Node : public SimulableObject, public EditorObject {
-private:
 
 	QPoint _posOffset;
 	Component* _coupledComponent;
