@@ -24,6 +24,11 @@ struct PropertyGeneric{
 	QString displayName;
 	QString unit;
 	T value;
+
+	PropertyGeneric& operator = (const T newValue) {
+		value = newValue;
+		return *this;
+	}
 };
 
 using Property = PropertyGeneric<double>;

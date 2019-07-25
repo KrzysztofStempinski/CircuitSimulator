@@ -13,10 +13,10 @@
 
 #include "Component.h"
 
-#include <qwidget.h>
+#include <qdialog.h>
 #include <qformlayout.h>
 
-class WidgetComponentProperties : QWidget {
+class WidgetComponentProperties : public QDialog {
 Q_OBJECT
 
 	QFormLayout* _formLayout;

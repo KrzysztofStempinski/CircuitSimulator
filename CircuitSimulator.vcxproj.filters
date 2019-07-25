@@ -48,9 +48,6 @@
     <ClCompile Include="src\SimulationResultsWindow.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="src\ComponentPropertiesWindow.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="src\CircuitEditor.cpp">
       <Filter>Circuit\Editor</Filter>
     </ClCompile>
@@ -98,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="src\util\QActionHelper.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WidgetComponentProperties.cpp">
+      <Filter>Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,9 +157,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\ComponentPropertiesWindow.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="src\SimulationResultsWindow.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
@@ -170,6 +167,9 @@
       <Filter>Main</Filter>
     </QtMoc>
     <QtMoc Include="src\DialogSimulationParameters.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="src\WidgetComponentProperties.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>

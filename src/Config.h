@@ -2,12 +2,18 @@
 
 #include <qcolor.h>
 #include <Qpen.h>
+#include <qicon.h>
 
 namespace Config {
 
 	namespace Paths {
 		const QString Icons = "data\\icons\\";
-		const std::string Components = "data\\components\\";
+		const QString Components = "data\\components\\";
+	}
+
+	namespace Icons {
+		const QString OK = Paths::Icons + "ok.ico";
+		const QString cancel = Paths::Icons + "cancel.ico";
 	}
 
 	namespace Pens {
