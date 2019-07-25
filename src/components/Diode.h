@@ -121,15 +121,10 @@ public:
 		return "D";
 	}
 
-	SimulationResult getSimulationResult() {
+	std::optional<SimulationResult> getSimulationResult() {
 		double current = properties["sat_curr"].value * (std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["therm_volt"].value) - 1);
 
-		return { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current };
-	}
-
-	// TODO this is temporary
-	bool hasSimulationResult() {
-		return true;
+		return { { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current } };
 	}
 
 	void updateNodeOffsets() {

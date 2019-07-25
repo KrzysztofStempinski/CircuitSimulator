@@ -31,17 +31,19 @@
 #include "EditorObject.h"
 #include "Property.h"
 
+#include <optional>
+
 class Component;
 
 #include "Node.h"
 
-struct SimulationResult{
+struct SimulationResult {
 	QString name = QString::null;
 	QString unit = QString::null;
 	double value = double(0);
 };
 
-class Component : public SimulableObject, public EditorObject{
+class Component : public SimulableObject, public EditorObject {
 protected:
 
 	QString _name;
@@ -50,7 +52,7 @@ protected:
 
 public:
 
-	Component() : _rotationAngle(0), ID(-1){
+	Component() : _rotationAngle(0), ID(-1) {
 	}
 
 	int ID;
@@ -77,12 +79,10 @@ public:
 
 	virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 
-	virtual SimulationResult getSimulationResult() = 0;
-
-	// TODO this is temporary
-	virtual bool hasSimulationResult() = 0;
+	virtual std::optional<SimulationResult> getSimulationResult();
 
 	virtual void updateNodeOffsets() = 0;
 
 	void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
+
 };

@@ -86,8 +86,8 @@ public:
 		return "V";
 	}
 
-	SimulationResult getSimulationResult() {
-		return { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", currentValue };
+	std::optional<SimulationResult> getSimulationResult() {
+		return { { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", currentValue } };
 	}
 
 	// TODO this is temporary

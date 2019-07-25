@@ -90,15 +90,10 @@ public:
 		return "R";
 	}
 
-	SimulationResult getSimulationResult() {
+	std::optional<SimulationResult> getSimulationResult() {
 		double current = (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value;
 
-		return { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current };
-	}
-
-	// TODO this is temporary
-	bool hasSimulationResult() {
-		return true;
+		return { { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current } };
 	}
 
 	void updateNodeOffsets() {

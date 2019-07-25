@@ -77,3 +77,7 @@ void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Documen
 
 	arrayComponents.PushBack(valueComponent, allocator);
 }
+
+std::optional<SimulationResult> Component::getSimulationResult() {
+	return {};
+}

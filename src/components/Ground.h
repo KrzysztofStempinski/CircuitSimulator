@@ -79,16 +79,6 @@ public:
 		return "GND";
 	}
 
-	SimulationResult getSimulationResult() {
-		throw "SHOULD NOT HAPPEN!";
-		return {};
-	}
-
-	// TODO this is temporary
-	bool hasSimulationResult() {
-		return false;
-	}
-
 	void updateNodeOffsets() {
 		coupledNodes[0]->setOffset(QPoint(0, -15));
 	}
