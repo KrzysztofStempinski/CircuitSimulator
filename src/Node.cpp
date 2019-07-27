@@ -55,6 +55,7 @@ void Node::draw(QPainter& painter){
 }
 
 void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator){
+
 	rapidjson::Value valueNode;
 	valueNode.SetObject();
 
@@ -81,6 +82,7 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 	}
 
 	nodeArray.PushBack(valueNode, allocator);
+
 }
 
 void Node::markAdjacentNodes(const int _voltageIndex){
