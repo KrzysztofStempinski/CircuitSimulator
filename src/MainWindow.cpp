@@ -21,7 +21,7 @@
 
 void MainWindow::slot_componentProperties(){
 	// TODO you know what
-	if (editor->mouseOverComponent != nullptr) {
+	if (editor->mouseOverComponent != editor->circuit.components.end()) {
 		qDeleteAll(dockComponentProperties->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
 
 		auto d = new WidgetComponentProperties(*editor->mouseOverComponent);

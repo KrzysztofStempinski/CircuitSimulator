@@ -70,10 +70,10 @@ public:
 	}
 
 	void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
-		addStampEntry(matrixA, 1, coupledNodes[1]->voltageIndex - 1, voltageCount + currentIndex - 1);
-		addStampEntry(matrixA, -1, coupledNodes[0]->voltageIndex - 1, voltageCount + currentIndex - 1);
-		addStampEntry(matrixA, 1, voltageCount + currentIndex - 1, coupledNodes[1]->voltageIndex - 1);
-		addStampEntry(matrixA, -1, voltageCount + currentIndex - 1, coupledNodes[0]->voltageIndex - 1);
+		addStampEntry(matrixA, 1, (*coupledNodes[1])->voltageIndex - 1, voltageCount + currentIndex - 1);
+		addStampEntry(matrixA, -1, (*coupledNodes[0])->voltageIndex - 1, voltageCount + currentIndex - 1);
+		addStampEntry(matrixA, 1, voltageCount + currentIndex - 1, (*coupledNodes[1])->voltageIndex - 1);
+		addStampEntry(matrixA, -1, voltageCount + currentIndex - 1, (*coupledNodes[0])->voltageIndex - 1);
 
 		addStampEntry(matrixB, properties["voltage"].value, voltageCount + currentIndex - 1);
 	}
@@ -96,8 +96,8 @@ public:
 	}
 
 	void updateNodeOffsets() {
-		coupledNodes[0]->setOffset(QPoint(-24, 0));
-		coupledNodes[1]->setOffset(QPoint(24, 0));
+		(*coupledNodes[0])->setOffset(QPoint(-24, 0));
+		(*coupledNodes[1])->setOffset(QPoint(24, 0));
 	}
 
 	bool linear() {

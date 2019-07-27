@@ -76,10 +76,10 @@ public:
 		// TODO  division by zero etc
 		double val = 1 / properties["resistance"].value;
 
-		addStampEntry(matrixA, val, coupledNodes[1]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
-		addStampEntry(matrixA, -val, coupledNodes[1]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
-		addStampEntry(matrixA, -val, coupledNodes[0]->voltageIndex - 1, coupledNodes[1]->voltageIndex - 1);
-		addStampEntry(matrixA, val, coupledNodes[0]->voltageIndex - 1, coupledNodes[0]->voltageIndex - 1);
+		addStampEntry(matrixA, val, (*coupledNodes[1])->voltageIndex - 1, (*coupledNodes[1])->voltageIndex - 1);
+		addStampEntry(matrixA, -val, (*coupledNodes[1])->voltageIndex - 1, (*coupledNodes[0])->voltageIndex - 1);
+		addStampEntry(matrixA, -val, (*coupledNodes[0])->voltageIndex - 1, (*coupledNodes[1])->voltageIndex - 1);
+		addStampEntry(matrixA, val, (*coupledNodes[0])->voltageIndex - 1, (*coupledNodes[0])->voltageIndex - 1);
 	}
 
 	QString displayNameBase() {
@@ -91,14 +91,14 @@ public:
 	}
 
 	std::optional<SimulationResult> getSimulationResult() {
-		double current = (coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["resistance"].value;
+		double current = ((*coupledNodes[1])->voltageValue - (*coupledNodes[0])->voltageValue) / properties["resistance"].value;
 
 		return { { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current } };
 	}
 
 	void updateNodeOffsets() {
-		coupledNodes[0]->setOffset(QPoint(-24, 0));
-		coupledNodes[1]->setOffset(QPoint(24, 0));
+		(*coupledNodes[0])->setOffset(QPoint(-24, 0));
+		(*coupledNodes[1])->setOffset(QPoint(24, 0));
 	}
 
 	bool linear() {

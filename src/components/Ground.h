@@ -80,7 +80,7 @@ public:
 	}
 
 	void updateNodeOffsets() {
-		coupledNodes[0]->setOffset(QPoint(0, -15));
+		(*coupledNodes[0])->setOffset(QPoint(0, -15));
 	}
 
 	bool linear() {

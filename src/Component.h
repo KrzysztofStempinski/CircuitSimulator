@@ -75,7 +75,7 @@ public:
 
 	PropertyMap properties;
 
-	std::vector<Node*> coupledNodes;
+	std::vector<std::list<Node*>::iterator> coupledNodes;
 
 	virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 

@@ -42,6 +42,8 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 
 	tabDCOP->setLayout(layoutDCOPdescription);
 
+
+	/*
 	// create the DC sweep tab
 	// we start with HBox for component name and parameter
 	QHBoxLayout* layoutComponentParameter = new QHBoxLayout;
@@ -84,7 +86,7 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 	sweepMainLayout->addLayout(layoutComponentParameter);
 	sweepMainLayout->addLayout(layoutSweepParameters);
 
-	tabDCSweep->setLayout(sweepMainLayout);
+	tabDCSweep->setLayout(sweepMainLayout);*/
 
 	// create "Simulation Run" button and corresponding layout
 	QPushButton* buttonRun = new QPushButton("Run simulation");
@@ -116,9 +118,9 @@ void DialogSimulationParameters::buttonRunClick() {
 		break;
 
 		// DC sweep
-	case 1:
+	//case 1:
 
-		parameters.mode = SimulationMode::DCSweep;
+		/*parameters.mode = SimulationMode::DCSweep;
 		// TODO consistent variable naming
 		// TODO error handling
 		parameters.start = editInitialValue->text().toDouble();
@@ -128,12 +130,14 @@ void DialogSimulationParameters::buttonRunClick() {
 		parameters.componentToSweep = _circuit.components[comboComponent->currentData().toInt()];
 		parameters.propertyToSweep = comboParameter->currentData().toString();
 		QDialog::accept();
-
-		break;
+		*/
+		//break;
 	}
+
 }
 
 void DialogSimulationParameters::componentComboChanged() {
+	/*
 	if (comboParameter->isHidden()) {
 		labelParameter->show();
 		comboParameter->show();
@@ -143,4 +147,5 @@ void DialogSimulationParameters::componentComboChanged() {
 
 	for (auto& it : _circuit.components[comboComponent->currentData().toInt()]->properties)
 		comboParameter->addItem(it.second.displayName, it.first);
+	*/
 }

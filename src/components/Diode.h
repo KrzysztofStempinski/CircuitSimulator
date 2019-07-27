@@ -73,7 +73,8 @@ public:
 	}
 
 	void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) {
-		double sat = properties["sat_curr"].value;
+	
+		/*double sat = properties["sat_curr"].value;
 		double vt = properties["therm_volt"].value;
 		// TODO  division by zero etc
 		double curr = sat * (std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / vt) - 1);
@@ -110,7 +111,7 @@ public:
 
 			addStampEntry(matrixB, -vdkp1, coupledNodes[1]->voltageIndex - 1);
 			addStampEntry(matrixB, vdkp1, coupledNodes[0]->voltageIndex - 1);
-		}
+		}*/
 	}
 
 	QString displayNameBase() {
@@ -122,14 +123,16 @@ public:
 	}
 
 	std::optional<SimulationResult> getSimulationResult() {
-		double current = properties["sat_curr"].value * (std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["therm_volt"].value) - 1);
+		return {};
 
-		return { { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current } };
+	//	double current = properties["sat_curr"].value * (std::exp((coupledNodes[1]->voltageValue - coupledNodes[0]->voltageValue) / properties["therm_volt"].value) - 1);
+
+		//return { { letterIdentifierBase() + QString::number(serialNumber), "Device current [A]", current } };
 	}
 
 	void updateNodeOffsets() {
-		coupledNodes[0]->setOffset(QPoint(-24, 0));
-		coupledNodes[1]->setOffset(QPoint(24, 0));
+		(*coupledNodes[0])->setOffset(QPoint(-24, 0));
+		(*coupledNodes[1])->setOffset(QPoint(24, 0));
 	}
 
 	bool linear() {

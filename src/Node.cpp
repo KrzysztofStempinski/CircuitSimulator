@@ -27,6 +27,7 @@ bool Node::isCoupled(){
 	return _coupledComponent != nullptr;
 }
 
+//TODO can we do this with iterators?
 Component* Node::getCoupledComponent(){
 	return _coupledComponent;
 }
@@ -43,47 +44,14 @@ void Node::setOffset(const QPoint& offset){
 	_posOffset = offset;
 }
 
-void Node::connectTo(Node* node){
-	connectedNodes.push_back(node);
-	node->connectedNodes.push_back(this);
-}
-
-void Node::disconnectFrom(Node* node){
-	auto it = std::find(std::begin(connectedNodes), std::end(connectedNodes), node);
-
-	if (it != std::end(connectedNodes))
-		connectedNodes.erase(it);
-
-	it = std::find(std::begin(node->connectedNodes), std::end(node->connectedNodes), this);
-
-	if (it != std::end(node->connectedNodes))
-		node->connectedNodes.erase(it);
-}
-
-bool Node::isConnectedTo(Node* node){
-	auto it = find(std::begin(connectedNodes), std::end(connectedNodes), node);
-
-	return (it != std::end(connectedNodes));
-}
-
 void Node::draw(QPainter& painter){
+
 	int size = NODE_SIZE + isCoupled();
 
 	painter.fillRect(_pos.x() - size, _pos.y() - size, 2 * size, 2 * size, painter.pen().color());
 
 	//if (DEBUG)
 	//	painter.drawText(QPoint(_pos.x() + 6, _pos.y() + 6), QString::number(voltageIndex));
-}
-
-void Node::removeInboundLinks(){
-	for (const auto& it : connectedNodes){
-		auto jt = std::find(std::begin(it->connectedNodes), std::end(it->connectedNodes), this);
-
-		if (jt != std::end(it->connectedNodes)){
-			it->connectedNodes.erase(jt);
-			// break;
-		}
-	}
 }
 
 void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator){
@@ -102,7 +70,7 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 		rapidjson::Value connectedNodesArray(rapidjson::kArrayType);
 
 		for (const auto& it : connectedNodes)
-			connectedNodesArray.PushBack(it->ID, allocator);
+			connectedNodesArray.PushBack((*it)->ID, allocator);
 
 		valueNode.AddMember("connectedNodes", connectedNodesArray, allocator);
 	}
@@ -116,9 +84,11 @@ void Node::saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::Allocato
 }
 
 void Node::markAdjacentNodes(const int _voltageIndex){
+
 	voltageIndex = _voltageIndex;
 
 	for (const auto& it : connectedNodes)
-		if (it->voltageIndex == -1) // if a node wasn't visited yet
-			it->markAdjacentNodes(voltageIndex);
+		if ((*it)->voltageIndex == -1) // if a node wasn't visited yet
+			(*it)->markAdjacentNodes(voltageIndex);
+
 }

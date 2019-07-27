@@ -28,6 +28,8 @@
 #include "../rapidjson/prettywriter.h"
 
 bool Circuit::saveToFile(const QString fileName) {
+
+	/*
 	// assign each node and component a unique ID, which is essentially its index
 	int ID = 0;
 	for (auto& it : nodes) {
@@ -70,9 +72,15 @@ bool Circuit::saveToFile(const QString fileName) {
 	out.close();
 
 	return true;
+	*/
+
+	return true;
+
 }
 
 bool Circuit::loadFromFile(const QString fileName) {
+
+	/*
 	// clean up
 	nodes.clear();
 	components.clear();
@@ -133,6 +141,9 @@ bool Circuit::loadFromFile(const QString fileName) {
 		if ((*it).HasMember("connectedNodes"))  // TODO it should always have one
 			for (rapidjson::Value::ConstValueIterator jt = (*it)["connectedNodes"].Begin(); jt != (*it)["connectedNodes"].End(); ++jt)
 				nodes[(*it)["ID"].GetInt()]->connectTo(nodes[(*jt).GetInt()]);
+
+	return true;
+	*/
 
 	return true;
 }

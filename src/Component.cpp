@@ -26,7 +26,7 @@ void Component::setPos(const QPoint& newPos) {
 	_pos = newPos;
 
 	for (const auto& it : coupledNodes)
-		it->updatePos();
+		(*it)->updatePos();
 };
 
 int Component::getRotationAngle() const {

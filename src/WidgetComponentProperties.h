@@ -21,11 +21,11 @@ Q_OBJECT
 
 	QFormLayout* _formLayout;
 
-	Component& _component;
+	Component* _component;
 
 public:
 
-	WidgetComponentProperties(Component& component);
+	WidgetComponentProperties(Component* component);
 
 public slots:
 
