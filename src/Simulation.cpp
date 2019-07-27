@@ -1,6 +1,8 @@
 #include "Circuit.h"
 #include "MatrixHelper.h"
 
+#include "SimulationErrors.h"
+
 // TODO settings entry or sth like that?
 constexpr int MAX_ITERATIONS = 400; // should be enough
 constexpr double DELTA = 1e-6;

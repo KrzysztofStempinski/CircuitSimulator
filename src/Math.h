@@ -28,7 +28,6 @@ namespace Math {
 
 	const double PI = std::atan(1) * 4;
 
-	// TODO find a proper place to put this in
 	template <typename T>
 	int sign(T val) {
 		return (T(0) < val) - (val < T(0));
