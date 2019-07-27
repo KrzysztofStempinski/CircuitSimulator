@@ -227,6 +227,7 @@ void CircuitEditor::clearSelection(){
 void CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos){
 	switch (_mode){
 	case EditorMode::linkDrawing: {
+
 		// if we click on a node1 while drawing a link from node2, connect them together
 		// and start drawing a new link from node1
 		if (mouseOverNode != circuit.nodes.end() && mouseOverNode != nodeLinkStart){

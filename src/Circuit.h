@@ -43,8 +43,8 @@ public:
 	std::list<Component*>::iterator createComponent(const QString componentName, const QPoint& pos, const bool createNodes = true);
 	void deleteComponent(std::list<Component*>::iterator component);
 
-	bool loadFromFile(const QString fileName);
-	bool saveToFile(const QString fileName);
+	bool saveToFile(const QString& fileName);	
+	bool loadFromFile(const QString& fileName);
 
 	int voltageCount;
 	int currentCount;

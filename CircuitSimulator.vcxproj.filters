@@ -26,9 +26,6 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{08edffe0-4b0e-47d2-93d7-4b6f6f99fb54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core %28circuit%29">
-      <UniqueIdentifier>{b3fd2e39-4b7b-4d05-ab6e-0f38a2184c6b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{663497fa-0794-4320-8777-39dd56ae9a22}</UniqueIdentifier>
     </Filter>
@@ -69,12 +66,6 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Circuit.cpp">
-      <Filter>Core %28circuit%29</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileIO.cpp">
-      <Filter>Core %28circuit%29</Filter>
-    </ClCompile>
     <ClCompile Include="src\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -99,6 +90,12 @@
     <ClCompile Include="src\WidgetComponentProperties.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="src\Circuit.cpp">
+      <Filter>Circuit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileIO.cpp">
+      <Filter>Circuit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Property.h">
@@ -109,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="src\Node.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Circuit.h">
-      <Filter>Core %28circuit%29</Filter>
     </ClInclude>
     <ClInclude Include="src\Math.h">
       <Filter>Math</Filter>
@@ -154,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="src\util\QActionHelper.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Circuit.h">
+      <Filter>Circuit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

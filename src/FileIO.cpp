@@ -27,7 +27,7 @@
 #include "../rapidjson/istreamwrapper.h"
 #include "../rapidjson/prettywriter.h"
 
-bool Circuit::saveToFile(const QString fileName) {
+bool Circuit::saveToFile(const QString& fileName) {
 
 	// assign each node and component a unique ID, which is essentially its index
 	int ID = 0;
@@ -74,7 +74,7 @@ bool Circuit::saveToFile(const QString fileName) {
 
 }
 
-bool Circuit::loadFromFile(const QString fileName) {
+bool Circuit::loadFromFile(const QString& fileName) {
 
 	//TODO check if that call destructors correctly...
 	// clean up

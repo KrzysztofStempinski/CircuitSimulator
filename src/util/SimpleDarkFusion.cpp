@@ -3,7 +3,7 @@
 #include <qstylefactory.h>
 #include <qpalette.h>
 
-void applySimpleDarkFusion(QApplication& app){
+void applySimpleDarkFusion(QApplication& app) {
 	qApp->setStyle(QStyleFactory::create("Fusion"));
 
 	QPalette darkPalette;
