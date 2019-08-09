@@ -3,8 +3,6 @@
 #include "Circuit.h"
 #include "CircuitEditor.h"
 
-#include "LogWindow.h"
-
 #include <QMainWindow>
 #include <QWidget>
 #include <qtoolbar.h>
@@ -13,9 +11,6 @@ constexpr int MAINWINDOW_DEF_WIDTH = 1440;
 constexpr int MAINWINDOW_DEF_HEIGHT = 900;
 
 class MainWindow : public QMainWindow {
-private:
-
-	LogWindow* logWindow;
 
 	QAction* action_componentProperties;
 

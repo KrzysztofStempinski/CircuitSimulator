@@ -28,8 +28,6 @@
 #include "../Component.h"
 #include "../Property.h"
 
-#include "../LogWindow.h"
-
 #include <qpainter.h>
 #include <qstring.h>
 
@@ -48,7 +46,7 @@ public:
 		std::vector<QPoint> path = { { -12, 0 }, { 12, 0 }, { -12, -1 }, { 12, -1 }, {-10, 3}, {10, 3}, {-8, 6}, {8, 6}, {-6, 9}, { 6, 9 }, { -4, 12}, {4, 12}, {-2, 15}, {2, 15}, {0, 0}, {0, -15} };
 
 		for (auto& it : path)
-			it = rotatePoint(it + _pos, _pos, _rotationAngle);
+			it = Math::rotatePoint(it + _pos, _pos, _rotationAngle);
 
 		for (int i = 0; i < path.size(); i += 2)
 			painter.drawLine(path[i], path[i + 1]);
@@ -57,7 +55,7 @@ public:
 
 		if (serialNumber > 0) {
 			QPoint pos(0, -24);
-			painter.drawText(rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
+			painter.drawText(Math::rotatePoint(pos + _pos, _pos, _rotationAngle % 180), letterIdentifierBase() + QString::number(serialNumber));
 		}
 	}
 
@@ -81,18 +79,8 @@ public:
 		return "GND";
 	}
 
-	SimulationResult getSimulationResult() {
-		throw "SHOULD NOT HAPPEN!";
-		return {};
-	}
-
-	// TODO this is temporary
-	bool hasSimulationResult() {
-		return false;
-	}
-
 	void updateNodeOffsets() {
-		coupledNodes[0]->setOffset(QPoint(0, -15));
+		(*coupledNodes[0])->setOffset(QPoint(0, -15));
 	}
 
 	bool linear() {

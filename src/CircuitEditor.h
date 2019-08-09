@@ -21,10 +21,12 @@
 #include <qevent.h>
 #include <qpoint.h>
 
+#include <optional>
+
 constexpr int GRID_SIZE = 8;
 
 enum class EditorMode {
-	_default,
+	idle,
 	canvasDragging,
 	linkDrawing,
 	rectSelect,
@@ -49,8 +51,8 @@ private:
 
 	QPoint _origin;
 
-	std::list<Node*> _selectedNodes;
-	std::list<Component*> _selectedComponents;
+	std::list<std::list<Node*>::iterator> _selectedNodes;
+	std::list<std::list<Component*>::iterator> _selectedComponents;
 
 	EditorMode _mode;
 
@@ -69,15 +71,15 @@ public:
 	QAction* action_nextNode;
 	QAction* action_createMidpointNode;
 
-	Node* nodeLinkStart;
-	Node* mouseOverNode;
-	Component* mouseOverComponent;
+	std::list<Node*>::iterator nodeLinkStart;
+	std::list<Node*>::iterator mouseOverNode;
+	std::list<Component*>::iterator mouseOverComponent;
 
-	std::pair<Node*, Node*> linkToMove;
-	std::pair<Node*, Node*> mouseOverLink;
+	std::pair<std::list<Node*>::iterator, std::list<Node*>::iterator> linkToMove;
+	std::pair<std::list<Node*>::iterator, std::list<Node*>::iterator> mouseOverLink;
 
-	void selectComponent(Component* component);
-	void selectNode(Node* node);
+	void selectComponent(std::list<Component*>::iterator component);
+	void selectNode(std::list<Node*>::iterator node);
 
 	void mouseButtonLeftDown(const QPoint& mousePos);
 	void mouseButtonLeftUp(const QPoint& mousePos);
@@ -89,7 +91,7 @@ public:
 	void clearSelection();
 
 	// TODO refactor
-	std::pair<Node*, Node*> isMouseOverLink(const QPoint& mousePos);
+	std::pair<std::list<Node*>::iterator, std::list<Node*>::iterator> isMouseOverLink(const QPoint& mousePos);
 
 	EditorMode mode() const;
 	void setMode(const EditorMode newMode);
@@ -102,8 +104,6 @@ public:
 	void displayContextMenu(const QPoint& mousePos);
 
 public:
-
-	LogWindow* logWindow;
 
 signals:
 

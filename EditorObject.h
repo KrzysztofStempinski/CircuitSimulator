@@ -14,9 +14,7 @@ public:
 	bool selected;
 	QPoint prevPos;
 
-	EditorObject() {
-		selected = false;
-		prevPos = QPoint(0, 0);
+	EditorObject() : selected(false), prevPos(QPoint(0, 0)) {
 	}
 
 	const QPoint pos() const {

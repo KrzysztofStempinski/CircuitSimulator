@@ -23,8 +23,8 @@
 
 // goddamnit fold expressions are sexy
 // unfold me daddy uwu
-template<typename ...Args>
-void addRow(QTableWidget* table, Args... args) {
+template <typename ...Args>
+void addRow(QTableWidget* table, Args ... args) {
 	table->insertRow(table->rowCount());
 
 	int i = 0;
@@ -32,33 +32,33 @@ void addRow(QTableWidget* table, Args... args) {
 };
 
 void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
-	table->setRowCount(0);
+
+	table->clear();
 
 	for (auto& it : _circuit.components) {
-		if (it->hasSimulationResult()) {
-			const SimulationResult result = it->getSimulationResult();
 
-			addRow(table, result.name, result.unit, QString::number(result.value));
-		}
+		auto result = it->getSimulationResult();
+		if (result.has_value()) 
+			addRow(table, result->name, result->unit, QString::number(result->value));
+		
 	}
 
 	//if (displayNodeVoltages)
-		//for (int i = 0; i < _circuit.voltageCount; ++i)
-			//addRow(table, "N" + QString::number(i + 1), "Node Voltage [V]", QString::number(_solutions(i)));
+	//for (int i = 0; i < _circuit.voltageCount; ++i)
+	//addRow(table, "N" + QString::number(i + 1), "Node Voltage [V]", QString::number(_solutions(i)));
 
 	table->sortByColumn(0, Qt::AscendingOrder);
 }
 
 SimulationResultsWindow::SimulationResultsWindow(Circuit& circuit)
-	: _circuit(circuit)
-{
+	: _circuit(circuit) {
 	setWindowTitle("Simulation results | Circuit Simulator");
 
 	table = new QTableWidget;
 
 	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	table->setColumnCount(3);
-	table->setHorizontalHeaderLabels({ "Element", "Value Type", "Value" });
+	table->setHorizontalHeaderLabels({"Element", "Value Type", "Value"});
 
 	table->show();
 	displayResults();

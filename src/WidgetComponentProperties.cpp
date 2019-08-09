@@ -21,29 +21,7 @@
 #include <qgroupbox.h>
 #include <qlabel.h>
 
-void WidgetComponentProperties::slotButtonAccept() {
-
-	for (int i = 0; i < _formLayout->count(); ++i) {
-		QWidget* widget = _formLayout->itemAt(i)->widget();
-		if (widget != nullptr)
-			if (const auto lineEdit = qobject_cast<QLineEdit*>(widget))
-				_component.properties[widget->property("key").toString()] = lineEdit->text().toDouble();
-	}
-
-	emit signalFinished();
-
-	close();
-}
-
-void WidgetComponentProperties::slotButtonReject() {
-
-	emit signalFinished();
-
-	close();
-
-}
-
-WidgetComponentProperties::WidgetComponentProperties(Component& component) : _component(component) {
+WidgetComponentProperties::WidgetComponentProperties(Component* component) : _component(component) {
 
 	setWindowTitle("Component properties");
 
@@ -57,10 +35,10 @@ WidgetComponentProperties::WidgetComponentProperties(Component& component) : _co
 
 	_formLayout = new QFormLayout;
 
-	if (component.properties.empty())
+	if (component->properties.empty())
 		_formLayout->addRow(new QLabel("No properties available."));
 	else {
-		for (const auto& it : component.properties) {
+		for (const auto& it : component->properties) {
 			// TODO precision, notation settings itd.
 			QLineEdit* lineEdit = new QLineEdit(QString::number(it.second.value));
 			lineEdit->setProperty("key", it.first);
@@ -73,7 +51,7 @@ WidgetComponentProperties::WidgetComponentProperties(Component& component) : _co
 	}
 
 	// TODO dedicated routines for getting various forms of a component's name
-	auto formGroupBox = new QGroupBox(component.letterIdentifierBase() + QString::number(component.serialNumber) + " (" + component.displayNameBase() + ")");
+	auto formGroupBox = new QGroupBox(component->letterIdentifierBase() + QString::number(component->serialNumber) + " (" + component->displayNameBase() + ")");
 	formGroupBox->setLayout(_formLayout);
 
 	auto mainLayout = new QVBoxLayout;
@@ -81,5 +59,27 @@ WidgetComponentProperties::WidgetComponentProperties(Component& component) : _co
 	mainLayout->addWidget(buttonBox);
 
 	setLayout(mainLayout);
+
+}
+
+void WidgetComponentProperties::slotButtonAccept() {
+
+	for (int i = 0; i < _formLayout->count(); ++i) {
+		QWidget* widget = _formLayout->itemAt(i)->widget();
+		if (widget != nullptr)
+			if (const auto lineEdit = qobject_cast<QLineEdit*>(widget))
+				_component->properties[widget->property("key").toString()] = lineEdit->text().toDouble();
+	}
+
+	emit signalFinished();
+
+	close();
+}
+
+void WidgetComponentProperties::slotButtonReject() {
+
+	emit signalFinished();
+
+	close();
 
 }

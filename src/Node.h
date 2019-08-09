@@ -31,7 +31,6 @@ class Node;
 constexpr int NODE_SIZE = 3;
 
 class Node : public SimulableObject, public EditorObject {
-private:
 
 	QPoint _posOffset;
 	Component* _coupledComponent;
@@ -42,17 +41,11 @@ public:
 
 	Node(const QPoint& newPos, Component* coupledComponent = nullptr);
 
-	std::vector<Node*> connectedNodes;
+	std::vector<std::list<Node*>::iterator> connectedNodes;
 
 	void setPos(const QPoint& newPos);
 	void updatePos();
 	void setOffset(const QPoint& offset);
-
-	void connectTo(Node* node);
-	void disconnectFrom(Node* node);
-	bool isConnectedTo(Node* node);
-
-	void removeInboundLinks();
 
 	bool isCoupled();
 	Component* getCoupledComponent();
@@ -62,5 +55,5 @@ public:
 	void saveToJSON(rapidjson::Value& nodeArray, rapidjson::Document::AllocatorType& allocator);
 
 	// TODO decent argument names?
-	void markAdjacentNodes(const int _voltageIndex);
+	void markAdjacentNodes(int _voltageIndex);
 };

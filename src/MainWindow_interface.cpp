@@ -19,16 +19,14 @@
 #include <qmenubar.h>
 #include <qstatusbar.h>
 
+#include "Config.h"
 #include "ComponentList.h"
 #include "SimulationResultsWindow.h"
-#include "Version.h"
-
-const QString ICON_PATH = "data\\icons\\";
-const std::string COMPONENT_PATH = "data\\components\\"; // TODO move to Settings or something like that
+#include "util/QActionHelper.h"
 
 void MainWindow::createInterface() {
-	setWindowIcon(QIcon(ICON_PATH + "appicon.ico"));
-	setWindowTitle("untitled.esf - CircuitSimulator v." + VersionInfo::getVersionString());
+	setWindowIcon(QIcon(Config::Paths::Icons + "appicon.ico"));
+	setWindowTitle("untitled.esf - CircuitSimulator");
 	resize(QSize(MAINWINDOW_DEF_WIDTH, MAINWINDOW_DEF_HEIGHT));
 
 	createDockWidgets();
@@ -38,13 +36,6 @@ void MainWindow::createInterface() {
 }
 
 void MainWindow::createDockWidgets() {
-	// log dock
-	logWindow = new LogWindow();
-
-	dockLog = new QDockWidget("Log", this);
-	dockLog->setWidget(logWindow);
-	dockLog->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
-	addDockWidget(Qt::BottomDockWidgetArea, dockLog);
 
 	// component properties dock
 	dockComponentProperties = new QDockWidget("Component properties", this);
@@ -63,59 +54,55 @@ void MainWindow::createDockWidgets() {
 // MainWindow::createMenus()
 //
 void MainWindow::createMenu() {
-	auto createAction = [this](QString const& title, const char* slot, QString const& shortcut = "", QString const& iconName = "") -> QAction * {
-		QAction* action = new QAction(title);
 
-		if (!iconName.isEmpty())
-			action->setIcon(QIcon(ICON_PATH + iconName));
-
-		if (!shortcut.isEmpty())
-			action->setShortcut(QKeySequence(shortcut));
-
-		QObject::connect(action, SIGNAL(triggered()), this, slot);
-
-		return action;
-	};
-
-	action_componentProperties = createAction("Component properties", SLOT(slot_componentProperties()), "P", "properties.ico");
+	//TODO connecte to slots!!!!!
+	action_componentProperties = createAction("Component properties", "P", "properties.ico");
+	QAction::connect(action_componentProperties, &QAction::triggered, this, &MainWindow::slot_componentProperties);
 	addAction(action_componentProperties);
 
 	// file actions
-	action_fileNew = createAction("New", SLOT(slot_fileNew()), "Ctrl+N", "fileNew.ico");
+	//TODO wire up
+	action_fileNew = createAction("New", "Ctrl+N", "fileNew.ico");
 	addAction(action_fileNew);
 
-	action_fileOpen = createAction("Open", SLOT(slot_fileOpen()), "Ctrl+O", "fileOpen.ico");
+	action_fileOpen = createAction("Open", "Ctrl+O", "fileOpen.ico");
+	QAction::connect(action_fileOpen, &QAction::triggered, this, &MainWindow::slot_fileOpen);
 	addAction(action_fileOpen);
 
-	action_fileSave = createAction("Save", SLOT(slot_fileSave()), "Ctrl+S", "fileSave.ico");
+	//TODO wire up
+	action_fileSave = createAction("Save", "Ctrl+S", "fileSave.ico");
 	addAction(action_fileSave);
 
-	action_fileSaveAs = createAction("Save As...", SLOT(slot_fileSaveAs()), "Ctrl+Shift+S", "fileSaveAs.ico");
+	action_fileSaveAs = createAction("Save As...", "Ctrl+Shift+S", "fileSaveAs.ico");
+	QAction::connect(action_fileSaveAs, &QAction::triggered, this, &MainWindow::slot_fileSaveAs);
 	addAction(action_fileSaveAs);
 
+	//TODO wire up
 	action_fileExit = createAction("Exit", SLOT(slot_fileExit()), "Alt+F4");
 	addAction(action_fileExit);
 
 	// edit actions
-	action_editUndo = createAction("Undo", SLOT(slot_editUndo()), "Ctrl+Z", "editUndo.ico");
+	action_editUndo = createAction("Undo", "Ctrl+Z", "editUndo.ico");
 	addAction(action_editUndo);
 
-	action_editRedo = createAction("Redo", SLOT(slot_editRedo()), "Ctrl+Y", "editRedo.ico");
+	action_editRedo = createAction("Redo", "Ctrl+Y", "editRedo.ico");
 	addAction(action_editRedo);
 
-	action_editCopy = createAction("Copy", SLOT(slot_editCopy()), "Ctrl+C", "fileCopy.ico");
+	action_editCopy = createAction("Copy", "Ctrl+C", "fileCopy.ico");
 	addAction(action_editCopy);
 
-	action_editPaste = createAction("Paste", SLOT(slot_editPaste()), "Ctrl+P", "filePaste.ico");
+	action_editPaste = createAction("Paste", "Ctrl+P", "filePaste.ico");
 	addAction(action_editPaste);
 
 	// simulation actions
-	action_simulationRun = createAction("Run", SLOT(slot_simulationRun()), "F5", "simulationRun.ico");
+	action_simulationRun = createAction("Run", "F5", "simulationRun.ico");
+	QAction::connect(action_simulationRun, &QAction::triggered, this, &MainWindow::slot_simulationRun);
 	action_simulationRun->setToolTip("Run simulation");
 	addAction(action_simulationRun);
 
 	// help actions
 	action_aboutQt = createAction("About Qt", SLOT(slot_aboutQt()));
+	QAction::connect(action_aboutQt, &QAction::triggered, this, &MainWindow::slot_aboutQt);
 
 	QMenu* menuFile = menuBar()->addMenu("File");
 	menuFile->addAction(action_fileNew);

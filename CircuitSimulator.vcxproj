@@ -18,9 +18,8 @@
     <ClCompile Include="src\DialogSimulationParameters.cpp" />
     <ClCompile Include="src\FileIO.cpp" />
     <ClCompile Include="src\Component.cpp" />
-    <ClCompile Include="src\ComponentPropertiesWindow.cpp" />
+    <ClCompile Include="src\WidgetComponentProperties.cpp" />
     <ClCompile Include="src\Math.cpp" />
-    <ClCompile Include="src\LogWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainWindow.cpp" />
     <ClCompile Include="src\MainWindow_interface.cpp" />
@@ -28,7 +27,8 @@
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\SimulationResultsWindow.cpp" />
-    <ClCompile Include="src\Version.cpp" />
+    <ClCompile Include="src\util\QActionHelper.cpp" />
+    <ClCompile Include="src\util\SimpleDarkFusion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorObject.h" />
@@ -38,7 +38,6 @@
     <ClInclude Include="src\ComponentList.h" />
     <ClInclude Include="src\components\Diode.h" />
     <ClInclude Include="src\components\Ground.h" />
-    <ClInclude Include="src\components\IdealOpAmp.h" />
     <ClInclude Include="src\components\Resistor.h" />
     <ClInclude Include="src\components\VoltageSource.h" />
     <QtMoc Include="src\DialogSimulationParameters.h">
@@ -49,18 +48,21 @@
     </QtMoc>
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Math.h" />
-    <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\MatrixHelper.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\SimulationErrors.h" />
     <ClInclude Include="src\SimulationParameters.h" />
+    <ClInclude Include="src\util\QActionHelper.h" />
     <ClInclude Include="src\util\SimpleDarkFusion.h" />
-    <ClInclude Include="src\Version.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />
     <QtMoc Include="src\MainWindow.h" />
-    <QtMoc Include="src\LogWindow.h" />
-    <QtMoc Include="src\ComponentPropertiesWindow.h" />
+    <QtMoc Include="src\WidgetComponentProperties.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
     <QtMoc Include="src\CircuitEditor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

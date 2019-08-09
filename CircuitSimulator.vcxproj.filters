@@ -8,9 +8,6 @@
     <Filter Include="Simulation">
       <UniqueIdentifier>{6f77f049-e242-4984-a67c-afcfc28cf764}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Version Info">
-      <UniqueIdentifier>{273648c1-7cb3-4704-8487-364698f368e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Circuit">
       <UniqueIdentifier>{a88b9c5a-3ebd-49d8-a590-05677c68c531}</UniqueIdentifier>
     </Filter>
@@ -29,9 +26,6 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{08edffe0-4b0e-47d2-93d7-4b6f6f99fb54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core %28circuit%29">
-      <UniqueIdentifier>{b3fd2e39-4b7b-4d05-ab6e-0f38a2184c6b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{663497fa-0794-4320-8777-39dd56ae9a22}</UniqueIdentifier>
     </Filter>
@@ -48,16 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Version.cpp">
-      <Filter>Version Info</Filter>
-    </ClCompile>
     <ClCompile Include="src\SimulationResultsWindow.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ComponentPropertiesWindow.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogWindow.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="src\CircuitEditor.cpp">
@@ -81,15 +66,6 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Circuit.cpp">
-      <Filter>Core %28circuit%29</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Simulation.cpp">
-      <Filter>Core %28circuit%29</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileIO.cpp">
-      <Filter>Core %28circuit%29</Filter>
-    </ClCompile>
     <ClCompile Include="src\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -102,25 +78,34 @@
     <ClCompile Include="src\Component.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\SimpleDarkFusion.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Simulation.cpp">
+      <Filter>Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\QActionHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WidgetComponentProperties.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Circuit.cpp">
+      <Filter>Circuit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileIO.cpp">
+      <Filter>Circuit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Property.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SimulationErrors.h">
       <Filter>Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="src\Version.h">
-      <Filter>Version Info</Filter>
-    </ClInclude>
     <ClInclude Include="src\Node.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Circuit.h">
-      <Filter>Core %28circuit%29</Filter>
     </ClInclude>
     <ClInclude Include="src\Math.h">
       <Filter>Math</Filter>
@@ -146,9 +131,6 @@
     <ClInclude Include="src\components\Ground.h">
       <Filter>Components\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\IdealOpAmp.h">
-      <Filter>Components\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\Resistor.h">
       <Filter>Components\Components</Filter>
     </ClInclude>
@@ -162,16 +144,16 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h">
-      <Filter>Header Files</Filter>
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\QActionHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Circuit.h">
+      <Filter>Circuit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\ComponentPropertiesWindow.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
-    <QtMoc Include="src\LogWindow.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="src\SimulationResultsWindow.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
@@ -182,6 +164,9 @@
       <Filter>Main</Filter>
     </QtMoc>
     <QtMoc Include="src\DialogSimulationParameters.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="src\WidgetComponentProperties.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>

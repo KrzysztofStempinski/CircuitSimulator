@@ -18,7 +18,6 @@
 // TODO(?): check for version compatibility in loadFromFile(...)
 
 #include "Circuit.h"
-#include "Version.h"
 
 #include <iostream>
 #include <fstream>
@@ -28,7 +27,8 @@
 #include "../rapidjson/istreamwrapper.h"
 #include "../rapidjson/prettywriter.h"
 
-bool Circuit::saveToFile(const QString fileName) {
+bool Circuit::saveToFile(const QString& fileName) {
+
 	// assign each node and component a unique ID, which is essentially its index
 	int ID = 0;
 	for (auto& it : nodes) {
@@ -46,12 +46,6 @@ bool Circuit::saveToFile(const QString fileName) {
 	rapidjson::Document file;
 	file.SetObject();
 	rapidjson::Document::AllocatorType& allocator = file.GetAllocator();
-
-	// save version info for comparision between releases
-	rapidjson::Value version(VersionInfo::getVersionString().toUtf8(),
-		VersionInfo::getVersionString().size(),
-		allocator);
-	file.AddMember("version", version, allocator);
 
 	// start by saving all nodes to file
 	rapidjson::Value arrayNodes(rapidjson::kArrayType);
@@ -77,9 +71,12 @@ bool Circuit::saveToFile(const QString fileName) {
 	out.close();
 
 	return true;
+
 }
 
-bool Circuit::loadFromFile(const QString fileName) {
+bool Circuit::loadFromFile(const QString& fileName) {
+
+	//TODO check if that call destructors correctly...
 	// clean up
 	nodes.clear();
 	components.clear();
@@ -98,6 +95,7 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 		components.back()->setRotationAngle((*it)["rotationAngle"].GetInt());
 
+		//TODO load properties
 		if ((*it).HasMember("properties")) {
 			//const rapidjson::Value& arrayProperties = (*it)["properties"];
 
@@ -121,8 +119,12 @@ bool Circuit::loadFromFile(const QString fileName) {
 	// first, we need to create all the nodes - only then can we start connecting them together
 	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it) {
 		if ((*it).HasMember("coupled")) {
-			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), components[(*it)["coupledComponent"].GetInt()]);
-			components[(*it)["coupledComponent"].GetInt()]->coupledNodes.push_back(nodes.back());
+
+			auto compIt = std::next(components.begin(), (*it)["coupledComponent"].GetInt());
+
+			auto nodeIt = createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()), *compIt);
+			(*compIt)->coupledNodes.push_back(nodeIt);
+
 		}
 		else {
 			createNode(QPoint((*it)["position"][0].GetInt(), (*it)["position"][1].GetInt()));
@@ -137,9 +139,10 @@ bool Circuit::loadFromFile(const QString fileName) {
 
 	// connect nodes together
 	for (rapidjson::Value::ConstValueIterator it = nodesVal.Begin(); it != nodesVal.End(); ++it)
-		if ((*it).HasMember("connectedNodes"))  // TODO it should always have one
+		if ((*it).HasMember("connectedNodes"))  // TODO should it always have one???
 			for (rapidjson::Value::ConstValueIterator jt = (*it)["connectedNodes"].Begin(); jt != (*it)["connectedNodes"].End(); ++jt)
-				nodes[(*it)["ID"].GetInt()]->connectTo(nodes[(*jt).GetInt()]);
+				connectNodes(std::next(nodes.begin(), (*it)["ID"].GetInt()), std::next(nodes.begin(), (*jt).GetInt()));
 
 	return true;
+
 }

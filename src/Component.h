@@ -30,7 +30,8 @@
 #include "SimulableObject.h"
 #include "EditorObject.h"
 #include "Property.h"
-#include "LogWindow.h"
+
+#include <optional>
 
 class Component;
 
@@ -51,14 +52,17 @@ protected:
 
 public:
 
-	Component() : _rotationAngle(0), ID(-1) {}
-	LogWindow* logWindow; // TODO temp
+	Component() : _rotationAngle(0), ID(-1) { }
+
+	virtual ~Component() {};
 
 	int ID;
 	int serialNumber;
+
 	QString getName();
 
 	virtual QString displayNameBase() = 0;
+
 	virtual QString letterIdentifierBase() = 0;
 
 	void setPos(const QPoint& newPos);
@@ -66,24 +70,25 @@ public:
 	virtual void draw(QPainter& painter) = 0;
 
 	int getRotationAngle() const;
+
 	void setRotationAngle(const int angle);
 
 	virtual int nodeCount() = 0;
+
 	virtual bool requiresCurrentEntry() = 0;
+
 	virtual bool linear() = 0;
 
 	PropertyMap properties;
 
-	std::vector<Node*> coupledNodes;
+	std::vector<std::list<Node*>::iterator> coupledNodes;
 
 	virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
 
-	virtual SimulationResult getSimulationResult() = 0;
-
-	// TODO this is temporary
-	virtual bool hasSimulationResult() = 0;
+	virtual std::optional<SimulationResult> getSimulationResult();
 
 	virtual void updateNodeOffsets() = 0;
 
 	void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
+
 };

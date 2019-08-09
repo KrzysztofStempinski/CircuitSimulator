@@ -26,7 +26,7 @@ void Component::setPos(const QPoint& newPos) {
 	_pos = newPos;
 
 	for (const auto& it : coupledNodes)
-		it->updatePos();
+		(*it)->updatePos();
 };
 
 int Component::getRotationAngle() const {
@@ -38,7 +38,7 @@ void Component::setRotationAngle(const int angle) {
 	if (angle == 0)
 		_rotationAngle = 0;
 	else
-		_rotationAngle = angle % (sign(angle) * 360);
+		_rotationAngle = angle % (Math::sign(angle) * 360);
 
 	// NOTE we assume that the only rotation angles will be 0, +-90, +=180, +-270, +-360
 	if (_rotationAngle % 180 != 0)
@@ -76,4 +76,8 @@ void Component::saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Documen
 	}*/
 
 	arrayComponents.PushBack(valueComponent, allocator);
+}
+
+std::optional<SimulationResult> Component::getSimulationResult() {
+	return {};
 }
