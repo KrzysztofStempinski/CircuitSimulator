@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 #include <qpainter.h>
 
@@ -30,7 +31,10 @@
 #include "SimulableObject.h"
 #include "EditorObject.h"
 #include "Property.h"
-#include "LogWindow.h"
+#include "Component.h"
+#include "Math.h"
+
+#include "utils/DLLFunctionLoader.h"
 
 class Component;
 
@@ -43,47 +47,129 @@ struct SimulationResult {
 };
 
 class Component : public SimulableObject, public EditorObject {
+
 protected:
-
-	QString _name;
-
 	int _rotationAngle;
 
 public:
 
-	Component() : _rotationAngle(0), ID(-1) {}
-	LogWindow* logWindow; // TODO temp
+	std::function<std::string()> name;
+	std::function<std::string()> displayNameBase;
+	std::function<std::string()> letterIdentifierBase;
+
+	std::function<void(QPainter& painter)> draw;
+	std::function<int()> nodeCount;
+	std::function<bool()> requiresCurrentEntry;
+	std::function<bool()> linear;
+
+	std::function<std::vector<std::pair<int, int>>()> nodeOffsets;
+
+	std::function<void(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount)> applyComponentStamp;
+
+	std::function<std::optional<SimulationResult>()> simulationResult;
+
+	std::function<QRect()> boundingRect;
+
+	std::function<PropertyMap()> propertiesFuncTEMP;
+
+	Component(const std::string& _name) : _rotationAngle(0), ID(-1) {
+
+		// TODO rewrite!!!
+		std::string dllName = _name + ".dll";
+		dllName[0] = std::toupper(dllName[0]);
+	
+		name					= loadDllFunc<std::string()>(dllName, "name");
+		displayNameBase			= loadDllFunc<std::string()>(dllName, "displayNameBase");
+		letterIdentifierBase	= loadDllFunc<std::string()>(dllName, "letterIdentifierBase");
+		draw					= loadDllFunc<void(QPainter & painter)>(dllName, "draw");
+		nodeCount				= loadDllFunc<int()>(dllName, "nodeCount");
+		requiresCurrentEntry	= loadDllFunc<bool()>(dllName, "requiresCurrentEntry");
+		linear					= loadDllFunc<bool()>(dllName, "linear");
+
+		applyComponentStamp		= loadDllFunc<void(Eigen::MatrixXd & matrixA, Eigen::VectorXd & matrixB, int voltageCount)>(dllName, "applyComponentStamp");
+
+		simulationResult		= loadDllFunc<std::optional<SimulationResult>()>(dllName, "simulationResult");
+
+		nodeOffsets				= loadDllFunc<std::vector<std::pair<int, int>>()>(dllName, "nodeOffsets");
+
+		boundingRect			= loadDllFunc<QRect()>(dllName, "boundingRect");
+
+		propertiesFuncTEMP		= loadDllFunc<PropertyMap()>(dllName, "propertiesFuncTEMP");
+
+		properties = propertiesFuncTEMP();
+
+	}
+
+	void updateNodeOffsets() {
+
+		std::vector<std::pair<int, int>> _nodeOffsets = nodeOffsets();
+
+		for (int i = 0; i < _nodeOffsets.size(); ++i)
+			coupledNodes[i]->setOffset(QPoint(_nodeOffsets[i].first, _nodeOffsets[i].second));
+		
+	}
 
 	int ID;
 	int serialNumber;
-	QString getName();
 
-	virtual QString displayNameBase() = 0;
-	virtual QString letterIdentifierBase() = 0;
+	void setPos(const QPoint& newPos) {
+		_pos = newPos;
 
-	void setPos(const QPoint& newPos);
+		for (const auto& it : coupledNodes)
+			it->updatePos();
+	}
 
-	virtual void draw(QPainter& painter) = 0;
+	int getRotationAngle() const {
+		return this->_rotationAngle;
+	}
 
-	int getRotationAngle() const;
-	void setRotationAngle(const int angle);
+	void setRotationAngle(int angle) {
+		// division by zero is apparently bad
+		if (angle == 0)
+			_rotationAngle = 0;
+		else
+			_rotationAngle = angle % (sign(angle) * 360);
 
-	virtual int nodeCount() = 0;
-	virtual bool requiresCurrentEntry() = 0;
-	virtual bool linear() = 0;
+		// NOTE we assume that the only rotation angles will be 0, +-90, +=180, +-270, +-360
+		if (_rotationAngle % 180 != 0)
+			_boundingRect = _boundingRect.transposed();
+
+		//  update node positions
+		setPos(_pos);
+	}
 
 	PropertyMap properties;
 
 	std::vector<Node*> coupledNodes;
 
-	virtual void applyComponentStamp(Eigen::MatrixXd& matrixA, Eigen::VectorXd& matrixB, int voltageCount) = 0;
+	void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator) {
+		rapidjson::Value valueComponent;
+		valueComponent.SetObject();
 
-	virtual SimulationResult getSimulationResult() = 0;
+		valueComponent.AddMember("ID", ID, allocator);
 
-	// TODO this is temporary
-	virtual bool hasSimulationResult() = 0;
+		rapidjson::Value name(name().c_str(), name().size(), allocator);
+		valueComponent.AddMember("name", name, allocator);
 
-	virtual void updateNodeOffsets() = 0;
+		rapidjson::Value position(rapidjson::kArrayType);
+		position.PushBack(_pos.x(), allocator);
+		position.PushBack(_pos.y(), allocator);
+		valueComponent.AddMember("position", position, allocator);
 
-	void saveToJSON(rapidjson::Value& arrayComponents, rapidjson::Document::AllocatorType& allocator);
+		valueComponent.AddMember("rotationAngle", _rotationAngle, allocator);
+
+		// TODO save properties to file
+		/*if (!properties.empty()) {
+			rapidjson::Value propertiesVal;
+			for (auto& it : properties) {
+				rapidjson::Value valueProperty(it.first.toUtf8(), it.second.value, allocator);
+				propertiesVal.AddMember(, valueProperty);
+			}
+
+			valueComponent.AddMember("properties", valueComponent, allocator);
+		}*/
+
+		arrayComponents.PushBack(valueComponent, allocator);
+	}
+
 };

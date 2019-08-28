@@ -12,7 +12,7 @@
 //	IdealOpAmp.h
 //
 //  ---------------------------------------------
-
+/*
 #pragma once
 
 #include <vector>
@@ -112,3 +112,4 @@ public:
 		return false;
 	}
 };
+*/

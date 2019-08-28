@@ -19,7 +19,6 @@
 #include <qmenubar.h>
 #include <qstatusbar.h>
 
-#include "ComponentList.h"
 #include "SimulationResultsWindow.h"
 #include "Version.h"
 
@@ -177,13 +176,14 @@ void MainWindow::populateComponents() {
 
 	// lambda magic
 	auto createComponentAction = [pixmap, painter](QString const& name) -> QAction * {
-		Component* tempComponent = getComponentFromName(name);
+
+		auto tempComponent = new Component(name);
 		tempComponent->setPos(QPoint(18, 18));
 
 		pixmap->fill(Qt::transparent);
 		tempComponent->draw(*painter);
 
-		QAction* action = new QAction(tempComponent->displayNameBase());
+		QAction* action = new QAction(QString::fromStdString(tempComponent->displayNameBase()));
 		action->setData(name);
 		action->setIcon(QIcon(*pixmap));
 

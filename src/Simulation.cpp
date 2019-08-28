@@ -18,7 +18,7 @@ void Circuit::prepareDCOP() {
 	bool foundGround = false;
 	for (const auto& it : nodes) {
 		if (it->voltageIndex == -1) {
-			if (it->isCoupled() && it->getCoupledComponent()->getName() == QString("ground")) {// TODO actually implement checking whether this is ground from config file
+			if (it->isCoupled() && it->getCoupledComponent()->name() == "ground") {// TODO actually implement checking whether this is ground from config file
 				it->markAdjacentNodes(0);
 
 				foundGround = true;

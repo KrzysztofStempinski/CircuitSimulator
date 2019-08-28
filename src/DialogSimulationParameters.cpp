@@ -51,7 +51,7 @@ DialogSimulationParameters::DialogSimulationParameters(Circuit& circuit)
 
 	for (int i = 0; i < _circuit.components.size(); ++i)
 		if (!_circuit.components[i]->properties.empty())
-			comboComponent->addItem(_circuit.components[i]->letterIdentifierBase() + QString::number(_circuit.components[i]->serialNumber), i);
+			comboComponent->addItem(QString::fromStdString(_circuit.components[i]->letterIdentifierBase() + std::to_string(_circuit.components[i]->serialNumber)), i);
 
 	QObject::connect(comboComponent, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(componentComboChanged()));
 

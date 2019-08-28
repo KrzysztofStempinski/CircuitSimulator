@@ -1,6 +1,7 @@
 /*
 	This file is part of CircuitSimulator
 	Copyright (C) 2018 Krzysztof Stempinski
+
 	Permission is hereby granted, free of charge, to any person obtaining
 	a copy of this software and associated documentation files (the "Software"),
 	to deal in the Software without restriction, including without limitation the
@@ -29,6 +30,7 @@
 #include "MainWindow.h"
 
 int main(int argc, char** argv) {
+
 	QApplication app(argc, argv);
 	applySimpleDarkFusion(app);
 

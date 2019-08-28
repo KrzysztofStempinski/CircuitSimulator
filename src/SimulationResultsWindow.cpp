@@ -35,11 +35,10 @@ void SimulationResultsWindow::displayResults(bool displayNodeVoltages) {
 	table->setRowCount(0);
 
 	for (auto& it : _circuit.components) {
-		if (it->hasSimulationResult()) {
-			const SimulationResult result = it->getSimulationResult();
+		std::optional<SimulationResult> result= it->simulationResult();
 
-			addRow(table, result.name, result.unit, QString::number(result.value));
-		}
+		if (result.has_value()) 
+			addRow(table, result.value().name, result.value().unit, QString::number(result.value().value));
 	}
 
 	//if (displayNodeVoltages)

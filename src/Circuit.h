@@ -15,10 +15,9 @@
 
 #pragma once
 
-class Circuit;
-
 #include "Node.h"
 #include "SimulationErrors.h"
+#include "LogWindow.h"
 
 class Circuit {
 private:
@@ -36,7 +35,7 @@ public:
 
 	void deleteNode(Node* node);
 
-	void createComponent(const QString componentName, const QPoint& pos, const bool createNodes = true);
+	void createComponent(std::string componentName, const QPoint& pos, const bool createNodes = true);
 
 	void deleteComponent(Component* component);
 

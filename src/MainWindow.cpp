@@ -182,7 +182,7 @@ void MainWindow::slot_editCopy() {
 
 			valueComponent.AddMember("ID", ID, allocator);
 
-			rapidjson::Value name(it->getName().toUtf8(), it->getName().size(), allocator);
+			rapidjson::Value name(it->name().c_str(), it->name().size(), allocator);
 			valueComponent.AddMember("name", name, allocator);
 
 			rapidjson::Value position(rapidjson::kArrayType);

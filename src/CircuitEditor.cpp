@@ -22,8 +22,6 @@
 #include <qwidget.h>
 #include <QMenu>
 
-#include "ComponentList.h"
-
 void CircuitEditor::selectComponent(Component* component) {
 	_selectedComponents.push_back(component);
 	component->selected = true;
@@ -293,7 +291,7 @@ void  CircuitEditor::mouseButtonLeftDown(const QPoint& mousePos) {
 								   break;
 
 	case EditorMode::componentCreation: {
-		circuit.createComponent(_currentComponent->getName(), snapPointToGrid(mousePos, GRID_SIZE));
+		circuit.createComponent(_currentComponent->name(), snapPointToGrid(mousePos, GRID_SIZE));
 		circuit.components.back()->setRotationAngle(_currentComponent->getRotationAngle());
 
 		update();
@@ -523,7 +521,7 @@ void CircuitEditor::paintEvent(QPaintEvent*) {
 }
 
 void CircuitEditor::setCurrentComponent(const QString component) {
-	_currentComponent = getComponentFromName(component);
+	_currentComponent = new Component(component.toStdString());
 }
 
 void CircuitEditor::mouseButtonRightUp(const QPoint& mousePos) {

@@ -15,8 +15,6 @@
 
 #include "Circuit.h"
 
-#include "ComponentList.h"
-
 void Circuit::createNode(const QPoint& pos, Component* _coupledComponent) {
 	nodes.push_back(new Node(pos, _coupledComponent));
 }
@@ -29,10 +27,11 @@ void Circuit::deleteNode(Node* node) {
 	nodes.erase(std::find(std::begin(nodes), std::end(nodes), node));
 }
 
-void Circuit::createComponent(const QString componentName, const QPoint& pos, const bool createNodes) {
-	Component* newComponent = getComponentFromName(componentName);
+void Circuit::createComponent(std::string componentName, const QPoint& pos, const bool createNodes) {
+	
+	auto newComponent = new Component(componentName);
 
-	newComponent->serialNumber = 1 + std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->getName() == componentName; });
+	newComponent->serialNumber = 1 + std::count_if(std::begin(components), std::end(components), [componentName](Component* c) { return c->name() == componentName; });
 
 	newComponent->setPos(pos);
 

@@ -99,9 +99,6 @@
     <ClCompile Include="src\DialogSimulationParameters.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="src\Component.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Log.h">
@@ -149,19 +146,16 @@
     <ClInclude Include="src\components\IdealOpAmp.h">
       <Filter>Components\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\Resistor.h">
-      <Filter>Components\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\VoltageSource.h">
       <Filter>Components\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ComponentList.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="src\util\SimpleDarkFusion.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\DLLFunctionLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

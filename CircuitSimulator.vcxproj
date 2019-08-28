@@ -17,7 +17,6 @@
     <ClCompile Include="src\CircuitEditor_slots.cpp" />
     <ClCompile Include="src\DialogSimulationParameters.cpp" />
     <ClCompile Include="src\FileIO.cpp" />
-    <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentPropertiesWindow.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\LogWindow.cpp" />
@@ -35,11 +34,9 @@
     <ClInclude Include="SimulableObject.h" />
     <ClInclude Include="src\Circuit.h" />
     <ClInclude Include="src\Component.h" />
-    <ClInclude Include="src\ComponentList.h" />
     <ClInclude Include="src\components\Diode.h" />
     <ClInclude Include="src\components\Ground.h" />
     <ClInclude Include="src\components\IdealOpAmp.h" />
-    <ClInclude Include="src\components\Resistor.h" />
     <ClInclude Include="src\components\VoltageSource.h" />
     <QtMoc Include="src\DialogSimulationParameters.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
@@ -55,6 +52,7 @@
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\SimulationErrors.h" />
     <ClInclude Include="src\SimulationParameters.h" />
+    <ClInclude Include="src\utils\DLLFunctionLoader.h" />
     <ClInclude Include="src\util\SimpleDarkFusion.h" />
     <ClInclude Include="src\Version.h" />
     <QtMoc Include="src\SimulationResultsWindow.h" />
